@@ -1,12 +1,15 @@
+import { Checkbox } from '@mui/material'
 import { useState } from 'react'
 import './App.css'
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 function App() {
 
 
   return (
     <div className="App">
-      <h1>Hi</h1>
+      <Checkbox {...label} defaultChecked />
     </div>
   )
 }
