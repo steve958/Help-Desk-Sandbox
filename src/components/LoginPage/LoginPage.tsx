@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { checkValidity } from "../../Helper";
+import logo from "../../assets/comdata.png";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -17,8 +18,16 @@ const LoginPage = () => {
 
   return (
     <div className="login_content">
-      <h3>ComData Help Desk i slikica ispred</h3>
-      <div style={{ display: "flex", flexFlow: "column" }}>
+      <div className="app_name">
+        <img
+          src={logo}
+          alt=""
+          style={{ width: "40px", verticalAlign: "textTop" }}
+        />
+        <span style={{ marginLeft: "10px" }}>ComData Help Desk</span>
+      </div>
+      <div className="login_form">
+        <h3 style={{ alignSelf: "flex-start", marginLeft: "100px" }}>Login</h3>
         <input
           type="email"
           placeholder="Email"
@@ -46,7 +55,7 @@ const LoginPage = () => {
           onClick={loggedIn}
           className="loginButton"
         >
-          Login to your Account
+          Login
         </button>
       </div>
     </div>
