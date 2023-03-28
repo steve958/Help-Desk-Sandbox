@@ -9,3 +9,49 @@ body {
 .app_container {
   display: flex;
 }
+
+.loader_container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.loader_item {
+  width: 25%;
+}
+
+.login_content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginInputs {
+  width: "100%";
+  border: 2px solid;
+  border-color: #398b93;
+  border-radius: 10px;
+  margin-top: 5px;
+  height: 30px;
+  font-family: "Comic Sans MS";
+}
+
+.loginButton {
+  border: none;
+  border-radius: 10px;
+  background-color: #398b93;
+  font-family: "Comic Sans MS";
+  width: 100%;
+}
+.loginButton:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.span_validation {
+  font-size: 12px;
+  padding: 3px;
+  color: red;
+  display: inline-block;
+}
