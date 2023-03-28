@@ -27,34 +27,13 @@ body {
   width: 100vw;
 }
 
-.loginInputs {
-  width: 400px;
-  border: 2px solid;
-  border-color: #398b93;
-  border-radius: 10px;
-  margin-top: 5px;
-  height: 30px;
-  font-family: "Times New Roman", Times, serif;
-}
-
-.loginButton {
-  margin-top: 10px;
-  border: none;
-  border-radius: 10px;
-  background-color: #398b93;
-  font-family: "Times New Roman", Times, serif;
-  width: 400px;
-}
-.loginButton:disabled {
-  color: #ccc;
-  cursor: not-allowed;
-}
-
 .span_validation {
-  font-size: 12px;
+  font-size: 16px;
   padding: 3px;
   color: red;
-  display: inline-block;
+  display: flex;
+  align-self: flex-start;
+  margin-left: 100px;
 }
 
 .app_name {
