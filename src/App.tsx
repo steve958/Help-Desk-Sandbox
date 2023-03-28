@@ -1,17 +1,12 @@
-import { Checkbox } from '@mui/material'
-import { useState } from 'react'
-import './App.css'
-
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+import { Outlet } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 function App() {
-
-
   return (
-    <div className="App">
-      <Checkbox {...label} defaultChecked />
+    <div className="app_container">
+      <Outlet />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
