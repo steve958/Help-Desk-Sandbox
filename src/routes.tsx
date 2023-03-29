@@ -6,6 +6,7 @@ import EditTicket from "./components/EditTicket/EditTicket";
 import HelpPage from "./components/HelpPage/HelpPage";
 import TicketDetail from "./components/TicketDeatil/TicketDetail";
 import Dashboard from "./components/Dashboard/Dashboard";
+import NewTicket from "./components/NewTicket/NewTicket";
 import { useSelector } from "react-redux";
 
 //import { state } from "./index";
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "/ticket:id",
         element: <TicketDetail />,
+      },
+      {
+        path: "/newticket",
+        element: <NewTicket />,
       },
     ],
   },

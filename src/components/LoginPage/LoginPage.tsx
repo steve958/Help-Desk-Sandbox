@@ -36,7 +36,7 @@ const LoginPage = () => {
         <h3 style={{ alignSelf: "flex-start", marginLeft: "100px" }}>Login</h3>
         <OutlinedInput
           id="input-with-icon-adornment"
-          style={{ width: "400px" }}
+          style={{ width: "400px", fontFamily: "Times New Roman" }}
           startAdornment={
             <InputAdornment position="start">
               <AccountCircleIcon />
@@ -58,7 +58,11 @@ const LoginPage = () => {
         )}
         <OutlinedInput
           id="input-with-icon-adornment"
-          style={{ width: "400px", marginTop: "10px" }}
+          style={{
+            width: "400px",
+            marginTop: "10px",
+            fontFamily: "Times New Roman",
+          }}
           startAdornment={
             <InputAdornment position="start">
               <LockIcon />
