@@ -56,3 +56,97 @@ body {
   padding: 10px;
   margin: 10px;
 }
+
+/*Toolbar*/
+.Toolbar {
+  width: 100%;
+  position: fixed;
+  background-color: #398b93;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px 0 5px;
+  height: 50px;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.Toolbar_left,
+.Toolbar_right {
+  display: flex;
+}
+.Toolbar_left img {
+  vertical-align: text-top;
+  width: 10%;
+}
+
+.Toolbar nav {
+  height: 100%;
+}
+
+.Toolbar_left ul,
+.Toolbar_right ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.Toolbar_left li a,
+.Toolbar_right li a {
+  display: block;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+.Toolbar_right li a {
+  width: 160px;
+
+  font-size: 12px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.Toolbar_left li:not(:first-child),
+.Toolbar_right a:hover {
+  background-color: lightgray;
+  color: white;
+}
+
+.Toolbar_right li button {
+  display: block;
+  background-color: white;
+  border: none;
+  font-family: "Comic Sans MS";
+  cursor: pointer;
+  color: #000;
+  padding: 8px 16px;
+  border-radius: 10px;
+  width: 160px;
+  height: 37px;
+  font-size: 12px;
+}
+.Toolbar_right li button:hover {
+  background-color: lightgray;
+}
+
+.content_container {
+  width: 100%;
+  margin-top: 50px;
+  padding-top: 5px;
+}
+
+.content_container {
+  width: 100%;
+  margin-top: 50px;
+  padding-top: 5px;
+}

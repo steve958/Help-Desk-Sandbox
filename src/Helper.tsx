@@ -51,7 +51,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
   );
 
   switch (user_type) {
-    case "client":
+    case "Client":
       leftToolbar = (
         <ul>
           {logoItem}
@@ -59,16 +59,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
           {helpItem}
         </ul>
       );
-    case "client-admin":
-      leftToolbar = (
-        <ul>
-          {logoItem}
-          {newTicketItem}
-          {editTicketItem}
-          {helpItem}
-        </ul>
-      );
-    case "support":
+    case "Client_Admin":
       leftToolbar = (
         <ul>
           {logoItem}
@@ -77,7 +68,16 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
           {helpItem}
         </ul>
       );
-    case "admin":
+    case "Support":
+      leftToolbar = (
+        <ul>
+          {logoItem}
+          {newTicketItem}
+          {editTicketItem}
+          {helpItem}
+        </ul>
+      );
+    case "Admin":
       leftToolbar = <></>;
     default:
       leftToolbar = <></>;

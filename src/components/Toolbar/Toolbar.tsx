@@ -6,7 +6,7 @@ const Toolbar = () => {
   //pretpostavka je da isAuthenticated i prevlacim iz authState, ovde mi je najznacajninja rola
   //a za sad cu ih rucno napraviti
   let isAuthenticated = true; //ovo ce biti ako je token razlicit od null koji cu sacuvati u redux
-  let userType = "client"; //a uzimacu ga iz reducera
+  let userType = "Client"; //a uzimacu ga iz reducera
 
   //const authState = useSelector((state: state) => state.auth);
 
