@@ -7,12 +7,28 @@ export interface Ticket {
   //sta jos od podataka
 }
 
+export interface UserType {
+  userTypeId: number;
+  userTypeName: string;
+}
+
+export interface User {
+  userId: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  isActive: boolean | null;
+  email: string;
+  phone: string;
+  userType: UserType;
+}
+
 export interface TicketState {
   tickets: Ticket[];
 }
 
 export interface AuthState {
-  user: { id: number; first_name: string; last_name: string }; //ovde mozda tip usera, kao ticket, ali videti sta user sadrzi
+  user: User;
   token: string | null;
   error: string;
 }

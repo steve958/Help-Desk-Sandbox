@@ -8,7 +8,16 @@ import {
 } from "../actions/authActions";
 
 const initialState: AuthState = {
-  user: { id: 0, first_name: "", last_name: "" }, //promeniti strukturu usera
+  user: {
+    username: "",
+    userId: "",
+    firstName: "",
+    lastName: "",
+    isActive: null,
+    email: "",
+    phone: "",
+    userType: { userTypeId: 0, userTypeName: "" },
+  },
   token: null,
   error: "",
 };

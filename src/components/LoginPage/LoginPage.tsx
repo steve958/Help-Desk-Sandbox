@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { checkValidity } from "../../Helper";
 import logo from "../../assets/comdata.png";
 
 import InputAdornment from "@mui/material/InputAdornment";
@@ -9,15 +8,13 @@ import { OutlinedInput } from "@mui/material";
 import Button from "@mui/material/Button";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  let validMail: boolean = false;
-
   const loggedIn = () => {
-    if (email && password && validMail) {
+    if (username && password) {
       // loginUserFn(email, password); -> ovde ide api poziv za login
-      setEmail("");
+      setUsername("");
       setPassword("");
     }
   };
@@ -42,20 +39,10 @@ const LoginPage = () => {
               <AccountCircleIcon />
             </InputAdornment>
           }
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="Username"
+          onChange={(e) => setUsername(e.target.value)}
         />
-        {!checkValidity(
-          email,
-          /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-        ) ? (
-          <span className="span_validation">
-            {"It should be a valid email address!"}
-          </span>
-        ) : (
-          (validMail = true)
-        )}
         <OutlinedInput
           id="input-with-icon-adornment"
           style={{
@@ -80,7 +67,7 @@ const LoginPage = () => {
             backgroundColor: "#398b93",
             color: "white",
           }}
-          disabled={!(email && password && validMail)}
+          disabled={!(username && password)}
           onClick={loggedIn}
         >
           Login
