@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { checkValidity } from "../../Helper";
 import logo from "../../assets/comdata.png";
 
+import { useNavigate } from "react-router-dom";
+
 import InputAdornment from "@mui/material/InputAdornment";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
@@ -13,12 +15,15 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   let validMail: boolean = false;
+  const navigate = useNavigate()
 
   const loggedIn = () => {
     if (email && password && validMail) {
       // loginUserFn(email, password); -> ovde ide api poziv za login
       setEmail("");
       setPassword("");
+      // simulacija prolaska kroz login i otvaranja dashboard-a
+      navigate('/clientdashboard')
     }
   };
 

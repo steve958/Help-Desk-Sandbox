@@ -2,12 +2,16 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Times New Roman", Times, serif;
-  max-width: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow-x: hidden;
 }
 
 .app_container {
   display: flex;
+  width: 100vw;
+  height: fit-content;
+  flex-direction: column;
 }
 
 .loader_container {
@@ -17,6 +21,7 @@ body {
   align-items: center;
   width: 100%;
 }
+
 .loader_item {
   width: 25%;
 }
@@ -43,6 +48,7 @@ body {
   margin-bottom: 100px;
   margin-left: 20px;
 }
+
 .login_form {
   display: flex;
   flex-flow: column;
@@ -67,7 +73,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 0 5px 0 5px;
-  height: 50px;
+  height: 100px;
   box-sizing: border-box;
   z-index: 1;
 }
@@ -76,6 +82,7 @@ body {
 .Toolbar_right {
   display: flex;
 }
+
 .Toolbar_left img {
   vertical-align: text-top;
   width: 10%;
@@ -105,9 +112,9 @@ body {
   padding: 8px 16px;
   text-decoration: none;
 }
+
 .Toolbar_right li a {
   width: 160px;
-
   font-size: 12px;
   text-align: center;
   display: flex;
@@ -135,18 +142,16 @@ body {
   height: 37px;
   font-size: 12px;
 }
+
 .Toolbar_right li button:hover {
   background-color: lightgray;
 }
 
 .content_container {
   width: 100%;
-  margin-top: 50px;
-  padding-top: 5px;
-}
-
-.content_container {
-  width: 100%;
-  margin-top: 50px;
-  padding-top: 5px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

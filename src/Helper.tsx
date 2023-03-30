@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/comdata.png";
+import logo from "./assets/comdata.png";
 
 export const checkValidity = (value: string, pattern: RegExp): boolean => {
   let isValid = true;
