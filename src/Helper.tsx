@@ -68,7 +68,6 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
       leftToolbar = (
         <ul>
           {logoItem}
-          {newTicketItem}
           {editTicketItem}
           {helpItem}
         </ul>
