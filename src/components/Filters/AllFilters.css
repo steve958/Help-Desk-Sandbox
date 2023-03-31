@@ -2,4 +2,35 @@
     display: flex;
     width: 100%;
     justify-content: space-around;
+    user-select: none;
+}
+
+.calendars-wrapper {
+    display: flex;
+    width: 50%;
+    border-radius: 10px;
+    transition: all 0.3s;
+    align-items: center;
+    justify-content: space-around;
+    color: #398b93;
+    font-size: 20px;
+}
+
+.calendars-wrapper input {
+    height: 50px;
+    width: 180px;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    color: gray;
+}
+
+.calendars-wrapper input:hover {
+    border: 1px solid gray;
+}
+
+.calendars-wrapper input:focus {
+    border: 1px solid blue;
 }
