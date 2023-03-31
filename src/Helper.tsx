@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
-import logo from "../src/assets/comdata.png";
+import logo from "./assets/comdata.png";
+
 
 let activeStyle = {
   color: "white",
@@ -8,7 +9,7 @@ let activeStyle = {
 
 export const getLeftToolbar = (user_type: string): JSX.Element => {
   let leftToolbar: JSX.Element = <></>;
-  let logoItem: JSX.Element = (
+  let logoItem = (
     <li>
       <img src={logo} alt="logo" />
     </li>
@@ -74,7 +75,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
       );
       break;
     case "Admin":
-      leftToolbar = <></>;
+      leftToolbar = <ul>{logoItem}</ul>;
       break;
     default:
       leftToolbar = <></>;

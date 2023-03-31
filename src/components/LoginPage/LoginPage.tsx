@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import logo from "../../assets/comdata.png";
-
+import { useNavigate } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
@@ -10,12 +10,15 @@ import Button from "@mui/material/Button";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate()
 
   const loggedIn = () => {
     if (username && password) {
       // loginUserFn(email, password); -> ovde ide api poziv za login
       setUsername("");
       setPassword("");
+      // simulacija prolaska kroz login i otvaranja dashboard-a
+      navigate('/clientdashboard')
     }
   };
 
