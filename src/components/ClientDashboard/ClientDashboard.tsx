@@ -1,8 +1,7 @@
-import { Toolbar } from "@mui/material";
-import './ClientDashboard.css'
+import Toolbar from "../Toolbar/Toolbar";
+import "./ClientDashboard.css";
 import DataTable from "../Table/DataTable";
 import ClientFilters from "../Filters/ClientFilters";
-
 
 const Dashboard = () => {
   //toolbar je sastavni deo svakog dashboarda, tako da bi informaciju o tipu toolbara mozda trebalo proslediti preko propsa, to cu dodati

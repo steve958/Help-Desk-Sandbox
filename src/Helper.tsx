@@ -78,7 +78,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
         </ul>
       );
     case "Admin":
-      leftToolbar = <></>;
+      leftToolbar = <ul>{logoItem}</ul>;
     default:
       leftToolbar = <></>;
   }
