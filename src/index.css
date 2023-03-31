@@ -70,6 +70,7 @@ body {
   height: 50px;
   box-sizing: border-box;
   z-index: 1;
+  font-size: 24px;
 }
 
 .Toolbar_left,
@@ -78,7 +79,7 @@ body {
 }
 .Toolbar_left img {
   vertical-align: text-top;
-  width: 10%;
+  width: 50%;
 }
 
 .Toolbar nav {
@@ -118,7 +119,6 @@ body {
 
 .Toolbar_left li:not(:first-child),
 .Toolbar_right a:hover {
-  background-color: lightgray;
   color: white;
 }
 
@@ -126,7 +126,7 @@ body {
   display: block;
   background-color: white;
   border: none;
-  font-family: "Comic Sans MS";
+  font-family: "Times New Roman";
   cursor: pointer;
   color: #000;
   padding: 8px 16px;

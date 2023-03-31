@@ -1,10 +1,22 @@
-import { Toolbar } from "@mui/material";
+import Toolbar from "../Toolbar/Toolbar";
+import { useSelector } from "react-redux";
+import { state } from "../../main";
+import { useState } from "react";
 
 const Dashboard = () => {
-  //toolbar je sastavni deo svakog dashboarda, tako da bi informaciju o tipu toolbara mozda trebalo proslediti preko propsa, to cu dodati
+  const authState = useSelector((state: state) => state.auth);
+  const [showUserProfile, setShowUserProfile] = useState(false);
   return (
     <div className="app_container">
-      <Toolbar />
+      <Toolbar
+        handleClickAccount={() => {
+          if (authState["token"]) setShowUserProfile(true);
+        }}
+      />
+      {/* <UserProfile
+        show={showUserProfile}
+        onClose={() => setShowUserProfile(false)}
+      /> */}
       <div className="content_container"></div>
     </div>
   );

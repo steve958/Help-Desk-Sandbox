@@ -9,18 +9,17 @@ import ClientDashboard from "./components/ClientDashboard/ClientDashboard";
 import NewTicket from "./components/NewTicket/NewTicket";
 import { useSelector } from "react-redux";
 
-//import { state } from "./index";
-//import { isAuthenticated } from "./interfaces";
+import { state } from "./main";
+import { isAuthenticated } from "./interfaces";
 
-// Da NAPRAVIM ZASTICENE RUTE DOK NAPRAVIM AUTH REDUCER  -> sve rute sem login ce biti zasticene
-// const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
-//   component: Component,
-// }) => {
-//   const authState = useSelector((state: state) => state.auth);
-//   if (authState["token"] !== null) return <Component />;
+const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
+  component: Component,
+}) => {
+  const authState = useSelector((state: state) => state.auth);
+  if (authState["token"] !== null) return <Component />;
 
-//   return <Navigate to="/" replace />;
-// };
+  return <Navigate to="/" replace />;
+};
 
 export const router = createBrowserRouter([
   {
@@ -33,24 +32,23 @@ export const router = createBrowserRouter([
       },
       {
         path: "/help",
-        //element: <CheckIsAuthenticated component={Favourites} />,
-        element: <HelpPage />,
+        element: <CheckIsAuthenticated component={HelpPage} />,
       },
       {
         path: "/clientdashboard",
-        element: <ClientDashboard />,
+        element: <CheckIsAuthenticated component={ClientDashboard} />,
       },
       {
         path: "/editticket",
-        element: <EditTicket />,
+        element: <CheckIsAuthenticated component={EditTicket} />,
       },
       {
         path: "/ticket:id",
-        element: <TicketDetail />,
+        element: <CheckIsAuthenticated component={TicketDetail} />,
       },
       {
         path: "/newticket",
-        element: <NewTicket />,
+        element: <CheckIsAuthenticated component={NewTicket} />,
       },
     ],
   },

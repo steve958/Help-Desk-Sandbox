@@ -32,3 +32,7 @@ export interface AuthState {
   token: string | null;
   error: string;
 }
+
+export interface ToolbarProps {
+  handleClickAccount: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}

@@ -53,6 +53,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
           {helpItem}
         </ul>
       );
+      break;
     case "Client_Admin":
       leftToolbar = (
         <ul>
@@ -62,6 +63,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
           {helpItem}
         </ul>
       );
+      break;
     case "Support":
       leftToolbar = (
         <ul>
@@ -71,8 +73,10 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
           {helpItem}
         </ul>
       );
+      break;
     case "Admin":
       leftToolbar = <></>;
+      break;
     default:
       leftToolbar = <></>;
   }
