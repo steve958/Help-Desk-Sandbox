@@ -1,6 +1,6 @@
 import Toolbar from "../Toolbar/Toolbar";
 import "./ClientDashboard.css";
-import DataTable from "../Table/DataTable";
+import DataTable from "../Table/ClientTable";
 import ClientFilters from "../Filters/ClientFilters";
 
 const Dashboard = () => {

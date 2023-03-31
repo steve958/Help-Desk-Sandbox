@@ -66,7 +66,6 @@ body {
 /*Toolbar*/
 .Toolbar {
   width: 100%;
-  position: fixed;
   background-color: #398b93;
   display: flex;
   flex-direction: row;
@@ -76,6 +75,7 @@ body {
   height: 100px;
   box-sizing: border-box;
   z-index: 1;
+  font-size: 24px;
 }
 
 .Toolbar_left,
@@ -85,7 +85,7 @@ body {
 
 .Toolbar_left img {
   vertical-align: text-top;
-  width: 10%;
+  width: 50%;
 }
 
 .Toolbar nav {
@@ -125,7 +125,6 @@ body {
 
 .Toolbar_left li:not(:first-child),
 .Toolbar_right a:hover {
-  background-color: lightgray;
   color: white;
 }
 
@@ -158,4 +157,5 @@ body {
 
 .headings {
   margin: 0;
+  margin-top: 20px;
 }

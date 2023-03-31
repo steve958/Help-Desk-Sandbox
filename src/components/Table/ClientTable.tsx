@@ -140,7 +140,7 @@ export default function DataTable() {
                         <StyledTableCell align="center">Company</StyledTableCell>
                     </StyledTableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody sx={{ color: 'white' }}>
                     {(rowsPerPage > 0
                         ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : data

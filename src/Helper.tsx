@@ -14,7 +14,7 @@ let activeStyle = {
 
 export const getLeftToolbar = (user_type: string): JSX.Element => {
   let leftToolbar: JSX.Element = <></>;
-  let logoItem: JSX.Element = (
+  let logoItem = (
     <li>
       <img src={logo} alt="logo" />
     </li>
@@ -59,6 +59,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
           {helpItem}
         </ul>
       );
+      break;
     case "Client_Admin":
       leftToolbar = (
         <ul>
@@ -68,6 +69,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
           {helpItem}
         </ul>
       );
+      break;
     case "Support":
       leftToolbar = (
         <ul>
@@ -77,8 +79,10 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
           {helpItem}
         </ul>
       );
+      break;
     case "Admin":
       leftToolbar = <ul>{logoItem}</ul>;
+      break;
     default:
       leftToolbar = <></>;
   }
