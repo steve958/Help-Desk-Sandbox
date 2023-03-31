@@ -105,7 +105,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         border: 0,
     },
 }));
-export default function ClientTable() {
+export default function ClientAdminTable() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -138,6 +138,7 @@ export default function ClientTable() {
                         <StyledTableCell align="center">Response</StyledTableCell>
                         <StyledTableCell align="center">Project</StyledTableCell>
                         <StyledTableCell align="center">Company</StyledTableCell>
+                        <StyledTableCell align="center">Employee ID</StyledTableCell>
                     </StyledTableRow>
                 </TableHead>
                 <TableBody sx={{ color: 'white' }}>
@@ -153,6 +154,7 @@ export default function ClientTable() {
                             <TableCell align="center"><FeedbackRoundedIcon /></TableCell>
                             <TableCell align="center">{row.project}</TableCell>
                             <TableCell align="center">{row.company}</TableCell>
+                            <TableCell align="center">{row.id}</TableCell>
                         </StyledTableRow>
                     ))}
                 </TableBody>

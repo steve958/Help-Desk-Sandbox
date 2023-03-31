@@ -52,11 +52,12 @@ function BasicSelect(props: any) {
     );
 }
 
-export default function ClientFilters() {
+export default function ClientAdminFilters() {
     return <div className='filter_wrapper'>
         <BasicSelect heading='company'></BasicSelect>
         <BasicSelect heading='project'></BasicSelect>
         <BasicSelect heading='status'></BasicSelect>
+        <BasicSelect heading='employee'></BasicSelect>
         <span className='calendars_wrapper'>
             <p>Filter tickets from</p>
             <input type="date" />
