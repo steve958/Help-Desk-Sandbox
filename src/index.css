@@ -57,7 +57,7 @@ body {
   align-self: center;
   width: 600px;
   height: 400px;
-  border: 2px solid #398b93;
+  border: 2px solid #19467c;
   border-radius: 5px;
   padding: 10px;
   margin: 10px;
@@ -66,7 +66,7 @@ body {
 /*Toolbar*/
 .Toolbar {
   width: 100%;
-  background-color: #398b93;
+  background-color: #19467c;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -86,6 +86,8 @@ body {
 .Toolbar_left img {
   vertical-align: text-top;
   width: 50%;
+  background-color: white;
+  margin-left: 20px;
 }
 
 .Toolbar nav {

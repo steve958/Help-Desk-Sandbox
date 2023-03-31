@@ -88,7 +88,7 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
-        backgroundColor: "#398b93",
+        backgroundColor: "#19467c",
         color: theme.palette.common.white,
         fontSize: 18
     },
@@ -99,7 +99,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     '&:nth-of-type(odd)': {
-        backgroundColor: "#398b933a",
+        backgroundColor: "#19467c5a",
     },
     '&:last-child td': {
         border: 0,
