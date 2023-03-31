@@ -10,7 +10,7 @@ const Toolbar = () => {
 
   //const authState = useSelector((state: state) => state.auth);
 
-  let leftToolbar: ReactJSXElement = getLeftToolbar(userType);
+  let leftToolbar: JSX.Element = getLeftToolbar(userType);
 
   return (
     <nav className="Toolbar">
