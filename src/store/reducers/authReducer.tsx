@@ -29,19 +29,19 @@ const reducer = (state = initialState, action: AuthAction) => {
       return {
         ...state,
         token: action.auth_token,
+        user: action.user,
       };
 
     case ActionType.LOGIN_FAIL:
       return {
         ...state,
         error: action.error,
-        loginSuccess: false,
       };
 
     case ActionType.LOGIN_USER:
       return {
         ...state,
-        email: action.email,
+        username: action.username,
         password: action.password,
       };
     case ActionType.LOGOUT_USER:

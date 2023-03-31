@@ -4,10 +4,12 @@ import { AuthAction } from "../reducers/authReducer";
 import axios from "axios";
 
 import { toast } from "react-toastify";
+import { User } from "../../interfaces";
 
 export interface loginSucces {
   type: ActionType.LOGIN_SUCCESS;
   auth_token: string | null;
+  user: User;
 }
 
 export interface loginFail {
@@ -17,7 +19,7 @@ export interface loginFail {
 
 export interface loginUser {
   type: ActionType.LOGIN_USER;
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -25,12 +27,12 @@ export interface logoutUser {
   type: ActionType.LOGOUT_USER;
 }
 
-export const loginUserFn = (email: string, password: string) => {
+export const loginUserFn = (username: string, password: string) => {
   return (dispatch: Dispatch<AuthAction>) => {
     axios({
       method: "post",
       url: "", //promeniti url
-      data: { email: email, password: password },
+      data: { username: username, password: password },
       headers: {
         "Content-Type": "application/json",
       },
@@ -38,12 +40,13 @@ export const loginUserFn = (email: string, password: string) => {
       .then((response) => {
         dispatch({
           type: ActionType.LOGIN_SUCCESS,
-          auth_token: response.data.auth_token, //odakle prevlacim taj token, tj sta mi se vraca kada logujem korisnika
+          auth_token: response.data.auth_token,
+          user: response.data.user,
         });
         localStorage.setItem("token", response.data.auth_token);
       })
       .catch((err) => {
-        toast.error("Incorrect email or password.");
+        toast.error("Incorrect username or password.");
         dispatch({
           type: ActionType.LOGIN_FAIL,
           error: err.message,
