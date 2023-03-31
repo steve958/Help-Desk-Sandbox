@@ -10,7 +10,7 @@ const Dashboard = () => {
     <div className="app_container">
       <Toolbar />
       <div className="content_container">
-        <h3>Filters</h3>
+        <h3 className="headings">Filters</h3>
         <div className="filter_container">
           <ClientFilters />
         </div>

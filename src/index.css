@@ -155,3 +155,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.headings {
+  margin: 0;
+}
