@@ -6,6 +6,20 @@
     user-select: none;
 }
 
+.column_filters {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.column_filters span {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px 0;
+}
+
 .calendars_wrapper {
     display: flex;
     width: 50%;
@@ -15,7 +29,8 @@
     justify-content: space-between;
     color: black;
     font-size: 20px;
-    margin: 0;
+    margin-left: 1vw;
+    margin-right: 1vw;
 }
 
 .calendars_wrapper input {
@@ -31,8 +46,4 @@
 
 .calendars_wrapper input:hover {
     border: 1px solid gray;
-}
-
-.calendars_wrapper input:focus {
-    border: 1px solid blue;
 }

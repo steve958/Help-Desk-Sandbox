@@ -1,4 +1,4 @@
-import { getLeftToolbar } from "../../Helper";
+import { getLeftToolbar } from "../../helpers/Helper";
 import { useSelector } from "react-redux";
 import { state } from "../../main";
 import { ToolbarProps } from "../../interfaces";
@@ -7,7 +7,8 @@ const Toolbar: React.FC<ToolbarProps> = ({ handleClickAccount }) => {
   const authState = useSelector((state: state) => state.auth);
 
   let leftToolbar: JSX.Element = getLeftToolbar(
-    authState["user"]["userType"]["userTypeName"]
+    // authState["user"]["userType"]["userTypeName"]
+    'Client'
   );
 
   return (

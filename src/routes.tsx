@@ -16,7 +16,8 @@ const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
   component: Component,
 }) => {
   const authState = useSelector((state: state) => state.auth);
-  if (authState["token"] !== null) return <Component />;
+  // if (authState["token"] !== null) return <Component />;
+  return <Component />;
 
   return <Navigate to="/" replace />;
 };

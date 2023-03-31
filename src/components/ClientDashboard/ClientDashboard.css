@@ -1,6 +1,6 @@
 .filter_container {
-    width: 80%;
-    height: 100px;
+    width: 95%;
+    padding: 1vw 0;
     border: 2px solid #19467c;
     border-radius: 5px;
     margin-top: 2vw;
@@ -9,8 +9,6 @@
     justify-content: center;
     align-items: center;
     color: white;
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 .table_container {
