@@ -19,6 +19,7 @@ import FeedbackRoundedIcon from '@mui/icons-material/FeedbackRounded';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { data } from '../../helpers/fakeData'
 import { dateConverter } from '../../helpers/dateConverter'
+import { useNavigate } from "react-router-dom";
 
 interface TablePaginationActionsProps {
     count: number;
@@ -109,7 +110,7 @@ export default function ClientTable() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    // Avoid a layout jump when reaching the last page with empty rows.
+    const navigate = useNavigate()
 
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -145,7 +146,7 @@ export default function ClientTable() {
                         ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : data
                     ).map((row) => (
-                        <StyledTableRow key={row.id}>
+                        <StyledTableRow key={row.id} onClick={() => navigate(`/ticket/${row.id}`)}>
                             <TableCell align="center">{dateConverter(row.created)}</TableCell>
                             <TableCell align="center">{row.status}</TableCell>
                             <TableCell align="center">{dateConverter(row.last_update)}</TableCell>
