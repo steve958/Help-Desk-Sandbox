@@ -1,38 +1,49 @@
 .filter_wrapper {
-  display: flex;
-  width: 100%;
-  justify-content: space-around;
-  align-items: center;
-  user-select: none;
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    user-select: none;
+}
+
+.column_filters {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.column_filters span {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    margin: 10px 0;
 }
 
 .calendars_wrapper {
-  display: flex;
-  width: 50%;
-  border-radius: 10px;
-  transition: all 0.3s;
-  align-items: center;
-  justify-content: space-between;
-  color: black;
-  font-size: 20px;
-  margin-left: 1vw;
+    display: flex;
+    width: 50%;
+    border-radius: 10px;
+    transition: all 0.3s;
+    align-items: center;
+    justify-content: space-between;
+    color: black;
+    font-size: 20px;
+    margin-left: 1vw;
+    margin-right: 1vw;
 }
 
 .calendars_wrapper input {
-  height: 50px;
-  width: 180px;
-  border: 1px solid lightgrey;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-  font-size: 18px;
-  color: gray;
+    height: 50px;
+    width: 180px;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 18px;
+    color: gray;
 }
 
 .calendars_wrapper input:hover {
-  border: 1px solid gray;
-}
-
-.calendars_wrapper input:focus {
-  border: 1px solid blue;
+    border: 1px solid gray;
 }
