@@ -3,12 +3,18 @@
     padding: 1vw 0;
     border: 2px solid #19467c;
     border-radius: 5px;
-    margin-top: 2vw;
-    margin-bottom: 2vw;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
+}
+
+.headings {
+    margin: 10px 10px;
+    width: 95%;
+    text-align: left;
+    color: #19467c;
+    font-size: 25px;
 }
 
 .table_container {
@@ -20,4 +26,24 @@
     background-color: #19467c !important;
     color: white !important;
     cursor: pointer;
+}
+
+
+.display_change {
+    position: absolute;
+    top: 11vh;
+    right: 0;
+}
+
+.display_change button {
+    background-color: #19467c;
+    color: white;
+    margin: 5px;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.display_change button:active {
+    position: sticky;
+    scale: 0.9;
 }
