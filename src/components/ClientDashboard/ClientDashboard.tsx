@@ -1,9 +1,9 @@
 import Toolbar from "../Toolbar/Toolbar";
 
 import "./ClientDashboard.css";
-import ClientTable from "../Table/ClientTable";
+import ClientTable from "../Tables/ClientTable";
 import ClientFilters from "../Filters/ClientFilters";
-import ClientAdminTable from "../Table/ClientAdminTabe";
+import ClientAdminTable from "../Tables/ClientAdminTable";
 import ClientAdminFilters from "../Filters/ClientAdminFilters";
 import { useSelector } from "react-redux";
 import { state } from "../../main";
