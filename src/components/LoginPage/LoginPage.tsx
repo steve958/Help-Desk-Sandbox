@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const loggedIn = () => {
     if (username && password) {
@@ -18,7 +18,7 @@ const LoginPage = () => {
       setUsername("");
       setPassword("");
       // simulacija prolaska kroz login i otvaranja dashboard-a
-      navigate('/clientdashboard')
+      navigate("/clientdashboard");
     }
   };
 
@@ -67,7 +67,7 @@ const LoginPage = () => {
           style={{
             marginTop: "10px",
             width: "400px",
-            backgroundColor: "#398b93",
+            backgroundColor: "#19467c",
             color: "white",
           }}
           disabled={!(username && password)}

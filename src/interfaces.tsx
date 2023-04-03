@@ -36,3 +36,8 @@ export interface AuthState {
 export interface ToolbarProps {
   handleClickAccount: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
+
+export interface ShowProp {
+  show: boolean;
+  onClose: () => void;
+}
