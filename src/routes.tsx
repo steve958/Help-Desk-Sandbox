@@ -19,7 +19,7 @@ const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
   // if (authState["token"] !== null) return <Component />;
   return <Component />;
 
-  return <Navigate to="/" replace />;
+  //return <Navigate to="/" replace />;
 };
 
 export const router = createBrowserRouter([

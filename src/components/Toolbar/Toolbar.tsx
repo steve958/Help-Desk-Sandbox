@@ -8,7 +8,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ handleClickAccount }) => {
 
   let leftToolbar: JSX.Element = getLeftToolbar(
     // authState["user"]["userType"]["userTypeName"]
-    'Client'
+    "Client"
   );
 
   return (
