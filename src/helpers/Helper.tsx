@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/comdata.png";
 
-
 let activeStyle = {
   color: "white",
   textDeocration: "underline",
@@ -34,16 +33,6 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
       </NavLink>
     </li>
   );
-  let editTicketItem: JSX.Element = (
-    <li>
-      <NavLink
-        to="/editticket"
-        style={({ isActive }) => (isActive ? activeStyle : undefined)}
-      >
-        Edit ticket
-      </NavLink>
-    </li>
-  );
 
   switch (user_type) {
     case "Client":
@@ -60,7 +49,6 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
         <ul>
           {logoItem}
           {newTicketItem}
-          {editTicketItem}
           {helpItem}
         </ul>
       );
@@ -69,7 +57,6 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
       leftToolbar = (
         <ul>
           {logoItem}
-          {editTicketItem}
           {helpItem}
         </ul>
       );
@@ -82,3 +69,5 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
   }
   return leftToolbar;
 };
+
+//dodati fju za odredjivanje role
