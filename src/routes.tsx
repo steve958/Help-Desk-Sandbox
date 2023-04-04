@@ -1,5 +1,4 @@
 import { createBrowserRouter, Navigate, useLocation } from "react-router-dom";
-
 import App from "./App";
 import LoginPage from "./components/LoginPage/LoginPage";
 import HelpPage from "./components/HelpPage/HelpPage";
@@ -9,7 +8,6 @@ import NewTicket from "./components/tickets/NewTicket/NewTicket";
 import AdminDashboard from "./components/Dashboards/AdminDashboard";
 import SupportDashboard from "./components/Dashboards/SupportDashboard";
 import { useSelector } from "react-redux";
-
 import { state } from "./main";
 import { isAuthenticated } from "./interfaces";
 import AllTickets from "./components/tickets/AllTickets/AllTickets";

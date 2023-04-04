@@ -18,7 +18,8 @@ const LoginPage = () => {
       setUsername("");
       setPassword("");
       // simulacija prolaska kroz login i otvaranja dashboard-a
-      navigate("/clientdashboard");
+      // navigate("/clientdashboard");
+      navigate("admindashboard");
     }
   };
 

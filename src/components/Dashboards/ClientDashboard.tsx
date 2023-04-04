@@ -15,6 +15,7 @@ const ClientDashboard = () => {
   const authState = useSelector((state: state) => state.auth);
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [displayDashboard, setDispalyDashboard] = useState("client");
+
   return (
     <div className="app_container">
       <div className="display_change">
