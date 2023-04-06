@@ -152,6 +152,7 @@ export default function ClientsUsersTable() {
             <StyledTableCell align="center">Is Active</StyledTableCell>
             <StyledTableCell align="center">User type ID</StyledTableCell>
             <StyledTableCell align="center">User type</StyledTableCell>
+            <StyledTableCell align="center">Remove user</StyledTableCell>
           </StyledTableRow>
         </TableHead>
         <TableBody sx={{ color: "white" }}>
@@ -172,9 +173,10 @@ export default function ClientsUsersTable() {
               <TableCell align="center">{row.phone}</TableCell>
               <TableCell align="center">{row.isActive.toString()}</TableCell>
               <TableCell align="center">{row.usertypeid}</TableCell>
+              <TableCell align="center">{row.usertypename}</TableCell>
               <TableCell align="center">
-                {row.usertypename}
-                <PersonRemoveIcon />
+                {/**dodati event za stvarno brisanje */}
+                <PersonRemoveIcon style={{ color: "#19467c" }} />
               </TableCell>
             </StyledTableRow>
           ))}
