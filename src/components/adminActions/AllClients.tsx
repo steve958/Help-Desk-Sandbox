@@ -10,6 +10,8 @@ import { OutlinedInput } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import SupportUsersTable from "../Tables/SupportUsersTable";
+import { AdminFilterSelect } from "../Filters/AdminFilterSelect";
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText("#398b93"),
@@ -36,6 +38,7 @@ const AllClients = () => {
         show={showUserProfile}
         onClose={() => setShowUserProfile(false)}
       />
+      {/**ovde filter da odabere da li ce jendu ili drugu tabelu */}
       <div className="content_container">
         {/**
          * SEARCH NE MOZE FUNKCIONISATI DOK NE OMOGUCIM DA SE I QUERY I CLIENTS PROSLEDJUJE TABELI KROZ PROPS
@@ -63,18 +66,21 @@ const AllClients = () => {
               setQuery(e.target.value.toLowerCase());
             }}
           />
+          <AdminFilterSelect />
           <ColorButton
             onClick={() => {
               navigate("/newclient");
             }}
           >
-            Add new client
+            Add new client /support
           </ColorButton>
         </div>
 
         <h3 className="headings">Clients</h3>
         <div className="table_container">
+          {/**na osnovu filtera da li otvara klijents users ili support users */}
           <ClientsUsersTable />
+          {/* {<SupportUsersTable/>} */}
         </div>
       </div>
     </div>

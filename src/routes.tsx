@@ -11,7 +11,6 @@ import { useSelector } from "react-redux";
 import { state } from "./main";
 import { isAuthenticated } from "./interfaces";
 import AllTickets from "./components/tickets/AllTickets/AllTickets";
-import AllSupport from "./components/adminActions/AllSupport";
 import AllClients from "./components/adminActions/AllClients";
 import NewClient from "./components/adminActions/NewClient";
 import AllProjects from "./components/adminActions/AllProjects";
@@ -65,10 +64,6 @@ export const router = createBrowserRouter([
       {
         path: "/alltickets",
         element: <CheckIsAuthenticated component={AllTickets} />,
-      },
-      {
-        path: "/allsupport",
-        element: <CheckIsAuthenticated component={AllSupport} />,
       },
       {
         path: "/allclients",
