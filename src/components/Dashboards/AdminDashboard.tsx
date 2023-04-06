@@ -47,7 +47,7 @@ const AdminDashboard = () => {
             <ColorButton
               variant="contained"
               onClick={() => {
-                navigate("/allsupport");
+                navigate("/supportdashboard");
               }}
               style={{ width: "300px" }}
             >
