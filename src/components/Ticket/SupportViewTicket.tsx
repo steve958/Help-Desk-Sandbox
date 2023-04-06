@@ -14,12 +14,18 @@ import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox';
 import CachedIcon from '@mui/icons-material/Cached';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import SettingsIcon from '@mui/icons-material/Settings';
 import InfoIcon from '@mui/icons-material/Info';
 import ForumIcon from '@mui/icons-material/Forum';
 import CreateIcon from '@mui/icons-material/Create';
 
+export default function SupportViewTicket() {
 
-export default function ClientViewTicket() {
     const [accordionHeading, setAccordionHeading] = useState('Show messages')
     const [sendMessageClicked, setSendMessageClicked] = useState(false)
 
@@ -30,11 +36,19 @@ export default function ClientViewTicket() {
         }
     }, [sendMessageClicked])
 
-
-
     const ColorButtonSubmit = styled(Button)<ButtonProps>(({ theme }) => ({
         color: theme.palette.getContrastText('#398b93'),
         backgroundColor: '#f9a235',
+        marginRight: '0',
+        '&:hover': {
+            backgroundColor: '#19467c',
+        },
+    }));
+
+    const ColorButtonUpdate = styled(Button)<ButtonProps>(({ theme }) => ({
+        color: theme.palette.getContrastText('#398b93'),
+        backgroundColor: '#f9a235',
+        marginRight: '10px',
         '&:hover': {
             backgroundColor: '#19467c',
         },
@@ -46,10 +60,45 @@ export default function ClientViewTicket() {
         );
     }
 
-    function handleAccordionHeadingClick() {
-        if (accordionHeading === 'Hide messages') setAccordionHeading('Show messages')
-        else setAccordionHeading('Hide messages')
+    function ButtonSettingsUpdate() {
+        return (
+            <ColorButtonUpdate variant="contained">SETTINGS UPDATE</ColorButtonUpdate>
+        );
     }
+
+    function BasicSelect(props: any) {
+        const [value, setValue] = useState('');
+
+        const { heading } = props
+        const handleChange = (event: SelectChangeEvent) => {
+            setValue(event.target.value as string);
+        };
+
+        return (
+            <Box sx={{ minWidth: 180 }}>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={value}
+                        label={heading}
+                        onChange={handleChange}
+                    >
+                        <MenuItem value={10}>Ten</MenuItem>
+                        <MenuItem value={20}>Twenty</MenuItem>
+                        <MenuItem value={30}>Thirty</MenuItem>
+                    </Select>
+                </FormControl>
+            </Box>
+        );
+    }
+
+    function handleAccordionHeadingClick() {
+        if (accordionHeading === 'Show messages') setAccordionHeading('Hide messages')
+        else setAccordionHeading('Show messages')
+    }
+
 
     return (
         <div className='view_ticket_wrapper'>
@@ -57,37 +106,42 @@ export default function ClientViewTicket() {
                 <h3 className="headings">Ticket details</h3>
                 <InfoIcon style={{ color: '#19467c' }} />
             </span>
-            <div className='details_wrapper'>
-                <span className='details_section'>
+            <div className='details_wrapper_support'>
+                <span className='details_section_support'>
                     <span className='client'>
                         <p>Ticket Created:</p>
                         <p>{dateConverter(new Date())}</p>
                     </span>
-                    <span className='support'>
-                        <p>Last Update:</p>
-                        <p>{dateConverter(new Date())}</p>
+                    <span className='client'>
+                        <p>Title:</p>
+                        <p>asdasdad</p>
                     </span>
                 </span>
-                <span className='details_section'>
+                <span className='details_section_support'>
                     <span className='client'>
-                        <p>Company: asdasdasdasd /</p>
-                        <p>Project: asdasdas</p>
+                        <p>Company: asdasd asda sda /</p>
+                        <p>Project: asdasdasdasd</p>
                     </span>
                     <span className='client'>
                         <p>Ticket created by:</p>
                         <p>Pera Trta</p>
                     </span>
                 </span>
-                <span className='details_section'>
-                    <span className='client'>
-                        <p>Title:</p>
-                        <p>asdasdad</p>
-                    </span>
-                    <span className='support'>
-                        <p>Ticket status:</p>
-                        <p>asdasdasd</p>
-                    </span>
+            </div>
+            <span className='heading_icon_wrapper'>
+                <h3 className="headings">Ticket settings</h3>
+                <SettingsIcon style={{ color: '#19467c' }} />
+            </span>
+            <div className="ticket_settings_wrapper">
+                <span>
+                    <p>Set ticket type:</p>
+                    <BasicSelect heading='type'>Type</BasicSelect>
+                    <p>Set ticket priority:</p>
+                    <BasicSelect heading='priority'>Priority</BasicSelect>
+                    <p>Set ticket status:</p>
+                    <BasicSelect heading='status' />
                 </span>
+                <ButtonSettingsUpdate></ButtonSettingsUpdate>
             </div>
             <span className='heading_icon_wrapper'>
                 <h3 className="headings">Messages received</h3>
@@ -299,7 +353,7 @@ export default function ClientViewTicket() {
                                             <CachedIcon style={{ color: '#19467c', width: '40px', height: '40px' }} />
                                         </span>
                                     </Tooltip>
-                                    <Tooltip title='SEND MESSAGE TO CUSTOMER SUPPORT'>
+                                    <Tooltip title='SEND MESSAGE TO A CLIENT'>
                                         <span onClick={() => {
                                             setSendMessageClicked(!sendMessageClicked);
                                         }} className='send_message_icon'>
@@ -310,10 +364,10 @@ export default function ClientViewTicket() {
                                 {sendMessageClicked && (
                                     <>
                                         <span className="heading_icon_wrapper">
-                                            <h3 className="headings">Send message to customer support</h3>
+                                            <h3 className="headings">Send message to a client</h3>
                                             <CreateIcon style={{ color: '#19467c' }} />
                                         </span>
-                                        <div className='send_message_wrapper'>
+                                        <div className='send_message_wrapper_support'>
                                             <span>
                                                 <textarea className="send_message_field" />
                                                 <input type="file" className='add_files' multiple />

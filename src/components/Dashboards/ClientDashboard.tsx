@@ -9,6 +9,8 @@ import { state } from "../../main";
 import { useState } from "react";
 import SupportTable from "../Tables/SupportTable";
 import SupportFilters from "../Filters/SupportFilter";
+import FilterListIcon from '@mui/icons-material/FilterList';
+import StorageIcon from '@mui/icons-material/Storage';
 
 const ClientDashboard = () => {
   const authState = useSelector((state: state) => state.auth);
@@ -30,13 +32,19 @@ const ClientDashboard = () => {
         onClose={() => setShowUserProfile(false)}
       /> */}
       <div className="content_container">
-        <h3 className="headings">Filters</h3>
+        <span className="heading_icon_wrapper">
+          <h3 className="headings">Filters</h3>
+          <FilterListIcon style={{ color: '#19467c' }} />
+        </span>
         <div className="filter_container">
           {displayDashboard === 'client' && <ClientFilters />}
           {displayDashboard === 'client-admin' && <ClientAdminFilters />}
           {displayDashboard === 'support' && <SupportFilters />}
         </div>
-        <h3 className="headings">Tickets</h3>
+        <span className="heading_icon_wrapper">
+          <h3 className="headings">Tickets</h3>
+          <StorageIcon style={{ color: '#19467c' }} />
+        </span>
         <div className="table_container">
           {displayDashboard === 'client' && <ClientTable />}
           {displayDashboard === 'client-admin' && <ClientAdminTable />}

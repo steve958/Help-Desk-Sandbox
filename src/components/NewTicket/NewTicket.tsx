@@ -11,6 +11,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import InfoIcon from '@mui/icons-material/Info';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import CreateIcon from '@mui/icons-material/Create';
 
 const NewTicket = () => {
   const authState = useSelector((state: state) => state.auth);
@@ -90,7 +93,10 @@ const NewTicket = () => {
       handleClickAccount={() => {
         if (authState["token"]) setShowUserProfile(true);
       }} />
-    <h3 className="headings">Ticket details</h3>
+    <span className='heading_icon_wrapper'>
+      <h3 className="headings">Ticket details</h3>
+      <InfoIcon style={{ color: '#19467c' }} />
+    </span>
     <div className="select_details_wrapper">
       <span>
         <p>Select company:</p>
@@ -105,11 +111,17 @@ const NewTicket = () => {
         <BasicTextFields />
       </span>
     </div>
-    <h3 className="headings">Ticket description</h3>
+    <span className="heading_icon_wrapper">
+      <h3 className="headings">Ticket description</h3>
+      <CreateIcon style={{ color: '#19467c' }} />
+    </span>
     <div className="description_wrapper">
       <textarea className="description_field" />
     </div>
-    <h3 className="headings">Add screenshots and other files</h3>
+    <span className="heading_icon_wrapper">
+      <h3 className="headings">Add screenshots and other files</h3>
+      <AttachFileIcon style={{ color: '#19467c' }} />
+    </span>
     <div className="add_files_wrapper">
       <input type="file" className="add_files_field" multiple />
     </div>

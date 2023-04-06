@@ -9,12 +9,18 @@
     color: white;
 }
 
-.headings {
-    margin: 10px 10px;
+.heading_icon_wrapper {
     width: 95%;
+    display: flex;
+    align-items: center;
+}
+
+.headings {
+    margin: 20px 10px;
     text-align: left;
     color: #19467c;
     font-size: 25px;
+    user-select: none;
 }
 
 .table_container {
