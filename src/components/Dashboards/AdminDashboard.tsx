@@ -40,18 +40,18 @@ const AdminDashboard = () => {
               onClick={() => {
                 navigate("/allclients");
               }}
-              style={{ width: "130px" }}
+              style={{ width: "300px" }}
             >
-              Clients
+              Clients and Support
             </ColorButton>
             <ColorButton
               variant="contained"
               onClick={() => {
                 navigate("/allsupport");
               }}
-              style={{ width: "130px" }}
+              style={{ width: "300px" }}
             >
-              Support
+              Support Mode
             </ColorButton>
           </div>
           <div className="admin_button_container">
@@ -60,7 +60,7 @@ const AdminDashboard = () => {
               onClick={() => {
                 navigate("/allcompanies");
               }}
-              style={{ width: "130px" }}
+              style={{ width: "300px" }}
             >
               Companies
             </ColorButton>
@@ -69,7 +69,7 @@ const AdminDashboard = () => {
               onClick={() => {
                 navigate("/allprojects");
               }}
-              style={{ width: "130px" }}
+              style={{ width: "300px" }}
             >
               Projects
             </ColorButton>

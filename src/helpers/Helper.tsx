@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/comdata.png";
+import { User } from "../interfaces";
 
 let activeStyle = {
   color: "white",
@@ -70,4 +71,11 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
   return leftToolbar;
 };
 
+export const searchClientUsers = (clients: User[], query: string): User[] => {
+  if (query !== "")
+    return clients.filter((x) => x.username.toLowerCase().includes(query));
+  else {
+    return clients;
+  }
+};
 //dodati fju za odredjivanje role

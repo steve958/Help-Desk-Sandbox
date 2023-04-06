@@ -12,7 +12,6 @@ import { state } from "./main";
 import { isAuthenticated } from "./interfaces";
 import AllTickets from "./components/tickets/AllTickets/AllTickets";
 import AllSupport from "./components/adminActions/AllSupport";
-import NewSupport from "./components/adminActions/NewSupport";
 import AllClients from "./components/adminActions/AllClients";
 import NewClient from "./components/adminActions/NewClient";
 import AllProjects from "./components/adminActions/AllProjects";
@@ -70,10 +69,6 @@ export const router = createBrowserRouter([
       {
         path: "/allsupport",
         element: <CheckIsAuthenticated component={AllSupport} />,
-      },
-      {
-        path: "/newsupport",
-        element: <CheckIsAuthenticated component={NewSupport} />,
       },
       {
         path: "/allclients",

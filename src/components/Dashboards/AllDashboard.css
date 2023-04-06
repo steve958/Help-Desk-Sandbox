@@ -61,7 +61,7 @@
 
 .admin_button_container {
   display: flex;
-  width: 600px;
+  width: 1000px;
   justify-content: space-between;
   margin-bottom: 30px;
 }
