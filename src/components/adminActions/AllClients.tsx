@@ -12,6 +12,8 @@ import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import SupportUsersTable from "../Tables/SupportUsersTable";
 import { AdminFilterSelect } from "../Filters/AdminFilterSelect";
+import PeopleIcon from '@mui/icons-material/People';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText("#398b93"),
@@ -43,13 +45,17 @@ const AllClients = () => {
         {/**
          * SEARCH NE MOZE FUNKCIONISATI DOK NE OMOGUCIM DA SE I QUERY I CLIENTS PROSLEDJUJE TABELI KROZ PROPS
          */}
+        <span className="heading_icon_wrapper">
+          <h3 className="headings">Filters</h3>
+          <FilterListIcon style={{ color: '#19467c' }} />
+        </span>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
             width: "95%",
             alignItems: "center",
-            marginTop: "20px",
+            // marginTop: "20px",
           }}
         >
           <OutlinedInput
@@ -75,8 +81,10 @@ const AllClients = () => {
             Add new client /support
           </ColorButton>
         </div>
-
-        <h3 className="headings">Clients</h3>
+        <span className="heading_icon_wrapper">
+          <h3 className="headings">Clients</h3>
+          <PeopleIcon />
+        </span>
         <div className="table_container">
           {/**na osnovu filtera da li otvara klijents users ili support users */}
           <ClientsUsersTable />
