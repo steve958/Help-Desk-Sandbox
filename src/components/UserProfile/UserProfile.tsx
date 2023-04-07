@@ -60,9 +60,13 @@ const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
               <h3 style={{ margin: "20px 0 0 0" }}>
                 {authState["user"]["lastName"]}
               </h3>
+              <label style={labelStyle}>Username</label>
+              <h3 style={{ margin: "20px 0 0 0" }}>
+                {authState["user"]["username"]}
+              </h3>
               <label style={labelStyle}>Email Address</label>
               <h3 style={{ margin: "20px 0 0 0" }}>
-                {authState["user"]["lastName"]}
+                {authState["user"]["email"]}
               </h3>
             </div>
           </div>
