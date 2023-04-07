@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './AllTables.css'
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -19,6 +19,7 @@ import TableHead from '@mui/material/TableHead';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import { supportData } from '../../helpers/fakeData'
 import { dateConverter } from '../../helpers/dateConverter'
+import { useNavigate } from 'react-router-dom';
 
 interface TablePaginationActionsProps {
     count: number;
@@ -94,7 +95,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 14,
-    },
+    }
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -108,6 +109,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function SupportTable() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    const navigate = useNavigate()
 
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -145,7 +148,7 @@ export default function SupportTable() {
                         ? supportData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : supportData
                     ).map((row) => (
-                        <StyledTableRow key={row.id}>
+                        <StyledTableRow key={row.id} onClick={() => navigate(`/ticket/${row.id}`)}>
                             <TableCell align="center">{dateConverter(row.created)}</TableCell>
                             <TableCell align="center">{row.status}</TableCell>
                             <TableCell align="center">{dateConverter(row.last_update)}</TableCell>

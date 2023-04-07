@@ -8,7 +8,6 @@ import './AllFilters.css'
 import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
 
-
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText('#398b93'),
     backgroundColor: '#f9a235',

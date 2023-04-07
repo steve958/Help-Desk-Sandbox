@@ -21,11 +21,11 @@ function ButtonSubmit() {
 }
 
 function BasicSelect(props: any) {
-  const [age, setAge] = useState('all');
+  const [value, setValue] = useState('all');
 
   const { heading } = props
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+    setValue(event.target.value as string);
   };
 
   return (
@@ -35,7 +35,7 @@ function BasicSelect(props: any) {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={age}
+          value={value}
           label={heading}
           onChange={handleChange}
         >
