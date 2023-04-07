@@ -14,7 +14,7 @@
     font-weight: 600;
     color: #19467c;
     margin-top: 10px;
-    border: 2px solid #19467c;
+    /* border: 2px solid #19467c; */
     padding: 15px;
     user-select: none;
 }
