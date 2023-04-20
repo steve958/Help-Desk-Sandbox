@@ -20,7 +20,7 @@ import CreateIcon from '@mui/icons-material/Create';
 
 
 export default function ClientViewTicket() {
-    const [accordionHeading, setAccordionHeading] = useState('Show messages')
+    const [accordionHeading, setAccordionHeading] = useState('Prikazati poruke')
     const [sendMessageClicked, setSendMessageClicked] = useState(false)
 
     useEffect(() => {
@@ -42,55 +42,55 @@ export default function ClientViewTicket() {
 
     function ButtonSubmit() {
         return (
-            <ColorButtonSubmit variant="contained">SUBMIT MESSAGE</ColorButtonSubmit>
+            <ColorButtonSubmit variant="contained">Pošalji poruku</ColorButtonSubmit>
         );
     }
 
     function handleAccordionHeadingClick() {
-        if (accordionHeading === 'Hide messages') setAccordionHeading('Show messages')
-        else setAccordionHeading('Hide messages')
+        if (accordionHeading === 'Sakriti poruke') setAccordionHeading('Prikazati poruke')
+        else setAccordionHeading('Sakriti poruke')
     }
 
     return (
         <div className='view_ticket_wrapper'>
             <span className='heading_icon_wrapper'>
-                <h3 className="headings">Ticket details</h3>
+                <h3 className="headings">Detalji tiketa</h3>
                 <InfoIcon style={{ color: '#19467c' }} />
             </span>
             <div className='details_wrapper'>
                 <span className='details_section'>
                     <span className='client'>
-                        <p>Ticket Created:</p>
+                        <p>Tiket kreiran:</p>
                         <p>{dateConverter(new Date())}</p>
                     </span>
-                    <span className='support'>
-                        <p>Last Update:</p>
-                        <p>{dateConverter(new Date())}</p>
+                    <span className='client'>
+                        <p>Naslov:</p>
+                        <p>asdasdad</p>
                     </span>
                 </span>
                 <span className='details_section'>
                     <span className='client'>
-                        <p>Company: asdasdasdasd /</p>
-                        <p>Project: asdasdas</p>
+                        <p>Kompanija: asdasdasdasd /</p>
+                        <p>Projekat: asdasdas</p>
                     </span>
                     <span className='client'>
-                        <p>Ticket created by:</p>
+                        <p>Tiket kreirao:</p>
                         <p>Pera Trta</p>
                     </span>
                 </span>
                 <span className='details_section'>
-                    <span className='client'>
-                        <p>Title:</p>
-                        <p>asdasdad</p>
+                    <span className='support'>
+                        <p>Poslednja promena:</p>
+                        <p>{dateConverter(new Date())}</p>
                     </span>
                     <span className='support'>
-                        <p>Ticket status:</p>
+                        <p>Status tiketa:</p>
                         <p>asdasdasd</p>
                     </span>
                 </span>
             </div>
             <span className='heading_icon_wrapper'>
-                <h3 className="headings">Messages received</h3>
+                <h3 className="headings">Poruke pristigle od podrške</h3>
                 <ForumIcon style={{ color: '#19467c' }} />
             </span>
             <div className='messages_container'>
@@ -125,62 +125,62 @@ export default function ClientViewTicket() {
                                         voluptatem. Modi corrupti voluptatem ullam
                                         odit.</p>
                                     <span className='attached_files_wrapper'>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
@@ -189,12 +189,12 @@ export default function ClientViewTicket() {
                                 </span>
                                 <span className='message_support'>
                                     <span className='attached_files_wrapper'>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
@@ -236,7 +236,7 @@ export default function ClientViewTicket() {
                                         quisquam odio? Dolorum beatae in distinctio
                                         dol</p>
                                     <span className='attached_files_wrapper'>
-                                        <Tooltip title='DOWNLOAD FILE'>
+                                        <Tooltip title='PREUZMI DOKUMENT'>
                                             <span className='file_wrapper'>
                                                 <p>LAKSD</p><FilePresentIcon />
                                             </span>
@@ -294,12 +294,12 @@ export default function ClientViewTicket() {
                                         dol</p>
                                 </span>
                                 <span className='icon_wrapper'>
-                                    <Tooltip title='REFRESH TO SEE NEW MESSAGES'>
+                                    <Tooltip title='OSVEŽI DA VIDIŠ PRISTIGLE PORUKE'>
                                         <span className='refresh_icon'>
                                             <CachedIcon style={{ color: '#19467c', width: '40px', height: '40px' }} />
                                         </span>
                                     </Tooltip>
-                                    <Tooltip title='SEND MESSAGE TO CUSTOMER SUPPORT'>
+                                    <Tooltip title='POŠALJI PORUKU KORISNIČKOJ PODRŠCI'>
                                         <span onClick={() => {
                                             setSendMessageClicked(!sendMessageClicked);
                                         }} className='send_message_icon'>
@@ -310,7 +310,7 @@ export default function ClientViewTicket() {
                                 {sendMessageClicked && (
                                     <>
                                         <span className="heading_icon_wrapper">
-                                            <h3 className="headings">Send message to customer support</h3>
+                                            <h3 className="headings">Slanje poruke korisničkoj podršci</h3>
                                             <CreateIcon style={{ color: '#19467c' }} />
                                         </span>
                                         <div className='send_message_wrapper'>

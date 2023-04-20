@@ -27,10 +27,29 @@
     transition: all 0.3s;
     align-items: center;
     justify-content: space-between;
-    color: black;
+    color: #19467c;
+    font-weight: 600;
     font-size: 20px;
     margin-left: 1vw;
     margin-right: 1vw;
+}
+
+.calendars_field {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.calendars_field span {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filters_button_field {
+    width: 30%;
 }
 
 .calendars_wrapper input {

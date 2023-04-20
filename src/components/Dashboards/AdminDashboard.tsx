@@ -7,6 +7,7 @@ import Toolbar from "../Toolbar/Toolbar";
 import UserProfile from "../UserProfile/UserProfile";
 import { styled } from "@mui/material/styles";
 import Button, { ButtonProps } from "@mui/material/Button";
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText("#398b93"),
@@ -33,46 +34,58 @@ const AdminDashboard = () => {
         onClose={() => setShowUserProfile(false)}
       />
       <div className="content_container">
+        <span className="background"></span>
         <div className="admin_container">
+          <span className='admin_icon_wrapper'>
+            <h3 className="headings">Admin panel</h3>
+            <SettingsIcon style={{ color: '#19467c' }} />
+          </span>
           <div className="admin_button_container">
-            <ColorButton
+            <span className="button_wrapper"><ColorButton
               variant="contained"
               onClick={() => {
                 navigate("/allclients");
               }}
-              style={{ width: "300px" }}
+              style={{ width: "400px", height: '50px', margin: '10px' }}
             >
-              Clients and Support
+              Korisnici i podrška
             </ColorButton>
-            <ColorButton
+              <ColorButton
+                variant="contained"
+                onClick={() => {
+                  navigate("/supportdashboard");
+                }}
+                style={{ width: "400px", height: '50px', margin: '10px' }}
+              >
+                Uloga podrške
+              </ColorButton></span>
+            <span className="button_wrapper"><ColorButton
               variant="contained"
               onClick={() => {
-                navigate("/supportdashboard");
+                navigate("/connections");
               }}
-              style={{ width: "300px" }}
+              style={{ width: "400px", height: '50px', margin: '10px' }}
             >
-              Support Mode
-            </ColorButton>
-          </div>
-          <div className="admin_button_container">
-            <ColorButton
+              Veze između kompanija i projekata
+            </ColorButton></span>
+            <span className="button_wrapper"><ColorButton
               variant="contained"
               onClick={() => {
                 navigate("/allcompanies");
               }}
-              style={{ width: "300px" }}
+              style={{ width: "400px", height: '50px', margin: '10px' }}
             >
-              Companies
+              Kompanije
             </ColorButton>
-            <ColorButton
-              variant="contained"
-              onClick={() => {
-                navigate("/allprojects");
-              }}
-              style={{ width: "300px" }}
-            >
-              Projects
-            </ColorButton>
+              <ColorButton
+                variant="contained"
+                onClick={() => {
+                  navigate("/allprojects");
+                }}
+                style={{ width: "400px", height: '50px', margin: '10px' }}
+              >
+                Projekti
+              </ColorButton></span>
           </div>
         </div>
       </div>

@@ -12,6 +12,11 @@ import SupportTable from "../Tables/SupportTable";
 import SupportFilters from "../Filters/SupportFilter";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import StorageIcon from '@mui/icons-material/Storage';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Typography from '@mui/material/Typography';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const ClientDashboard = () => {
   const authState = useSelector((state: state) => state.auth);
@@ -38,7 +43,7 @@ const ClientDashboard = () => {
       />
       <div className="content_container">
         <span className="heading_icon_wrapper">
-          <h3 className="headings">Filters</h3>
+          <h3 className="headings">Filteri</h3>
           <FilterListIcon style={{ color: '#19467c' }} />
         </span>
         <div className="filter_container">
@@ -47,7 +52,7 @@ const ClientDashboard = () => {
           {displayDashboard === "support" && <SupportFilters />}
         </div>
         <span className="heading_icon_wrapper">
-          <h3 className="headings">Tickets</h3>
+          <h3 className="headings">Tiketi</h3>
           <StorageIcon style={{ color: '#19467c' }} />
         </span>
         <div className="table_container">

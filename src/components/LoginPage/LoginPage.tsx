@@ -18,13 +18,14 @@ const LoginPage = () => {
       setUsername("");
       setPassword("");
       // simulacija prolaska kroz login i otvaranja dashboard-a
-      //navigate("/clientdashboard");
-      navigate("admindashboard");
+      navigate("/clientdashboard");
+      // navigate("admindashboard");
     }
   };
 
   return (
     <div className="login_content">
+      <span className="background"></span>
       <div className="app_name">
         <img
           src={logo}
@@ -34,10 +35,12 @@ const LoginPage = () => {
         <span style={{ marginLeft: "10px" }}>ComData Help Desk</span>
       </div>
       <div className="login_form">
-        <h3 style={{ alignSelf: "flex-start", marginLeft: "100px" }}>Login</h3>
+        <h3 style={{ alignSelf: "flex-start", marginLeft: "100px", color: '#19467c' }}>PRIJAVI SE</h3>
         <OutlinedInput
           id="input-with-icon-adornment"
-          style={{ width: "400px", fontFamily: "Times New Roman" }}
+          style={{
+            width: "400px", height: '50px', backgroundColor: 'white'
+          }}
           startAdornment={
             <InputAdornment position="start">
               <AccountCircleIcon />
@@ -52,7 +55,8 @@ const LoginPage = () => {
           style={{
             width: "400px",
             marginTop: "10px",
-            fontFamily: "Times New Roman",
+            height: '50px',
+            backgroundColor: 'white'
           }}
           startAdornment={
             <InputAdornment position="start">
@@ -70,11 +74,12 @@ const LoginPage = () => {
             width: "400px",
             backgroundColor: "#19467c",
             color: "white",
+            height: '50px'
           }}
           disabled={!(username && password)}
           onClick={loggedIn}
         >
-          Login
+          PRIJAVA
         </Button>
       </div>
     </div>

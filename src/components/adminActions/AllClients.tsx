@@ -1,4 +1,4 @@
-import ClientsUsersTable from "../Tables/ClientsUsersTable";
+import ClientsUsersTable from "../Tables/UsersTable";
 import Toolbar from "../Toolbar/Toolbar";
 import UserProfile from "../UserProfile/UserProfile";
 import { useSelector } from "react-redux";
@@ -10,7 +10,6 @@ import { OutlinedInput } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import SupportUsersTable from "../Tables/SupportUsersTable";
 import { AdminFilterSelect } from "../Filters/AdminFilterSelect";
 import PeopleIcon from '@mui/icons-material/People';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -46,7 +45,7 @@ const AllClients = () => {
          * SEARCH NE MOZE FUNKCIONISATI DOK NE OMOGUCIM DA SE I QUERY I CLIENTS PROSLEDJUJE TABELI KROZ PROPS
          */}
         <span className="heading_icon_wrapper">
-          <h3 className="headings">Filters</h3>
+          <h3 className="headings">Filteri</h3>
           <FilterListIcon style={{ color: '#19467c' }} />
         </span>
         <div
@@ -55,43 +54,47 @@ const AllClients = () => {
             justifyContent: "space-between",
             width: "95%",
             alignItems: "center",
-            // marginTop: "20px",
           }}
         >
-          <OutlinedInput
-            id="input-with-icon-adornment"
-            style={{ width: "400px", fontFamily: "Times New Roman" }}
-            startAdornment={
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            }
-            type="text"
-            placeholder="Search"
-            onChange={(e) => {
-              setQuery(e.target.value.toLowerCase());
-            }}
-          />
-          <AdminFilterSelect />
+          <span style={{
+            display: 'flex',
+            width: '35%',
+            justifyContent: 'space-between',
+          }}>
+            <OutlinedInput
+              id="input-with-icon-adornment"
+              style={{ width: "400px" }}
+              startAdornment={
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              }
+              type="text"
+              placeholder="Search"
+              onChange={(e) => {
+                setQuery(e.target.value.toLowerCase());
+              }}
+            />
+            <AdminFilterSelect />
+          </span>
           <ColorButton
             onClick={() => {
               navigate("/newclient");
             }}
           >
-            Add new client /support
+            Dodaj novog korisnika / podršku
           </ColorButton>
         </div>
         <span className="heading_icon_wrapper">
-          <h3 className="headings">Clients</h3>
-          <PeopleIcon />
+          <h3 className="headings">Svi korisnici i podrška</h3>
+          <PeopleIcon style={{ color: '#19467c' }} />
         </span>
         <div className="table_container">
           {/**na osnovu filtera da li otvara klijents users ili support users */}
           <ClientsUsersTable />
-          {/* {<SupportUsersTable/>} */}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

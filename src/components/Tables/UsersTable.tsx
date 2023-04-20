@@ -143,25 +143,24 @@ export default function ClientsUsersTable() {
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead>
           <StyledTableRow>
-            <StyledTableCell align="center">User ID</StyledTableCell>
-            <StyledTableCell align="center">Username</StyledTableCell>
-            <StyledTableCell align="center">First name</StyledTableCell>
-            <StyledTableCell align="center">Last name</StyledTableCell>
-            <StyledTableCell align="center">Email</StyledTableCell>
-            <StyledTableCell align="center">Phone</StyledTableCell>
-            <StyledTableCell align="center">Is Active</StyledTableCell>
-            <StyledTableCell align="center">User type ID</StyledTableCell>
-            <StyledTableCell align="center">User type</StyledTableCell>
-            <StyledTableCell align="center">Remove user</StyledTableCell>
+            <StyledTableCell align="center">ID</StyledTableCell>
+            <StyledTableCell align="center">Korisničko ime</StyledTableCell>
+            <StyledTableCell align="center">Ime</StyledTableCell>
+            <StyledTableCell align="center">Prezime</StyledTableCell>
+            <StyledTableCell align="center">E-mail</StyledTableCell>
+            <StyledTableCell align="center">Broj telefona</StyledTableCell>
+            <StyledTableCell align="center">ID tipa</StyledTableCell>
+            <StyledTableCell align="center">Tip korisnika</StyledTableCell>
+            <StyledTableCell align="center">Obrisati korisnika</StyledTableCell>
           </StyledTableRow>
         </TableHead>
         <TableBody sx={{ color: "white" }}>
           {(rowsPerPage > 0
             ? clients.slice(
-                //ovde nad clients pozvati searchClients da bi prikazao filtrirane jer cu podatke uimati iz apija
-                page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage
-              )
+              //ovde nad clients pozvati searchClients da bi prikazao filtrirane jer cu podatke uimati iz apija
+              page * rowsPerPage,
+              page * rowsPerPage + rowsPerPage
+            )
             : clients
           ).map((row) => (
             <StyledTableRow key={row.id}>
@@ -171,7 +170,6 @@ export default function ClientsUsersTable() {
               <TableCell align="center">{row.lastname}</TableCell>
               <TableCell align="center">{row.email}</TableCell>
               <TableCell align="center">{row.phone}</TableCell>
-              <TableCell align="center">{row.isActive.toString()}</TableCell>
               <TableCell align="center">{row.usertypeid}</TableCell>
               <TableCell align="center">{row.usertypename}</TableCell>
               <TableCell align="center">

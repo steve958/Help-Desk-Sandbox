@@ -18,7 +18,7 @@ const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 
 function ButtonSubmit() {
     return (
-        <ColorButton variant="contained">Submit filters</ColorButton>
+        <ColorButton variant="contained">Primeni filtere</ColorButton>
     );
 }
 
@@ -53,16 +53,29 @@ function BasicSelect(props: any) {
 
 export default function ClientAdminFilters() {
     return <div className='filter_wrapper'>
-        <BasicSelect heading='company'></BasicSelect>
-        <BasicSelect heading='project'></BasicSelect>
+        <BasicSelect heading='kompanija'></BasicSelect>
+        <BasicSelect heading='projekat'></BasicSelect>
         <BasicSelect heading='status'></BasicSelect>
-        <BasicSelect heading='employee'></BasicSelect>
+        <BasicSelect heading='korisnik'></BasicSelect>
         <span className='calendars_wrapper'>
-            <p>Filter tickets from</p>
-            <input type="date" />
-            <p>to</p>
-            <input type="date" />
-            <ButtonSubmit />
+            <span style={{ width: '20%' }}>
+                <p>Filtriraj tikete</p>
+            </span>
+            <span className='calendars_field'>
+                <span>
+                    <p>od</p>
+                    <input type="date" />
+                    <input type='time' style={{ width: '120px' }} />
+                </span>
+                <span>
+                    <p>do</p>
+                    <input type="date" />
+                    <input type='time' style={{ width: '120px' }} />
+                </span>
+            </span>
+            <span className='filters_button_field'>
+                <ButtonSubmit />
+            </span>
         </span>
     </div>
 }

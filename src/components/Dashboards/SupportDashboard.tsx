@@ -23,14 +23,14 @@ const SupportDashboard = () => {
             /> */}
       <div className="content_container">
         <span className="heading_icon_wrapper">
-          <h3 className="headings">Filters</h3>
+          <h3 className="headings">Filteri</h3>
           <FilterListIcon style={{ color: '#19467c' }} />
         </span>
         <div className="filter_container">
           <SupportFilters />
         </div>
         <span className="heading_icon_wrapper">
-          <h3 className="headings">Tickets</h3>
+          <h3 className="headings">Ticketi</h3>
           <StorageIcon style={{ color: '#19467c' }} />
         </span>
         <div className="table_container">

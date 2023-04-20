@@ -20,7 +20,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
         to="/help"
         style={({ isActive }) => (isActive ? activeStyle : undefined)}
       >
-        Help
+        Pomoć
       </NavLink>
     </li>
   );
@@ -30,7 +30,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
         to="/newticket"
         style={({ isActive }) => (isActive ? activeStyle : undefined)}
       >
-        Create new ticket
+        Kreiraj nov tiket
       </NavLink>
     </li>
   );

@@ -13,9 +13,9 @@ import { isAuthenticated } from "./interfaces";
 import AllClients from "./components/adminActions/AllClients";
 import NewClient from "./components/adminActions/NewClient";
 import AllProjects from "./components/adminActions/AllProjects";
-import NewProject from "./components/adminActions/NewProject";
 import AllCompanies from "./components/adminActions/AllCompanies";
-import NewCompany from "./components/adminActions/NewCompany";
+import Connections from "./components/adminActions/Connections"
+
 
 const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
   component: Component,
@@ -73,16 +73,12 @@ export const router = createBrowserRouter([
         element: <CheckIsAuthenticated component={AllProjects} />,
       },
       {
-        path: "/newproject",
-        element: <CheckIsAuthenticated component={NewProject} />,
-      },
-      {
         path: "/allcompanies",
         element: <CheckIsAuthenticated component={AllCompanies} />,
       },
       {
-        path: "/newcompany",
-        element: <CheckIsAuthenticated component={NewCompany} />,
+        path: "/connections",
+        element: <CheckIsAuthenticated component={Connections} />,
       },
     ],
   },
