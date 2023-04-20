@@ -132,13 +132,13 @@ export default function ClientTable() {
             <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                 <TableHead>
                     <StyledTableRow>
-                        <StyledTableCell align="center">Ticket Created</StyledTableCell>
-                        <StyledTableCell align="center">Ticket Status</StyledTableCell>
-                        <StyledTableCell align="center">Last Update</StyledTableCell>
-                        <StyledTableCell align="center">Title</StyledTableCell>
-                        <StyledTableCell align="center">Response</StyledTableCell>
-                        <StyledTableCell align="center">Project</StyledTableCell>
-                        <StyledTableCell align="center">Company</StyledTableCell>
+                        <StyledTableCell align="center">Tiket kreiran</StyledTableCell>
+                        <StyledTableCell align="center">Status</StyledTableCell>
+                        <StyledTableCell align="center">Poslednje promene</StyledTableCell>
+                        <StyledTableCell align="center">Naslov</StyledTableCell>
+                        <StyledTableCell align="center">Odgovor</StyledTableCell>
+                        <StyledTableCell align="center">Projekat</StyledTableCell>
+                        <StyledTableCell align="center">Kompanija</StyledTableCell>
                     </StyledTableRow>
                 </TableHead>
                 <TableBody sx={{ color: 'white' }}>

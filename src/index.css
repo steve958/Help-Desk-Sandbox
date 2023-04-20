@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Times New Roman", Times, serif;
+  font-family: Arial, Helvetica, sans-serif;
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;
@@ -30,6 +30,25 @@ body {
   display: flex;
   flex-flow: column;
   width: 100vw;
+  height: 100vh;
+
+}
+
+.background {
+  width: 90vw;
+  height: 90vh;
+  position: absolute;
+  z-index: -1;
+  background-image: url('./assets/pozadina1.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  -webkit-filter: blur(6px);
+  -moz-filter: blur(6px);
+  -o-filter: blur(6px);
+  -ms-filter: blur(6px);
+  filter: blur(6px);
+
 }
 
 .span_validation {
@@ -47,6 +66,9 @@ body {
   margin-top: 20px;
   margin-bottom: 100px;
   margin-left: 20px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #19467c;
 }
 
 .login_form {
@@ -61,6 +83,7 @@ body {
   border-radius: 5px;
   padding: 10px;
   margin: 10px;
+  background-color: #19467c4a;
 }
 
 /*Toolbar*/
@@ -135,7 +158,6 @@ body {
   display: block;
   background-color: white;
   border: none;
-  font-family: "Times New Roman";
   cursor: pointer;
   color: #000;
   padding: 8px 16px;
@@ -147,6 +169,7 @@ body {
 
 .Toolbar_right li button:hover {
   background-color: lightgray;
+  cursor: pointer;
 }
 
 .content_container {

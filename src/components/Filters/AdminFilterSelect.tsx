@@ -7,7 +7,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import "./AllFilters.css";
 
 function BasicSelect(props: any) {
-  const [value, setValue] = useState("all");
+  const [value, setValue] = useState("svi");
 
   const { heading } = props;
   const handleChange = (event: SelectChangeEvent) => {
@@ -25,8 +25,9 @@ function BasicSelect(props: any) {
           label={heading}
           onChange={handleChange}
         >
-          <MenuItem value="Clients">Clients</MenuItem>
-          <MenuItem value={"Support"}>Support</MenuItem>
+          <MenuItem value="svi">Svi</MenuItem>
+          <MenuItem value="Clients">Korisnici</MenuItem>
+          <MenuItem value="Support">Podrška</MenuItem>
         </Select>
       </FormControl>
     </Box>
@@ -34,5 +35,5 @@ function BasicSelect(props: any) {
 }
 
 export const AdminFilterSelect = () => {
-  return <BasicSelect heading="User type" />;
+  return <BasicSelect heading="tip" />;
 };

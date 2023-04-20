@@ -19,7 +19,7 @@ const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 
 function ButtonSubmit() {
     return (
-        <ColorButton variant="contained">Submit filters</ColorButton>
+        <ColorButton variant="contained">Primeni filtere</ColorButton>
     );
 }
 
@@ -56,22 +56,35 @@ export default function SupportFilters() {
     return <div className='filter_wrapper'>
         <span className='column_filters'>
             <span>
-                <BasicSelect heading='company'></BasicSelect>
-                <BasicSelect heading='project'></BasicSelect>
+                <BasicSelect heading='kompanija'></BasicSelect>
+                <BasicSelect heading='projekat'></BasicSelect>
                 <BasicSelect heading='status'></BasicSelect>
             </span>
             <span>
-                <BasicSelect heading='employee'></BasicSelect>
-                <BasicSelect heading='priority'></BasicSelect>
-                <BasicSelect heading='type'></BasicSelect>
+                <BasicSelect heading='korisnik'></BasicSelect>
+                <BasicSelect heading='prioritet'></BasicSelect>
+                <BasicSelect heading='tip'></BasicSelect>
             </span>
         </span>
         <span className='calendars_wrapper'>
-            <p>Filter tickets from</p>
-            <input type="date" />
-            <p>to</p>
-            <input type="date" />
-            <ButtonSubmit />
+            <span style={{ width: '20%' }}>
+                <p>Filtriraj tikete</p>
+            </span>
+            <span className='calendars_field'>
+                <span>
+                    <p>od</p>
+                    <input type="date" />
+                    <input type='time' style={{ width: '120px' }} />
+                </span>
+                <span>
+                    <p>do</p>
+                    <input type="date" />
+                    <input type='time' style={{ width: '120px' }} />
+                </span>
+            </span>
+            <span className='filters_button_field'>
+                <ButtonSubmit />
+            </span>
         </span>
     </div>
 }

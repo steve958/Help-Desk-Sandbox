@@ -200,7 +200,6 @@
 }
 
 .send_message_field {
-    font-family: 'Times New Roman', Times, serif;
     color: #19467c;
     font-size: 18px;
     width: calc(100% - 8px);
@@ -232,7 +231,6 @@
     font-weight: 600;
     color: #19467c;
     margin: 5px;
-    font-family: 'Times New Roman', Times, serif;
 }
 
 .messages_wrapper {

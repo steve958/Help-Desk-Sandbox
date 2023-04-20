@@ -132,15 +132,15 @@ export default function SupportTable() {
             <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                 <TableHead>
                     <StyledTableRow>
-                        <StyledTableCell align="center">Ticket Created</StyledTableCell>
-                        <StyledTableCell align="center">Ticket Status</StyledTableCell>
-                        <StyledTableCell align="center">Last Update</StyledTableCell>
-                        <StyledTableCell align="center">Title</StyledTableCell>
-                        <StyledTableCell align="center">Project</StyledTableCell>
-                        <StyledTableCell align="center">Company</StyledTableCell>
-                        <StyledTableCell align="center">Client ID</StyledTableCell>
-                        <StyledTableCell align="center">Priority</StyledTableCell>
-                        <StyledTableCell align="center">Type</StyledTableCell>
+                        <StyledTableCell align="center">Tiket kreiran</StyledTableCell>
+                        <StyledTableCell align="center">Status</StyledTableCell>
+                        <StyledTableCell align="center">Poslednja promena</StyledTableCell>
+                        <StyledTableCell align="center">Naslov</StyledTableCell>
+                        <StyledTableCell align="center">Projekat</StyledTableCell>
+                        <StyledTableCell align="center">Kompanija</StyledTableCell>
+                        <StyledTableCell align="center">Korisnikov ID</StyledTableCell>
+                        <StyledTableCell align="center">Prioritet</StyledTableCell>
+                        <StyledTableCell align="center">Tip</StyledTableCell>
                     </StyledTableRow>
                 </TableHead>
                 <TableBody sx={{ color: 'white' }}>

@@ -30,6 +30,7 @@
     align-items: center;
     border: 4px solid #f9a235;
     position: relative;
+    text-align: center;
 }
 
 .input_field_wrapper_type span {
@@ -76,9 +77,53 @@
     cursor: pointer;
 }
 
-.submint_buttons_wrapper {
+.submit_buttons_wrapper {
     margin: 10px;
     width: 40vw;
     display: flex;
     justify-content: space-evenly;
+}
+
+.connection_wrapper {
+    width: 95%;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.list_wrapper {
+    width: 50vw;
+    max-height: 70vh;
+    display: flex;
+    justify-content: space-between;
+}
+
+.list_field {
+    padding: 10px;
+    width: 40%;
+    border: 2px solid #19467c;
+    max-height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}
+
+.list_field p {
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 10px;
+    color: #19467c;
+}
+
+.list_field p:hover {
+    background-color: #f9a235;
+}
+
+.selected {
+    background-color: #19467c;
+    color: white;
 }

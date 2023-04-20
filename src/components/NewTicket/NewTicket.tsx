@@ -36,12 +36,12 @@ const NewTicket = () => {
   }));
 
   function ButtonDiscard() {
-    return (<ColorButtonDiscard variant='contained'>Discard ticket</ColorButtonDiscard>)
+    return (<ColorButtonDiscard variant='contained'>Zanemari</ColorButtonDiscard>)
   }
 
   function ButtonSubmit() {
     return (
-      <ColorButtonSubmit variant="contained">Submit ticket</ColorButtonSubmit>
+      <ColorButtonSubmit variant="contained">Kreiraj tiket</ColorButtonSubmit>
     );
   }
 
@@ -50,12 +50,12 @@ const NewTicket = () => {
       <Box
         component="form"
         sx={{
-          '& > :not(style)': { m: 1, width: '180px' },
+          '& > :not(style)': { m: 1, width: '500px' },
         }}
         noValidate
         autoComplete="off"
       >
-        <TextField id="outlined-basic" label="title" variant="outlined" />
+        <TextField id="outlined-basic" label="naslov" variant="outlined" />
       </Box>
     );
   }
@@ -94,32 +94,32 @@ const NewTicket = () => {
         if (authState["token"]) setShowUserProfile(true);
       }} />
     <span className='heading_icon_wrapper'>
-      <h3 className="headings">Ticket details</h3>
+      <h3 className="headings">Detalji tiketa</h3>
       <InfoIcon style={{ color: '#19467c' }} />
     </span>
     <div className="select_details_wrapper">
       <span>
-        <p>Select company:</p>
-        <BasicSelect heading='company'>Company</BasicSelect>
+        <p>Izaberi uvezanu kompaniju:</p>
+        <BasicSelect heading='kompanija'>Kompanija</BasicSelect>
       </span>
       <span>
-        <p>Select project:</p>
-        <BasicSelect heading='project'>Project</BasicSelect>
+        <p>Izaberi uvezani projekat:</p>
+        <BasicSelect heading='projekat'>Projekat</BasicSelect>
       </span>
-      <span>
-        <p>Ticket title:</p>
+      <span style={{ width: '50%' }}>
+        <p>Naslov tiketa:</p>
         <BasicTextFields />
       </span>
     </div>
     <span className="heading_icon_wrapper">
-      <h3 className="headings">Ticket description</h3>
+      <h3 className="headings">Opis tiketa</h3>
       <CreateIcon style={{ color: '#19467c' }} />
     </span>
     <div className="description_wrapper">
       <textarea className="description_field" />
     </div>
     <span className="heading_icon_wrapper">
-      <h3 className="headings">Add screenshots and other files</h3>
+      <h3 className="headings">Priloži dokument ili sliku ekrana</h3>
       <AttachFileIcon style={{ color: '#19467c' }} />
     </span>
     <div className="add_files_wrapper">
