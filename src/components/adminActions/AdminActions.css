@@ -1,0 +1,129 @@
+.new_client_container {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.new_client_wrapper {
+    width: 95%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 22px;
+    font-weight: 600;
+    color: #19467c;
+    margin-top: 10px;
+    /* border: 2px solid #19467c; */
+    padding: 15px;
+    user-select: none;
+}
+
+.input_field_wrapper_type {
+    width: 40vw;
+    padding: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #19467c;
+    color: white;
+    border-radius: 5px;
+    align-items: center;
+    border: 4px solid #f9a235;
+    position: relative;
+    text-align: center;
+}
+
+.input_field_wrapper_type span {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    right: 20px;
+}
+
+.input_field_wrapper_type span:hover {
+    transition: all 0.3s;
+    scale: 1.5;
+    cursor: pointer;
+    rotate: 180deg;
+}
+
+.input_field_wrapper {
+    width: 40vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input_field_wrapper_projects {
+    display: flex;
+    align-items: center;
+    max-width: 40vw;
+    overflow: auto;
+}
+
+.project_field {
+    white-space: nowrap;
+    background-color: #f9a235;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 5px;
+    color: white;
+    font-size: 16px;
+}
+
+.project_field:hover {
+    background-color: #19467c;
+    cursor: pointer;
+}
+
+.submit_buttons_wrapper {
+    margin: 10px;
+    width: 40vw;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.connection_wrapper {
+    width: 95%;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.list_wrapper {
+    width: 50vw;
+    max-height: 70vh;
+    display: flex;
+    justify-content: space-between;
+}
+
+.list_field {
+    padding: 10px;
+    width: 40%;
+    border: 2px solid #19467c;
+    max-height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}
+
+.list_field p {
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 10px;
+    color: #19467c;
+}
+
+.list_field p:hover {
+    background-color: #f9a235;
+}
+
+.selected {
+    background-color: #19467c;
+    color: white;
+}

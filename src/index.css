@@ -1,13 +1,17 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Times New Roman", Times, serif;
-  max-width: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100vw;
+  height: 100vh;
   overflow-x: hidden;
 }
 
 .app_container {
   display: flex;
+  width: 100vw;
+  height: fit-content;
+  flex-direction: column;
 }
 
 .loader_container {
@@ -17,6 +21,7 @@ body {
   align-items: center;
   width: 100%;
 }
+
 .loader_item {
   width: 25%;
 }
@@ -25,6 +30,25 @@ body {
   display: flex;
   flex-flow: column;
   width: 100vw;
+  height: 100vh;
+
+}
+
+.background {
+  width: 90vw;
+  height: 90vh;
+  position: absolute;
+  z-index: -1;
+  background-image: url('./assets/pozadina1.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  -webkit-filter: blur(6px);
+  -moz-filter: blur(6px);
+  -o-filter: blur(6px);
+  -ms-filter: blur(6px);
+  filter: blur(6px);
+
 }
 
 .span_validation {
@@ -42,7 +66,11 @@ body {
   margin-top: 20px;
   margin-bottom: 100px;
   margin-left: 20px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #19467c;
 }
+
 .login_form {
   display: flex;
   flex-flow: column;
@@ -51,34 +79,39 @@ body {
   align-self: center;
   width: 600px;
   height: 400px;
-  border: 2px solid #398b93;
+  border: 2px solid #19467c;
   border-radius: 5px;
   padding: 10px;
   margin: 10px;
+  background-color: #19467c4a;
 }
 
 /*Toolbar*/
 .Toolbar {
   width: 100%;
-  position: fixed;
-  background-color: #398b93;
+  background-color: #19467c;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 0 5px 0 5px;
-  height: 50px;
+  height: 100px;
   box-sizing: border-box;
   z-index: 1;
+  font-size: 24px;
 }
 
 .Toolbar_left,
 .Toolbar_right {
   display: flex;
 }
+
 .Toolbar_left img {
   vertical-align: text-top;
-  width: 10%;
+  width: 50%;
+  background-color: white;
+  margin-left: 20px;
+
 }
 
 .Toolbar nav {
@@ -105,9 +138,9 @@ body {
   padding: 8px 16px;
   text-decoration: none;
 }
+
 .Toolbar_right li a {
   width: 160px;
-
   font-size: 12px;
   text-align: center;
   display: flex;
@@ -118,7 +151,6 @@ body {
 
 .Toolbar_left li:not(:first-child),
 .Toolbar_right a:hover {
-  background-color: lightgray;
   color: white;
 }
 
@@ -126,7 +158,6 @@ body {
   display: block;
   background-color: white;
   border: none;
-  font-family: "Comic Sans MS";
   cursor: pointer;
   color: #000;
   padding: 8px 16px;
@@ -135,18 +166,31 @@ body {
   height: 37px;
   font-size: 12px;
 }
+
 .Toolbar_right li button:hover {
   background-color: lightgray;
+  cursor: pointer;
 }
 
 .content_container {
   width: 100%;
-  margin-top: 50px;
-  padding-top: 5px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.content_container {
-  width: 100%;
-  margin-top: 50px;
-  padding-top: 5px;
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+
+::-webkit-scrollbar-track {
+  background: #19467c4a;
+}
+
+
+::-webkit-scrollbar-thumb {
+  background: #19467c;
 }

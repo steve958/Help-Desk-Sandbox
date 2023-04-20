@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { checkValidity } from "../../Helper";
 import logo from "../../assets/comdata.png";
-
+import { useNavigate } from "react-router-dom";
 import InputAdornment from "@mui/material/InputAdornment";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
@@ -9,21 +8,24 @@ import { OutlinedInput } from "@mui/material";
 import Button from "@mui/material/Button";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  let validMail: boolean = false;
+  const navigate = useNavigate();
 
   const loggedIn = () => {
-    if (email && password && validMail) {
+    if (username && password) {
       // loginUserFn(email, password); -> ovde ide api poziv za login
-      setEmail("");
+      setUsername("");
       setPassword("");
+      // simulacija prolaska kroz login i otvaranja dashboard-a
+      navigate("/clientdashboard");
+      // navigate("admindashboard");
     }
   };
 
   return (
     <div className="login_content">
+      <span className="background"></span>
       <div className="app_name">
         <img
           src={logo}
@@ -33,35 +35,28 @@ const LoginPage = () => {
         <span style={{ marginLeft: "10px" }}>ComData Help Desk</span>
       </div>
       <div className="login_form">
-        <h3 style={{ alignSelf: "flex-start", marginLeft: "100px" }}>Login</h3>
+        <h3 style={{ alignSelf: "flex-start", marginLeft: "100px", color: '#19467c' }}>PRIJAVI SE</h3>
         <OutlinedInput
           id="input-with-icon-adornment"
-          style={{ width: "400px", fontFamily: "Times New Roman" }}
+          style={{
+            width: "400px", height: '50px', backgroundColor: 'white'
+          }}
           startAdornment={
             <InputAdornment position="start">
               <AccountCircleIcon />
             </InputAdornment>
           }
-          type="email"
-          placeholder="Email"
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="Username"
+          onChange={(e) => setUsername(e.target.value)}
         />
-        {!checkValidity(
-          email,
-          /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-        ) ? (
-          <span className="span_validation">
-            {"It should be a valid email address!"}
-          </span>
-        ) : (
-          (validMail = true)
-        )}
         <OutlinedInput
           id="input-with-icon-adornment"
           style={{
             width: "400px",
             marginTop: "10px",
-            fontFamily: "Times New Roman",
+            height: '50px',
+            backgroundColor: 'white'
           }}
           startAdornment={
             <InputAdornment position="start">
@@ -77,13 +72,14 @@ const LoginPage = () => {
           style={{
             marginTop: "10px",
             width: "400px",
-            backgroundColor: "#398b93",
+            backgroundColor: "#19467c",
             color: "white",
+            height: '50px'
           }}
-          disabled={!(email && password && validMail)}
+          disabled={!(username && password)}
           onClick={loggedIn}
         >
-          Login
+          PRIJAVA
         </Button>
       </div>
     </div>

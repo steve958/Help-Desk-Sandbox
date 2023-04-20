@@ -1,26 +1,31 @@
 import { createBrowserRouter, Navigate, useLocation } from "react-router-dom";
-
 import App from "./App";
 import LoginPage from "./components/LoginPage/LoginPage";
-import EditTicket from "./components/EditTicket/EditTicket";
 import HelpPage from "./components/HelpPage/HelpPage";
-import TicketDetail from "./components/TicketDeatil/TicketDetail";
-import ClientDashboard from "./components/ClientDashboard/ClientDashboard";
+import Ticket from "./components/Ticket/Ticket";
+import ClientDashboard from "./components/Dashboards/ClientDashboard";
 import NewTicket from "./components/NewTicket/NewTicket";
+import AdminDashboard from "./components/Dashboards/AdminDashboard";
+import SupportDashboard from "./components/Dashboards/SupportDashboard";
 import { useSelector } from "react-redux";
+import { state } from "./main";
+import { isAuthenticated } from "./interfaces";
+import AllClients from "./components/adminActions/AllClients";
+import NewClient from "./components/adminActions/NewClient";
+import AllProjects from "./components/adminActions/AllProjects";
+import AllCompanies from "./components/adminActions/AllCompanies";
+import Connections from "./components/adminActions/Connections"
 
-//import { state } from "./index";
-//import { isAuthenticated } from "./interfaces";
 
-// Da NAPRAVIM ZASTICENE RUTE DOK NAPRAVIM AUTH REDUCER  -> sve rute sem login ce biti zasticene
-// const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
-//   component: Component,
-// }) => {
-//   const authState = useSelector((state: state) => state.auth);
-//   if (authState["token"] !== null) return <Component />;
+const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
+  component: Component,
+}) => {
+  const authState = useSelector((state: state) => state.auth);
+  // if (authState["token"] !== null) return <Component />;
+  return <Component />;
 
-//   return <Navigate to="/" replace />;
-// };
+  //return <Navigate to="/" replace />;
+};
 
 export const router = createBrowserRouter([
   {
@@ -33,24 +38,47 @@ export const router = createBrowserRouter([
       },
       {
         path: "/help",
-        //element: <CheckIsAuthenticated component={Favourites} />,
-        element: <HelpPage />,
+        element: <CheckIsAuthenticated component={HelpPage} />,
       },
       {
         path: "/clientdashboard",
-        element: <ClientDashboard />,
+        element: <CheckIsAuthenticated component={ClientDashboard} />,
       },
       {
-        path: "/editticket",
-        element: <EditTicket />,
-      },
-      {
-        path: "/ticket:id",
-        element: <TicketDetail />,
+        path: "/ticket/:id",
+        element: <CheckIsAuthenticated component={Ticket} />,
       },
       {
         path: "/newticket",
-        element: <NewTicket />,
+        element: <CheckIsAuthenticated component={NewTicket} />,
+      },
+      {
+        path: "/supportdashboard",
+        element: <CheckIsAuthenticated component={SupportDashboard} />,
+      },
+      {
+        path: "/admindashboard",
+        element: <CheckIsAuthenticated component={AdminDashboard} />,
+      },
+      {
+        path: "/allclients",
+        element: <CheckIsAuthenticated component={AllClients} />,
+      },
+      {
+        path: "/newclient",
+        element: <CheckIsAuthenticated component={NewClient} />,
+      },
+      {
+        path: "/allprojects",
+        element: <CheckIsAuthenticated component={AllProjects} />,
+      },
+      {
+        path: "/allcompanies",
+        element: <CheckIsAuthenticated component={AllCompanies} />,
+      },
+      {
+        path: "/connections",
+        element: <CheckIsAuthenticated component={Connections} />,
       },
     ],
   },

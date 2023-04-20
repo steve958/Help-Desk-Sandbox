@@ -1,11 +1,6 @@
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/comdata.png";
-
-export const checkValidity = (value: string, pattern: RegExp): boolean => {
-  let isValid = true;
-  if (value !== "") isValid = pattern.test(value) && isValid;
-  return isValid;
-};
+import logo from "../assets/comdata.png";
+import { User } from "../interfaces";
 
 let activeStyle = {
   color: "white",
@@ -14,7 +9,7 @@ let activeStyle = {
 
 export const getLeftToolbar = (user_type: string): JSX.Element => {
   let leftToolbar: JSX.Element = <></>;
-  let logoItem: JSX.Element = (
+  let logoItem = (
     <li>
       <img src={logo} alt="logo" />
     </li>
@@ -25,7 +20,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
         to="/help"
         style={({ isActive }) => (isActive ? activeStyle : undefined)}
       >
-        Help
+        Pomoć
       </NavLink>
     </li>
   );
@@ -35,17 +30,7 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
         to="/newticket"
         style={({ isActive }) => (isActive ? activeStyle : undefined)}
       >
-        Create new ticket
-      </NavLink>
-    </li>
-  );
-  let editTicketItem: JSX.Element = (
-    <li>
-      <NavLink
-        to="/editticket"
-        style={({ isActive }) => (isActive ? activeStyle : undefined)}
-      >
-        Edit ticket
+        Kreiraj nov tiket
       </NavLink>
     </li>
   );
@@ -59,28 +44,38 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
           {helpItem}
         </ul>
       );
+      break;
     case "Client_Admin":
       leftToolbar = (
         <ul>
           {logoItem}
           {newTicketItem}
-          {editTicketItem}
           {helpItem}
         </ul>
       );
+      break;
     case "Support":
       leftToolbar = (
         <ul>
           {logoItem}
-          {newTicketItem}
-          {editTicketItem}
           {helpItem}
         </ul>
       );
+      break;
     case "Admin":
-      leftToolbar = <></>;
+      leftToolbar = <ul>{logoItem}</ul>;
+      break;
     default:
       leftToolbar = <></>;
   }
   return leftToolbar;
 };
+
+export const searchClientUsers = (clients: User[], query: string): User[] => {
+  if (query !== "")
+    return clients.filter((x) => x.username.toLowerCase().includes(query));
+  else {
+    return clients;
+  }
+};
+//dodati fju za odredjivanje role

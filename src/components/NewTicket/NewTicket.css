@@ -1,0 +1,92 @@
+.new_ticket_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.select_details_wrapper {
+    user-select: none;
+    font-weight: 600;
+    width: 95%;
+    border: 2px solid #19467c;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    color: #19467c;
+    border-radius: 5px;
+}
+
+.select_details_wrapper span {
+    display: flex;
+    width: 30%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.description_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 95%;
+    height: 40%;
+}
+
+.description_field {
+    font-family: inherit;
+    border: 2px solid #19467c;
+    text-align: start;
+    border-radius: 5px;
+    font-size: 22px;
+    width: calc(100% - 8px);
+    height: 100%;
+    color: #19467c;
+}
+
+.add_files_wrapper {
+    display: flex;
+    align-items: center;
+    width: 95%;
+    height: 80px;
+}
+
+.add_files_field {
+    border-radius: 5px;
+    border: 2px solid #19467c;
+    width: 100%;
+    cursor: pointer;
+}
+
+.add_files_field::-webkit-file-upload-button {
+    background-color: #19467c;
+    border: none;
+    padding: 5px;
+    width: 150px;
+    border-radius: 5px;
+    color: white;
+    height: 50px;
+    font-size: 18px;
+    margin: 10px;
+}
+
+.add_files_field::-webkit-file-upload-button:hover {
+    transition: all 0.3s;
+    background-color: #19467c;
+    cursor: pointer;
+}
+
+.submit_wrapper {
+    height: 80px;
+    width: 95%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.submit_wrapper span {
+    width: 18vw;
+    display: flex;
+    justify-content: space-between;
+}
