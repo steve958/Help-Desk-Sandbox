@@ -108,7 +108,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 export default function SupportTable() {
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const navigate = useNavigate()
 

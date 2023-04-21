@@ -7,12 +7,14 @@
   justify-content: center;
   align-items: center;
   color: white;
+  animation: 1s ease-in;
 }
 
 .heading_icon_wrapper {
   width: 95%;
   display: flex;
   align-items: center;
+
 }
 
 .headings {
@@ -38,6 +40,7 @@
   position: absolute;
   top: 11vh;
   right: 0;
+  z-index: 2;
 }
 
 .display_change button {
@@ -81,4 +84,17 @@
   display: flex;
   align-items: center;
   width: 100%;
+}
+
+.tooltip {
+  user-select: none;
+}
+
+.tooltip:hover {
+  cursor: pointer;
+  padding-left: 15px;
+  background-color: #19467c4a;
+  border-radius: 10px 10px 0 0;
+  user-select: none;
+  font-size: 25px;
 }

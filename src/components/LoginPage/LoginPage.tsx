@@ -32,10 +32,12 @@ const LoginPage = () => {
           alt=""
           style={{ width: "40px", verticalAlign: "textTop" }}
         />
-        <span style={{ marginLeft: "10px" }}>ComData Help Desk</span>
+        {/* <span style={{ marginLeft: "10px" }}>ComData Help Desk</span> */}
+        <span style={{ position: 'absolute', left: '0', top: '10px' }} className="logo_help_desk">
+        </span>
       </div>
       <div className="login_form">
-        <h3 style={{ alignSelf: "flex-start", marginLeft: "100px", color: '#19467c' }}>PRIJAVI SE</h3>
+        <h3 style={{ alignSelf: "flex-start", marginLeft: "100px", color: '#19467c', fontSize: '2em' }}>Prijavi se</h3>
         <OutlinedInput
           id="input-with-icon-adornment"
           style={{
@@ -74,7 +76,8 @@ const LoginPage = () => {
             width: "400px",
             backgroundColor: "#19467c",
             color: "white",
-            height: '50px'
+            height: '50px',
+            fontWeight: '600'
           }}
           disabled={!(username && password)}
           onClick={loggedIn}

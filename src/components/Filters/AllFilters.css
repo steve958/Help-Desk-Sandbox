@@ -4,6 +4,7 @@
     justify-content: space-around;
     align-items: center;
     user-select: none;
+    animation: show 0.3s ease-in;
 }
 
 .column_filters {
@@ -44,7 +45,7 @@
 .calendars_field span {
     width: 80%;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
 }
 
@@ -54,15 +55,31 @@
 
 .calendars_wrapper input {
     height: 50px;
-    width: 180px;
+    width: 300px;
     border: 1px solid lightgrey;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
     font-size: 18px;
     color: gray;
+    display: flex;
+    justify-content: center;
 }
 
 .calendars_wrapper input:hover {
     border: 1px solid gray;
+}
+
+@keyframes show {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }

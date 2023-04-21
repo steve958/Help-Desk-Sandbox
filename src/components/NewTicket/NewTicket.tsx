@@ -93,6 +93,7 @@ const NewTicket = () => {
       handleClickAccount={() => {
         if (authState["token"]) setShowUserProfile(true);
       }} />
+    <span className="background"></span>
     <span className='heading_icon_wrapper'>
       <h3 className="headings">Detalji tiketa</h3>
       <InfoIcon style={{ color: '#19467c' }} />

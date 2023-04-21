@@ -19,6 +19,6 @@ export const getAllTickets = () => {
           tickets: response.data.tickets,
         });
       })
-      .catch((err) => console.log(`Error while getting all flowers: ${err}`));
+      .catch((err) => console.log(`Error while getting all tickets: ${err}`));
   };
 };

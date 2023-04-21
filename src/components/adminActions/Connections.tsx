@@ -56,6 +56,7 @@ export default function Connections() {
                 onClose={() => setShowUserProfile(false)}
             />
             <div className='connection_wrapper'>
+                <span className="background" style={{ height: '80vh' }}></span>
                 <span className="heading_icon_wrapper">
                     <h3 className="headings">Povezivanje kompanija i projekata</h3>
                     <CableIcon style={{ color: '#19467c' }} />

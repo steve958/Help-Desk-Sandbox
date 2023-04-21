@@ -12,16 +12,19 @@ import SupportTable from "../Tables/SupportTable";
 import SupportFilters from "../Filters/SupportFilter";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import StorageIcon from '@mui/icons-material/Storage';
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 const ClientDashboard = () => {
   const authState = useSelector((state: state) => state.auth);
-  const [showUserProfile, setShowUserProfile] = useState(false);
+  const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
+  const [expanded, setExpanded] = useState<boolean>(false);
   const [displayDashboard, setDispalyDashboard] = useState("client");
+
+
+  function handleChange() {
+    setExpanded(!expanded)
+  }
 
   return (
     <div className="app_container">
@@ -42,11 +45,12 @@ const ClientDashboard = () => {
         onClose={() => setShowUserProfile(false)}
       />
       <div className="content_container">
-        <span className="heading_icon_wrapper">
+        <span className="heading_icon_wrapper tooltip" onClick={handleChange}>
+          <span style={{ position: 'absolute', color: 'white', left: '45%' }}>{expanded ? <ExpandLessIcon style={{ color: 'white' }} /> : <ExpandMoreIcon style={{ color: 'white' }} />}{expanded ? 'sakriti filtere' : 'prikazati filtere'}{expanded ? <ExpandLessIcon style={{ color: 'white' }} /> : <ExpandMoreIcon style={{ color: 'white' }} />}</span>
           <h3 className="headings">Filteri</h3>
           <FilterListIcon style={{ color: '#19467c' }} />
         </span>
-        <div className="filter_container">
+        <div className="filter_container" style={{ display: expanded ? 'flex' : 'none' }}>
           {displayDashboard === "client" && <ClientFilters />}
           {displayDashboard === "client-admin" && <ClientAdminFilters />}
           {displayDashboard === "support" && <SupportFilters />}
@@ -61,7 +65,7 @@ const ClientDashboard = () => {
           {displayDashboard === "support" && <SupportTable />}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

@@ -62,13 +62,11 @@ export default function ClientFilters() {
         <span className='calendars_field'>
           <span>
             <p>od</p>
-            <input type="date" />
-            <input type='time' style={{ width: '120px' }} />
+            <input type="datetime-local" />
           </span>
           <span>
             <p>do</p>
-            <input type="date" />
-            <input type='time' style={{ width: '120px' }} />
+            <input type="datetime-local" />
           </span>
         </span>
         <span className='filters_button_field'>
