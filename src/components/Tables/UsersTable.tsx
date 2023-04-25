@@ -18,7 +18,7 @@ import { styled } from "@mui/material/styles";
 import TableHead from "@mui/material/TableHead";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { clients } from "../../helpers/fakeData";
-import { searchClientUsers } from "../../helpers/Helper";
+import { searchClientUsers } from "../../helpers/toolbarProvider";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 
 interface TablePaginationActionsProps {

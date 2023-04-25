@@ -1,22 +1,11 @@
-import { ShowProp } from "../../interfaces";
+import { ShowProp, User } from "../../interfaces";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
-import { state } from "../../main";
-import * as actions from "../../store/actions/index";
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 
 const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
-  const authState = useSelector((state: state) => state.auth);
-  const dispatch = useDispatch();
-  const { logoutUserFn } = bindActionCreators(actions, dispatch);
-
-  const logoutAndClose = () => {
-    logoutUserFn();
-    onClose();
-  };
 
   let labelStyle = {
     margin: "20px 0 0 0",
@@ -42,7 +31,7 @@ const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
                   alignSelf: "center",
                 }}
               >
-                {`${authState["user"]["firstName"]}  ${authState["user"]["lastName"]}`}
+                {/* {`${user.firstName}  ${user["lastName"]}`} */}
               </span>
             </div>
             <div
@@ -54,19 +43,19 @@ const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
             >
               <label style={labelStyle}>First Name</label>
               <h3 style={{ margin: "20px 0 0 0" }}>
-                {authState["user"]["firstName"]}
+                {/* {user["firstName"]} */}
               </h3>
               <label style={labelStyle}>Last Name</label>
               <h3 style={{ margin: "20px 0 0 0" }}>
-                {authState["user"]["lastName"]}
+                {/* {user["lastName"]} */}
               </h3>
               <label style={labelStyle}>Username</label>
               <h3 style={{ margin: "20px 0 0 0" }}>
-                {authState["user"]["username"]}
+                {/* {user["username"]} */}
               </h3>
               <label style={labelStyle}>Email Address</label>
               <h3 style={{ margin: "20px 0 0 0" }}>
-                {authState["user"]["email"]}
+                {/* {user["email"]} */}
               </h3>
             </div>
           </div>
@@ -80,7 +69,6 @@ const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
               backgroundColor: "#19467c",
               color: "white",
             }}
-            onClick={logoutAndClose}
           >
             Logout
           </Button>

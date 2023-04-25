@@ -1,4 +1,4 @@
-import { getLeftToolbar } from "../../helpers/Helper";
+import { getLeftToolbar } from "../../helpers/toolbarProvider";
 import { useSelector } from "react-redux";
 import { state } from "../../main";
 import { ToolbarProps } from "../../interfaces";

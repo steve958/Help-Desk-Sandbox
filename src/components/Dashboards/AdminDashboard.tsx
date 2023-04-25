@@ -1,6 +1,4 @@
 import "./AllDashboard.css";
-import { useSelector } from "react-redux";
-import { state } from "../../main";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Toolbar from "../Toolbar/Toolbar";
@@ -8,6 +6,8 @@ import UserProfile from "../UserProfile/UserProfile";
 import { styled } from "@mui/material/styles";
 import Button, { ButtonProps } from "@mui/material/Button";
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useAppSelector } from "../../app/hooks";
+import { RootState } from "../../app/store";
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: theme.palette.getContrastText("#398b93"),
@@ -18,15 +18,15 @@ const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 const AdminDashboard = () => {
-  const authState = useSelector((state: state) => state.auth);
   const [showUserProfile, setShowUserProfile] = useState(false);
   const navigate = useNavigate();
+  const user = useAppSelector((state: RootState) => state.user.JWT)
 
   return (
     <div className="app_container">
       <Toolbar
         handleClickAccount={() => {
-          if (authState["token"]) setShowUserProfile(true);
+          if (user) setShowUserProfile(true);
         }}
       />
       <UserProfile

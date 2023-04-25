@@ -6,20 +6,24 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LockIcon from "@mui/icons-material/Lock";
 import { OutlinedInput } from "@mui/material";
 import Button from "@mui/material/Button";
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import { useAppDispatch } from "../../app/hooks";
+import { login } from "../../features/user/userSlice";
+import { loginCall } from "../../helpers/apiCalls";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const loggedIn = () => {
+  const loggedIn = async () => {
     if (username && password) {
-      // loginUserFn(email, password); -> ovde ide api poziv za login
       setUsername("");
       setPassword("");
-      // simulacija prolaska kroz login i otvaranja dashboard-a
-      navigate("/clientdashboard");
+      // navigate("/clientdashboard");
       // navigate("admindashboard");
+      const response = await loginCall()
+      console.log(response);
     }
   };
 
@@ -37,19 +41,20 @@ const LoginPage = () => {
         </span>
       </div>
       <div className="login_form">
-        <h3 style={{ alignSelf: "flex-start", marginLeft: "100px", color: '#19467c', fontSize: '2em' }}>Prijavi se</h3>
+        <span className='heading_icon_wrapper' style={{ width: '400px' }}>
+          <h3 className="headings">Prijavi se</h3>
+          <AssignmentIndIcon style={{ color: '#19467c' }} />
+        </span>
         <OutlinedInput
           id="input-with-icon-adornment"
-          style={{
-            width: "400px", height: '50px', backgroundColor: 'white'
-          }}
+          style={{ width: "400px", height: '50px', backgroundColor: 'white' }}
           startAdornment={
             <InputAdornment position="start">
               <AccountCircleIcon />
             </InputAdornment>
           }
           type="text"
-          placeholder="Username"
+          placeholder="korisničko ime"
           onChange={(e) => setUsername(e.target.value)}
         />
         <OutlinedInput
@@ -66,7 +71,7 @@ const LoginPage = () => {
             </InputAdornment>
           }
           type="password"
-          placeholder="Password"
+          placeholder="šifra"
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button

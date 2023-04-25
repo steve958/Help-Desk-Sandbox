@@ -17,7 +17,6 @@ export interface User {
   username: string;
   firstName: string;
   lastName: string;
-  isActive: boolean | null;
   email: string;
   phone: string;
   userType: UserType;
@@ -40,4 +39,9 @@ export interface ToolbarProps {
 export interface ShowProp {
   show: boolean;
   onClose: () => void;
+}
+
+export interface UserSlicePayload {
+  token: string,
+  data: User
 }
