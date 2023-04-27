@@ -3,9 +3,11 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { useAppSelector } from '../../app/hooks'
 
 const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
+
+  const user: User | any = useAppSelector(state => state.user)
 
   let labelStyle = {
     margin: "20px 0 0 0",
@@ -25,14 +27,6 @@ const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
             }}
           >
             <div style={{ display: "flex" }}>
-              <span
-                style={{
-                  marginLeft: "10px",
-                  alignSelf: "center",
-                }}
-              >
-                {/* {`${user.firstName}  ${user["lastName"]}`} */}
-              </span>
             </div>
             <div
               style={{
@@ -43,19 +37,23 @@ const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
             >
               <label style={labelStyle}>First Name</label>
               <h3 style={{ margin: "20px 0 0 0" }}>
-                {/* {user["firstName"]} */}
+                {user.userData["firstName"]}
               </h3>
               <label style={labelStyle}>Last Name</label>
               <h3 style={{ margin: "20px 0 0 0" }}>
-                {/* {user["lastName"]} */}
+                {user.userData["lastName"]}
               </h3>
               <label style={labelStyle}>Username</label>
               <h3 style={{ margin: "20px 0 0 0" }}>
-                {/* {user["username"]} */}
+                {user.userData["username"]}
               </h3>
               <label style={labelStyle}>Email Address</label>
               <h3 style={{ margin: "20px 0 0 0" }}>
-                {/* {user["email"]} */}
+                {user.userData["email"]}
+              </h3>
+              <label style={labelStyle}>User Type</label>
+              <h3 style={{ margin: "20px 0 0 0" }}>
+                {user?.userData?.userType?.userTypeName}
               </h3>
             </div>
           </div>
@@ -69,6 +67,7 @@ const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
               backgroundColor: "#19467c",
               color: "white",
             }}
+            onClick={onClose}
           >
             Logout
           </Button>

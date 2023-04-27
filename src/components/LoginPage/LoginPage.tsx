@@ -15,15 +15,31 @@ const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useAppDispatch()
+
 
   const loggedIn = async () => {
     if (username && password) {
       setUsername("");
       setPassword("");
-      // navigate("/clientdashboard");
-      // navigate("admindashboard");
-      const response = await loginCall()
-      console.log(response);
+      try {
+        const response = await loginCall()
+        if (response) {
+          dispatch(login({
+            token: response.token,
+            data: response.user
+          }))
+        }
+        switch (response.user.userType.userTypeName) {
+          case 'Admin':
+            navigate("admindashboard");
+            break;
+          default:
+            break;
+        }
+      } catch (error: any) {
+        console.error(error.message)
+      }
     }
   };
 

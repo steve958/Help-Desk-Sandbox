@@ -1,29 +1,30 @@
 import { getLeftToolbar } from "../../helpers/toolbarProvider";
-import { useSelector } from "react-redux";
-import { state } from "../../main";
-import { ToolbarProps } from "../../interfaces";
+import { ToolbarProps, User } from "../../interfaces";
+import { useAppSelector } from "../../app/hooks";
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 
 const Toolbar: React.FC<ToolbarProps> = ({ handleClickAccount }) => {
-  const authState = useSelector((state: state) => state.auth);
 
-  let leftToolbar: JSX.Element = getLeftToolbar(
-    // authState["user"]["userType"]["userTypeName"]
-    "Client"
-  );
+  const user: User | any = useAppSelector(state => state.user)
+
+  function leftToolbar() {
+    if (user.userData.userType) {
+      return getLeftToolbar(user.userData.userType.userTypeName)
+    } return ''
+  }
 
   return (
     <nav className="Toolbar">
-      <div className="Toolbar_left">{leftToolbar}</div>
+      <div className="Toolbar_left">{leftToolbar()}</div>
       <div className="Toolbar_right">
         <ul>
           <li>
-            {authState["token"] === null ? null : (
-              <button onClick={handleClickAccount}>
-                {authState["user"]["firstName"] +
-                  " " +
-                  authState["user"]["lastName"]}
-              </button>
-            )}
+            <button onClick={handleClickAccount}>
+              <AssignmentIndIcon style={{ color: '#19467c' }} />
+              {user.userData["firstName"] +
+                " " +
+                user.userData["lastName"]}
+            </button>
           </li>
         </ul>
       </div>

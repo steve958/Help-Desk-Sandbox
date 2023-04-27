@@ -1,52 +1,93 @@
 import Toolbar from "../Toolbar/Toolbar";
 import UserProfile from "../UserProfile/UserProfile";
-import { useSelector } from "react-redux";
-import { state } from "../../main";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useState, useEffect, useRef } from "react";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import BusinessIcon from '@mui/icons-material/Business';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField'
 import CompaniesTable from "../Tables/CompaniesTable";
-
-
-const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  color: theme.palette.getContrastText("#398b93"),
-  backgroundColor: "#f9a235",
-  "&:hover": {
-    backgroundColor: "#19467c",
-  },
-}));
-
-function NewCompanyTextField() {
-  return (
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { width: '400px', marginRight: '20px' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField id="outlined-basic" label='ime kompanije' variant="outlined" />
-    </Box>
-  );
-}
+import { useAppSelector } from "../../app/hooks";
+import { Company } from '../../interfaces'
+import { allCompaniesCall, newCompanyCall } from "../../helpers/apiCalls";
 
 const AllCompanies = () => {
-  const authState = useSelector((state: state) => state.auth);
-  const [showUserProfile, setShowUserProfile] = useState(false);
-  const [query, setQuery] = useState("");
-  const navigate = useNavigate();
+  const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
+  const [companiesList, setCompaniesList] = useState<Company[] | []>([])
+  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const companyNameRef = useRef('') as React.MutableRefObject<string> | any
+  const token = useAppSelector(state => state.user.JWT)
+
+  async function fetchAllCompanies() {
+    const list = await allCompaniesCall(token)
+    setCompaniesList(list)
+  }
+
+  useEffect(() => {
+    if (successMessage || errorMessage) {
+      setTimeout(() => { setSuccessMessage(''); setErrorMessage('') }, 4000)
+    }
+    fetchAllCompanies()
+  }, [successMessage, errorMessage])
+
+  useEffect(() => {
+    console.log(companiesList);
+  }, [companiesList])
+
+  //MUI CONFIG
+  const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+    color: theme.palette.getContrastText("#398b93"),
+    backgroundColor: "#f9a235",
+    "&:hover": {
+      backgroundColor: "#19467c",
+    },
+  }));
+
+  function NewCompanyTextField() {
+    return (
+      <Box
+        component="form"
+        sx={{
+          '& > :not(style)': { width: '400px', marginRight: '20px' },
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField id="outlined-basic" label='ime kompanije' variant="outlined" inputRef={companyNameRef} disabled={!!successMessage || !!errorMessage} />
+      </Box >
+    );
+  }
+
+
+  //handle company submit
+  async function companySubmit() {
+    let companyName: string = companyNameRef.current.value
+    if (!companyName) return
+    else {
+      try {
+        const postCompany = await newCompanyCall(token, companyName)
+        if (postCompany) {
+          setSuccessMessage('Uspešno kreirana kompanija')
+        } else {
+          console.log(postCompany);
+          setErrorMessage('Došlo je do problema')
+        }
+      } catch (err: any) {
+        console.error(err.message)
+      }
+      companyName = ''
+    }
+  }
 
   return (
     <div className="app_container">
       <Toolbar
         handleClickAccount={() => {
-          if (authState["token"]) setShowUserProfile(true);
+          if (token) setShowUserProfile(true);
         }}
       />
       <UserProfile
@@ -54,7 +95,6 @@ const AllCompanies = () => {
         onClose={() => setShowUserProfile(false)}
       />
       <div className="content_container">
-
         <span className="heading_icon_wrapper">
           <h3 className="headings">Dodaj novu kompaniju</h3>
           <DomainAddIcon style={{ color: '#19467c' }} />
@@ -67,8 +107,20 @@ const AllCompanies = () => {
             alignItems: "center",
           }}
         >
+          <span style={{ position: 'absolute', width: '300px', left: '40%', fontWeight: '600' }}>
+            {successMessage &&
+              <span style={{ display: 'flex', alignItems: 'center', color: '#19467c' }}>
+                <p>{successMessage}</p>
+                <CheckCircleOutlineIcon style={{ color: 'green' }} />
+              </span>}
+            {errorMessage &&
+              <span style={{ display: "flex", alignItems: 'center', color: 'red' }}>
+                <p>{errorMessage}</p>
+                <ErrorOutlineIcon style={{ color: 'red' }} />
+              </span>}
+          </span>
           <NewCompanyTextField />
-          <ColorButton>
+          <ColorButton onClick={companySubmit}>
             Dodaj kompaniju
           </ColorButton>
         </div>
@@ -77,7 +129,7 @@ const AllCompanies = () => {
           <BusinessIcon style={{ color: '#19467c' }} />
         </span>
         <div className="table_container">
-          <CompaniesTable />
+          <CompaniesTable data={companiesList} setSuccessMessage={setSuccessMessage} setErrorMessage={setErrorMessage} />
         </div>
       </div>
     </div >

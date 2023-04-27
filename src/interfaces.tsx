@@ -22,6 +22,16 @@ export interface User {
   userType: UserType;
 }
 
+export interface Company {
+  companyId: string,
+  companyName: string
+}
+
+export interface Project {
+  projectId: string,
+  projectName: string
+}
+
 export interface TicketState {
   tickets: Ticket[];
 }

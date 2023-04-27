@@ -19,6 +19,13 @@ import TableHead from "@mui/material/TableHead";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Project } from "../../interfaces";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Button from "@mui/material/Button";
+import { deleteProjectCall } from "../../helpers/apiCalls";
+import { useAppSelector } from "../../app/hooks";
 
 interface TablePaginationActionsProps {
     count: number;
@@ -119,9 +126,21 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
         border: 0,
     },
 }));
-export default function ProjectsTable() {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+
+interface ProjectsTableProps {
+    data: Project[] | []
+    setSuccessMessage: React.Dispatch<React.SetStateAction<string>>
+    setErrorMessage: React.Dispatch<React.SetStateAction<string>>
+}
+
+
+export default function ProjectsTable(props: ProjectsTableProps) {
+    const [page, setPage] = useState<number>(0);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+    const [deleteId, setDeleteId] = useState<string>('')
+    const [deleteProjectName, setDeleteProjectName] = useState<string>('')
+    const [showModal, setShowModal] = useState<boolean>(false)
+    const token = useAppSelector(state => state.user.JWT)
 
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -137,12 +156,63 @@ export default function ProjectsTable() {
         setPage(0);
     };
 
+    //handle delete project click
+    function handleDeleteProject(id: string, projectName: string) {
+        setShowModal(true)
+        setDeleteId(id)
+        setDeleteProjectName(projectName)
+    }
+
+    //handle project delete
+    async function projectDelete(id: string) {
+        const response = await deleteProjectCall(token, id)
+        if (response) {
+            setShowModal(false)
+            props.setSuccessMessage('Uspešno obrisan projekat')
+        } else {
+            setShowModal(false)
+            props.setErrorMessage('Došlo je do greške')
+        }
+    }
+
     return (
         <TableContainer component={Paper}>
+            {showModal && <Dialog open={showModal} onClose={() => setShowModal(false)}>
+                <DialogContent>
+                    <div>
+                        <p style={{ fontSize: '25px', fontWeight: '600', color: '#19467c', textAlign: 'center' }}>{`Da li Ste sigurni da želite da obrišete projekat ${deleteProjectName}?`}</p>
+                    </div>
+                </DialogContent>
+                <DialogActions style={{ display: "flex", justifyContent: "center" }}>
+                    <Button
+                        variant="contained"
+                        style={{
+                            width: "200px",
+                            backgroundColor: "red",
+                            color: "white",
+                            marginBottom: '10px'
+                        }}
+                        onClick={() => projectDelete(deleteId)}
+                    >
+                        Da
+                    </Button>
+                    <Button
+                        variant="contained"
+                        style={{
+                            width: "200px",
+                            backgroundColor: "#19467c",
+                            color: "white",
+                            marginBottom: '10px'
+                        }}
+                        onClick={() => setShowModal(false)}
+                    >
+                        Ne
+                    </Button>
+                </DialogActions>
+            </Dialog>}
             <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                 <TableHead>
                     <StyledTableRow>
-                        <StyledTableCell align="center">ID</StyledTableCell>
                         <StyledTableCell align="center">Ime projekta</StyledTableCell>
                         <StyledTableCell align="center">Uvezane kompanije</StyledTableCell>
                         <StyledTableCell align="center">Lista korisnika</StyledTableCell>
@@ -150,24 +220,30 @@ export default function ProjectsTable() {
                     </StyledTableRow>
                 </TableHead>
                 <TableBody sx={{ color: "white" }}>
-                    <StyledTableRow>
-                        <TableCell align="center">1231</TableCell>
-                        <TableCell align="center">adasdasda</TableCell>
-                        <TableCell align="center">asdasdasd</TableCell>
-                        <TableCell align="center">asdasdasda</TableCell>
-                        <TableCell align="center">
-                            <Tooltip title='KLIKNI DA OBRIŠEŠ PROJEKAT'>
-                                <DeleteIcon style={{ color: "#19467c" }} />
-                            </Tooltip>
-                        </TableCell>
-                    </StyledTableRow>
+                    {(props.data.length > 0 && rowsPerPage > 0
+                        ? props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : props.data
+                    ).map((project: Project) => {
+                        return <StyledTableRow key={project.projectId}>
+                            <TableCell align="center">{project.projectName}</TableCell>
+                            <TableCell align="center">asdasdasd</TableCell>
+                            <TableCell align="center">asdasdasda</TableCell>
+                            <TableCell align="center" >
+                                <Tooltip title="KLIKNI DA OBRIŠEŠ KOMPANIJU">
+                                    <span onClick={() => handleDeleteProject(project.projectId, project.projectName)}>
+                                        <DeleteIcon style={{ color: "#19467c" }} />
+                                    </span>
+                                </Tooltip>
+                            </TableCell>
+                        </StyledTableRow>
+                    })}
                 </TableBody>
                 <TableFooter>
                     <TableRow>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
                             colSpan={10}
-                            count={5}
+                            count={props.data.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             SelectProps={{
