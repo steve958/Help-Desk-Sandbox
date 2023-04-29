@@ -1,18 +1,23 @@
+import { useState, useEffect, useRef } from "react";
+//CUSTOM COMPONENTS
 import Toolbar from "../Toolbar/Toolbar";
 import UserProfile from "../UserProfile/UserProfile";
-import { useState, useEffect, useRef } from "react";
+import CompaniesTable from "../Tables/CompaniesTable";
+//LOCAL HELPERS 
+import { useAppSelector } from "../../app/hooks";
+import { Company } from '../../interfaces'
+import { allCompaniesCall, newCompanyCall } from "../../helpers/apiCalls";
+//MUI COMPONENTS AND TYPES
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField'
+//MUI ICONS
 import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import BusinessIcon from '@mui/icons-material/Business';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField'
-import CompaniesTable from "../Tables/CompaniesTable";
-import { useAppSelector } from "../../app/hooks";
-import { Company } from '../../interfaces'
-import { allCompaniesCall, newCompanyCall } from "../../helpers/apiCalls";
+
 
 const AllCompanies = () => {
   const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
@@ -61,7 +66,6 @@ const AllCompanies = () => {
       </Box >
     );
   }
-
 
   //handle company submit
   async function companySubmit() {

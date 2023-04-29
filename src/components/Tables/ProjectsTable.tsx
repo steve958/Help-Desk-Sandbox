@@ -1,5 +1,10 @@
 import react, { useState, useEffect } from "react";
 import "./AllTables.css";
+//LOCAL HELPERS
+import { deleteProjectCall, allCompProjConnectionCall } from "../../helpers/apiCalls";
+import { useAppSelector } from "../../app/hooks";
+import { CompanyProject, Project } from "../../interfaces";
+//MUI COMPONENTS AND TYPES
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -9,23 +14,23 @@ import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import Tooltip from '@mui/material/Tooltip';
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+//MUI ICONS
 import IconButton from "@mui/material/IconButton";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import { styled } from "@mui/material/styles";
-import TableHead from "@mui/material/TableHead";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
-import Tooltip from '@mui/material/Tooltip';
+import CableIcon from '@mui/icons-material/Cable';
+import PeopleIcon from '@mui/icons-material/People';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Project } from "../../interfaces";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import Button from "@mui/material/Button";
-import { deleteProjectCall } from "../../helpers/apiCalls";
-import { useAppSelector } from "../../app/hooks";
 
 interface TablePaginationActionsProps {
     count: number;
@@ -139,9 +144,17 @@ export default function ProjectsTable(props: ProjectsTableProps) {
     const [rowsPerPage, setRowsPerPage] = useState<number>(5);
     const [deleteId, setDeleteId] = useState<string>('')
     const [deleteProjectName, setDeleteProjectName] = useState<string>('')
+    const [selectedProject, setSelectedProject] = useState<string>('')
     const [showModal, setShowModal] = useState<boolean>(false)
+    const [showCompanyConnections, setShowCompanyConnections] = useState<boolean>(false)
+    const [connectionsList, setConnectionsList] = useState<CompanyProject[] | []>([])
     const token = useAppSelector(state => state.user.JWT)
 
+    useEffect(() => {
+        fetchAllConnections()
+    }, [])
+
+    //MUI CONFIG
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
         newPage: number
@@ -155,6 +168,14 @@ export default function ProjectsTable(props: ProjectsTableProps) {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
+
+    //fetch connection in order to prevent latency
+    async function fetchAllConnections() {
+        const list = await allCompProjConnectionCall(token)
+        if (list) {
+            setConnectionsList(list)
+        }
+    }
 
     //handle delete project click
     function handleDeleteProject(id: string, projectName: string) {
@@ -175,8 +196,14 @@ export default function ProjectsTable(props: ProjectsTableProps) {
         }
     }
 
+    //filter connection based on selected project
+    function filterConnections() {
+        return connectionsList.filter((connection: CompanyProject) => connection.projectId === selectedProject)
+    }
+
     return (
         <TableContainer component={Paper}>
+            {/*delete project modal*/}
             {showModal && <Dialog open={showModal} onClose={() => setShowModal(false)}>
                 <DialogContent>
                     <div>
@@ -210,6 +237,30 @@ export default function ProjectsTable(props: ProjectsTableProps) {
                     </Button>
                 </DialogActions>
             </Dialog>}
+            {/*show company connections modal*/}
+            {showCompanyConnections && <Dialog open={showCompanyConnections} onClose={() => setShowCompanyConnections(false)}>
+                <DialogContent>
+                    <div>
+                        {filterConnections().length > 0 ? filterConnections().map((connection: CompanyProject) => {
+                            return <p key={connection.companyProjectId}>{connection.companyProjectName}</p>
+                        }) : <p>Nema povezanih kompanija</p>}
+                    </div>
+                </DialogContent>
+                <DialogActions style={{ display: "flex", justifyContent: "center" }}>
+                    <Button
+                        variant="contained"
+                        style={{
+                            width: "200px",
+                            backgroundColor: "#19467c",
+                            color: "white",
+                            marginBottom: '10px'
+                        }}
+                        onClick={() => setShowCompanyConnections(false)}
+                    >
+                        Zatvori prikaz
+                    </Button>
+                </DialogActions>
+            </Dialog>}
             <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                 <TableHead>
                     <StyledTableRow>
@@ -226,8 +277,20 @@ export default function ProjectsTable(props: ProjectsTableProps) {
                     ).map((project: Project) => {
                         return <StyledTableRow key={project.projectId}>
                             <TableCell align="center">{project.projectName}</TableCell>
-                            <TableCell align="center">asdasdasd</TableCell>
-                            <TableCell align="center">asdasdasda</TableCell>
+                            <TableCell align="center">
+                                <Tooltip title='KLIKNI DA VIDIŠ POVEZANE KOMPANIJE'>
+                                    <span onClick={() => { setShowCompanyConnections(true); setSelectedProject(project.projectId) }}>
+                                        <CableIcon style={{ color: "#19467c" }} />
+                                    </span>
+                                </Tooltip>
+                            </TableCell>
+                            <TableCell align="center">
+                                <Tooltip title='KLIKNI DA VIDIŠ POVEZANE KORISNIKE'>
+                                    <span>
+                                        <PeopleIcon style={{ color: "#19467c" }} />
+                                    </span>
+                                </Tooltip>
+                            </TableCell>
                             <TableCell align="center" >
                                 <Tooltip title="KLIKNI DA OBRIŠEŠ KOMPANIJU">
                                     <span onClick={() => handleDeleteProject(project.projectId, project.projectName)}>

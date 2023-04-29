@@ -92,7 +92,7 @@
 }
 
 .list_wrapper {
-    width: 50vw;
+    width: 60vw;
     max-height: 70vh;
     display: flex;
     justify-content: space-between;
@@ -125,5 +125,27 @@
 
 .selected {
     background-color: #19467c;
-    color: white;
+    color: white !important;
+}
+
+.list_field_connections {
+    padding: 10px;
+    width: 40%;
+    border: 2px solid #19467c;
+    max-height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    background-color: white;
+}
+
+.list_field_connections p {
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    border-radius: 10px;
+    color: darkgray;
+    cursor: auto;
 }

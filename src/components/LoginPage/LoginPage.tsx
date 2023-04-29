@@ -62,7 +62,7 @@ const LoginPage = () => {
           <AssignmentIndIcon style={{ color: '#19467c' }} />
         </span>
         <OutlinedInput
-          id="input-with-icon-adornment"
+          id="input-with-icon-adonment"
           style={{ width: "400px", height: '50px', backgroundColor: 'white' }}
           startAdornment={
             <InputAdornment position="start">

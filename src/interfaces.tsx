@@ -23,13 +23,20 @@ export interface User {
 }
 
 export interface Company {
-  companyId: string,
+  companyId: string
   companyName: string
 }
 
 export interface Project {
-  projectId: string,
+  projectId: string
   projectName: string
+}
+
+export interface CompanyProject {
+  companyProjectId: string
+  companyProjectName: string
+  companyId: string
+  projectId: string
 }
 
 export interface TicketState {

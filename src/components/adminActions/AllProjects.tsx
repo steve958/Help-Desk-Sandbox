@@ -1,18 +1,22 @@
-import Toolbar from "../Toolbar/Toolbar";
-import UserProfile from "../UserProfile/UserProfile";
 import { useEffect, useRef, useState } from "react";
+//CUSTOM COMPONENTS 
+import UserProfile from "../UserProfile/UserProfile";
+import Toolbar from "../Toolbar/Toolbar";
+import ProjectsTable from "../Tables/ProjectsTable";
+//LOCAL HELPERS 
+import { useAppSelector } from "../../app/hooks";
+import { Project } from "../../interfaces";
+import { allProjectsCall, newProjectCall } from "../../helpers/apiCalls";
+//MUI COMPONENTS AND TYPES
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField'
+//MUI ICONS
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import NoteAddIcon from '@mui/icons-material/NoteAdd';
-import ProjectsTable from "../Tables/ProjectsTable";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { useAppSelector } from "../../app/hooks";
-import { Project } from "../../interfaces";
-import { allProjectsCall, newProjectCall } from "../../helpers/apiCalls";
 
 const AllProjects = () => {
   const [showUserProfile, setShowUserProfile] = useState(false);
