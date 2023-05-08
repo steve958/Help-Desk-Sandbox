@@ -1,49 +1,71 @@
-import ClientsUsersTable from "../Tables/UsersTable";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+//CUSTOM COMPONENTS
 import Toolbar from "../Toolbar/Toolbar";
 import UserProfile from "../UserProfile/UserProfile";
-import { useSelector } from "react-redux";
-import { state } from "../../main";
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { AdminFilterSelect } from "../Filters/AdminFilterSelect";
+//LOCAL HELPERS
+import { useAppSelector } from "../../app/hooks";
+import { RootState } from "../../app/store";
+import { allUsersCall } from "../../helpers/apiCalls";
+import { User } from "../../interfaces";
+//MUI COMPONENTS AND TYPES
 import InputAdornment from "@mui/material/InputAdornment";
 import { OutlinedInput } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-import { AdminFilterSelect } from "../Filters/AdminFilterSelect";
+//MUI ICONS
+import SearchIcon from "@mui/icons-material/Search";
 import PeopleIcon from '@mui/icons-material/People';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import UsersTable from "../Tables/UsersTable";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
-const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  color: theme.palette.getContrastText("#398b93"),
-  backgroundColor: "#f9a235",
-  "&:hover": {
-    backgroundColor: "#19467c",
-  },
-}));
 
 const AllClients = () => {
-  const authState = useSelector((state: state) => state.auth);
+  const token = useAppSelector((state: RootState) => state.user.JWT)
   const [showUserProfile, setShowUserProfile] = useState(false);
+  const [usersList, setUsersList] = useState<User[] | []>([])
+  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
   const [query, setQuery] = useState("");
+  const [selectedType, setSelectedType] = useState<string>("Svi");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (successMessage || errorMessage) {
+      setTimeout(() => { setSuccessMessage(''); setErrorMessage('') }, 4000)
+    }
+    fetchAllUsers()
+  }, [successMessage, errorMessage])
+
+  async function fetchAllUsers() {
+    const list = await allUsersCall(token)
+    setUsersList(list)
+  }
+
+  //MUI CONFIG
+  const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+    color: theme.palette.getContrastText("#398b93"),
+    backgroundColor: "#f9a235",
+    "&:hover": {
+      backgroundColor: "#19467c",
+    },
+  }));
 
   return (
     <div className="app_container">
       <Toolbar
         handleClickAccount={() => {
-          if (authState["token"]) setShowUserProfile(true);
+          if (token) setShowUserProfile(true);
         }}
       />
       <UserProfile
         show={showUserProfile}
         onClose={() => setShowUserProfile(false)}
       />
-      {/**ovde filter da odabere da li ce jendu ili drugu tabelu */}
       <div className="content_container">
-        {/**
-         * SEARCH NE MOZE FUNKCIONISATI DOK NE OMOGUCIM DA SE I QUERY I CLIENTS PROSLEDJUJE TABELI KROZ PROPS
-         */}
         <span className="heading_icon_wrapper">
           <h3 className="headings">Filteri</h3>
           <FilterListIcon style={{ color: '#19467c' }} />
@@ -70,12 +92,24 @@ const AllClients = () => {
                 </InputAdornment>
               }
               type="text"
-              placeholder="Search"
+              placeholder="Pretraži po korisničkom imenu"
               onChange={(e) => {
                 setQuery(e.target.value.toLowerCase());
               }}
             />
-            <AdminFilterSelect />
+            <AdminFilterSelect selectedType={selectedType} setSelectedType={setSelectedType} />
+          </span>
+          <span style={{ position: 'absolute', width: '300px', left: '40%', fontWeight: '600' }}>
+            {successMessage &&
+              <span style={{ display: 'flex', alignItems: 'center', color: '#19467c' }}>
+                <p>{successMessage}</p>
+                <CheckCircleOutlineIcon style={{ color: 'green' }} />
+              </span>}
+            {errorMessage &&
+              <span style={{ display: "flex", alignItems: 'center', color: 'red' }}>
+                <p>{errorMessage}</p>
+                <ErrorOutlineIcon style={{ color: 'red' }} />
+              </span>}
           </span>
           <ColorButton
             onClick={() => {
@@ -90,8 +124,7 @@ const AllClients = () => {
           <PeopleIcon style={{ color: '#19467c' }} />
         </span>
         <div className="table_container">
-          {/**na osnovu filtera da li otvara klijents users ili support users */}
-          <ClientsUsersTable />
+          <UsersTable query={query} data={usersList} selectedType={selectedType} setErrorMessage={setErrorMessage} setSuccessMessage={setSuccessMessage} />
         </div>
       </div>
     </div >

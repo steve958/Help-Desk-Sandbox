@@ -1,9 +1,9 @@
 import react, { useState, useEffect } from "react";
 import "./AllTables.css";
 //LOCAL HELPERS
-import { deleteProjectCall, allCompProjConnectionCall } from "../../helpers/apiCalls";
+import { deleteProjectCall, allCompProjConnectionCall, allCompProjUserConnectionCall } from "../../helpers/apiCalls";
 import { useAppSelector } from "../../app/hooks";
-import { CompanyProject, Project } from "../../interfaces";
+import { CompanyProject, CompanyProjectUser, Project } from "../../interfaces";
 //MUI COMPONENTS AND TYPES
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -143,11 +143,13 @@ export default function ProjectsTable(props: ProjectsTableProps) {
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(5);
     const [deleteId, setDeleteId] = useState<string>('')
-    const [deleteProjectName, setDeleteProjectName] = useState<string>('')
+    const [selectedProjectName, setSelectedProjectName] = useState<string>('')
     const [selectedProject, setSelectedProject] = useState<string>('')
     const [showModal, setShowModal] = useState<boolean>(false)
     const [showCompanyConnections, setShowCompanyConnections] = useState<boolean>(false)
+    const [showUserConnections, setShowUsersConnections] = useState<boolean>(false)
     const [connectionsList, setConnectionsList] = useState<CompanyProject[] | []>([])
+    const [userConnections, setUserConnections] = useState<CompanyProjectUser[] | []>([])
     const token = useAppSelector(state => state.user.JWT)
 
     useEffect(() => {
@@ -175,13 +177,18 @@ export default function ProjectsTable(props: ProjectsTableProps) {
         if (list) {
             setConnectionsList(list)
         }
+        const list1 = await allCompProjUserConnectionCall(token)
+        if (list1) {
+            setUserConnections(list1)
+        }
+
     }
 
     //handle delete project click
     function handleDeleteProject(id: string, projectName: string) {
         setShowModal(true)
         setDeleteId(id)
-        setDeleteProjectName(projectName)
+        setSelectedProjectName(projectName)
     }
 
     //handle project delete
@@ -190,9 +197,13 @@ export default function ProjectsTable(props: ProjectsTableProps) {
         if (response) {
             setShowModal(false)
             props.setSuccessMessage('Uspešno obrisan projekat')
+            const element = document.getElementsByClassName('app_container')
+            element[0].scrollIntoView({ behavior: 'smooth', block: 'start' })
         } else {
             setShowModal(false)
             props.setErrorMessage('Došlo je do greške')
+            const element = document.getElementsByClassName('app_container')
+            element[0].scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
     }
 
@@ -201,13 +212,18 @@ export default function ProjectsTable(props: ProjectsTableProps) {
         return connectionsList.filter((connection: CompanyProject) => connection.projectId === selectedProject)
     }
 
+    //filter connection with users based on selected project
+    function filterUserConnections() {
+        return userConnections.filter((connection: CompanyProjectUser) => connection.companyProjectUserName.includes(selectedProjectName))
+    }
+
     return (
         <TableContainer component={Paper}>
             {/*delete project modal*/}
             {showModal && <Dialog open={showModal} onClose={() => setShowModal(false)}>
                 <DialogContent>
                     <div>
-                        <p style={{ fontSize: '25px', fontWeight: '600', color: '#19467c', textAlign: 'center' }}>{`Da li Ste sigurni da želite da obrišete projekat ${deleteProjectName}?`}</p>
+                        <p style={{ fontSize: '25px', fontWeight: '600', color: '#19467c', textAlign: 'center' }}>{`Da li Ste sigurni da želite da obrišete projekat ${selectedProjectName}?`}</p>
                     </div>
                 </DialogContent>
                 <DialogActions style={{ display: "flex", justifyContent: "center" }}>
@@ -240,9 +256,10 @@ export default function ProjectsTable(props: ProjectsTableProps) {
             {/*show company connections modal*/}
             {showCompanyConnections && <Dialog open={showCompanyConnections} onClose={() => setShowCompanyConnections(false)}>
                 <DialogContent>
-                    <div>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                        <p style={{ color: '#19467c', fontWeight: '600' }}>{selectedProjectName.toUpperCase()}</p>
                         {filterConnections().length > 0 ? filterConnections().map((connection: CompanyProject) => {
-                            return <p key={connection.companyProjectId}>{connection.companyProjectName}</p>
+                            return <span key={connection.companyProjectId} className="connection_display"><p>{connection.companyProjectName.slice(0, connection.companyProjectName.indexOf('-'))}</p></span>
                         }) : <p>Nema povezanih kompanija</p>}
                     </div>
                 </DialogContent>
@@ -256,6 +273,31 @@ export default function ProjectsTable(props: ProjectsTableProps) {
                             marginBottom: '10px'
                         }}
                         onClick={() => setShowCompanyConnections(false)}
+                    >
+                        Zatvori prikaz
+                    </Button>
+                </DialogActions>
+            </Dialog>}
+            {/*show user connections modal*/}
+            {showUserConnections && <Dialog open={showUserConnections} onClose={() => setShowUsersConnections(false)}>
+                <DialogContent>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                        <p style={{ color: '#19467c', fontWeight: '600' }}>{selectedProjectName.toUpperCase()}</p>
+                        {filterUserConnections().length > 0 ? filterUserConnections().map((connection: CompanyProjectUser) => {
+                            return <span key={connection.companyProjectUserId} className="connection_display"><p>{connection.companyProjectUserName.slice(connection.companyProjectUserName.lastIndexOf('-') + 1)}</p></span>
+                        }) : <p>Nema povezanih korisnika</p>}
+                    </div>
+                </DialogContent>
+                <DialogActions style={{ display: "flex", justifyContent: "center" }}>
+                    <Button
+                        variant="contained"
+                        style={{
+                            width: "200px",
+                            backgroundColor: "#19467c",
+                            color: "white",
+                            marginBottom: '10px'
+                        }}
+                        onClick={() => setShowUsersConnections(false)}
                     >
                         Zatvori prikaz
                     </Button>
@@ -279,22 +321,22 @@ export default function ProjectsTable(props: ProjectsTableProps) {
                             <TableCell align="center">{project.projectName}</TableCell>
                             <TableCell align="center">
                                 <Tooltip title='KLIKNI DA VIDIŠ POVEZANE KOMPANIJE'>
-                                    <span onClick={() => { setShowCompanyConnections(true); setSelectedProject(project.projectId) }}>
-                                        <CableIcon style={{ color: "#19467c" }} />
+                                    <span onClick={() => { setShowCompanyConnections(true); setSelectedProject(project.projectId); setSelectedProjectName(project.projectName) }}>
+                                        <CableIcon className="icon_cable" style={{ color: "#19467c" }} />
                                     </span>
                                 </Tooltip>
                             </TableCell>
                             <TableCell align="center">
                                 <Tooltip title='KLIKNI DA VIDIŠ POVEZANE KORISNIKE'>
-                                    <span>
-                                        <PeopleIcon style={{ color: "#19467c" }} />
+                                    <span onClick={() => { setSelectedProjectName(project.projectName); setShowUsersConnections(true) }}>
+                                        <PeopleIcon className="icon_people" style={{ color: "#19467c" }} />
                                     </span>
                                 </Tooltip>
                             </TableCell>
                             <TableCell align="center" >
                                 <Tooltip title="KLIKNI DA OBRIŠEŠ KOMPANIJU">
                                     <span onClick={() => handleDeleteProject(project.projectId, project.projectName)}>
-                                        <DeleteIcon style={{ color: "#19467c" }} />
+                                        <DeleteIcon className="icon_people" style={{ color: "#19467c" }} />
                                     </span>
                                 </Tooltip>
                             </TableCell>

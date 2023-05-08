@@ -7,11 +7,6 @@ export interface Ticket {
   //sta jos od podataka
 }
 
-export interface UserType {
-  userTypeId: number;
-  userTypeName: string;
-}
-
 export interface User {
   userId: string;
   username: string;
@@ -19,7 +14,7 @@ export interface User {
   lastName: string;
   email: string;
   phone: string;
-  userType: UserType;
+  userType: UserTypes;
 }
 
 export interface Company {
@@ -39,6 +34,13 @@ export interface CompanyProject {
   projectId: string
 }
 
+export interface CompanyProjectUser {
+  companyProjectUserId: string
+  companyProjectUserName: string
+  companyProjectId: string
+  userId: string
+}
+
 export interface TicketState {
   tickets: Ticket[];
 }
@@ -48,6 +50,12 @@ export interface AuthState {
   token: string | null;
   error: string;
 }
+
+export interface UserTypes {
+  userTypeId: number
+  userTypeName: string
+}
+
 
 export interface ToolbarProps {
   handleClickAccount: (e: React.MouseEvent<HTMLButtonElement>) => void;

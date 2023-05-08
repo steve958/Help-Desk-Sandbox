@@ -1,235 +1,204 @@
-import { useEffect, useState } from 'react'
-import Toolbar from '../Toolbar/Toolbar';
-import { useSelector } from "react-redux";
-import { state } from "../../main";
+import { useEffect, useState, useRef } from 'react'
+import { useNavigate } from 'react-router';
 import './AdminActions.css'
+//CUSTOM COMPONENTS
+import Toolbar from '../Toolbar/Toolbar';
+import UserProfile from '../UserProfile/UserProfile';
+//LOCAL HELPERS
+import { useAppSelector } from '../../app/hooks';
+import { RootState } from '../../app/store';
+import { CompanyProject, UserTypes } from '../../interfaces';
+import { createNewUserCall, allCompProjConnectionCall, createCompProjUserConnectionCall, createSingleConnectionCall } from '../../helpers/apiCalls';
+//MUI COMPONENTS AND TYPES
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import AddIcon from '@mui/icons-material/Add';
+import { OutlinedInput } from "@mui/material";
 import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
-
-
-const ColorButtonSubmit = styled(Button)<ButtonProps>(({ theme }) => ({
-  color: theme.palette.getContrastText('#398b93'),
-  backgroundColor: '#f9a235',
-  '&:hover': {
-    backgroundColor: '#19467c',
-  },
-}));
-
-const ColorButtonDiscard = styled(Button)<ButtonProps>(({ theme }) => ({
-  color: theme.palette.getContrastText('#398b93'),
-  backgroundColor: '#19467c4a',
-  '&:hover': {
-    backgroundColor: '#19467c',
-  },
-}));
-
-function ButtonDiscard() {
-  return (<ColorButtonDiscard variant='contained'>Zanemari</ColorButtonDiscard>)
-}
-
-function ButtonSubmit() {
-  return (
-    <ColorButtonSubmit variant="contained">Sačuvaj korisnika</ColorButtonSubmit>
-  );
-}
-
-function BasicSelect(props: any) {
-
-  const { heading, value, setValue } = props
-  const handleChange = (event: SelectChangeEvent) => {
-    setValue(event.target.value as string);
-  };
-
-  return (
-    <Box sx={{ minWidth: 150 }}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={value}
-          label={heading}
-          onChange={handleChange}
-          sx={{ color: 'white' }}
-        >
-          <MenuItem value='client'>Klijent</MenuItem>
-          <MenuItem value='client_admin'>Klijent-Admin</MenuItem>
-          <MenuItem value='support'>Podrška</MenuItem>
-        </Select>
-      </FormControl>
-    </Box>
-  );
-}
-
-function CompaniesSelect(props: any) {
-  const [value, setValue] = useState('')
-  const { heading } = props
-  const handleChange = (event: SelectChangeEvent) => {
-    setValue(event.target.value as string);
-  };
-
-  return (
-    <Box sx={{ minWidth: 150 }}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={value}
-          label={heading}
-          onChange={handleChange}
-          sx={{ color: 'white' }}
-        >
-          <MenuItem value='company 1'>Kompanija 1</MenuItem>
-          <MenuItem value='company 2'>Kompanija 2</MenuItem>
-          <MenuItem value='company 3'>Kompanija 3</MenuItem>
-          <MenuItem value='company 4'>Kompanija 4</MenuItem>
-          <MenuItem value='company 5'>Kompanija 5</MenuItem>
-          <MenuItem value='company 6'>Kompanija 6</MenuItem>
-          <MenuItem value='company 7'>Kompanija 7</MenuItem>
-          <MenuItem value='company 8'>Kompanija 8</MenuItem>
-          <MenuItem value='company 9'>Kompanija 9</MenuItem>
-        </Select>
-      </FormControl>
-    </Box>
-  );
-}
-
-function ProjectsSelect(props: any) {
-
-  const { heading, projectID, setProjectID } = props
-  const handleChange = (event: SelectChangeEvent) => {
-    setProjectID(event.target.value as string);
-  };
-
-  return (
-    <Box sx={{ minWidth: 150 }}>
-      <FormControl fullWidth hiddenLabel>
-        <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={projectID}
-          label={heading}
-          onChange={handleChange}
-          sx={{ color: 'white' }}
-        >
-          <MenuItem value='project 1'>Projekat 1</MenuItem>
-          <MenuItem value='project 2'>Projekat 2</MenuItem>
-          <MenuItem value='project 3'>Projekat 3</MenuItem>
-          <MenuItem value='project 4'>Projekat 4</MenuItem>
-          <MenuItem value='project 5'>Projekat 5</MenuItem>
-          <MenuItem value='project 6'>Projekat 6</MenuItem>
-          <MenuItem value='project 7'>Projekat 7</MenuItem>
-          <MenuItem value='project 8'>Projekat 8</MenuItem>
-          <MenuItem value='project 9'>Projekat 9</MenuItem>
-          <MenuItem value='project 10'>Projekat 10</MenuItem>
-          <MenuItem value='project 11'>Projekat 11</MenuItem>
-          <MenuItem value='project 12'>Projekat 12</MenuItem>
-          <MenuItem value='project 13'>Projekat 13</MenuItem>
-        </Select>
-      </FormControl>
-    </Box>
-  );
-}
-
-function FirstNameTextField() {
-
-  return (
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 1, width: '180px' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField id="outlined-basic" label='ime' variant="outlined" />
-    </Box>
-  );
-}
-
-function LastNameTextField() {
-
-  return (
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 1, width: '180px' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField id="outlined-basic" label='prezime' variant="outlined" />
-    </Box>
-  );
-}
-
-function EmailTextField() {
-  return (
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 1, width: '180px' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField id="outlined-basic" label='email' variant="outlined" />
-    </Box>
-  );
-}
-
-function PhoneTextField() {
-  return (
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 1, width: '180px' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField id="outlined-basic" label='broj telefona' variant="outlined" />
-    </Box>
-  );
-}
-
-function UserNameTextField() {
-  return (
-    <Box
-      component="form"
-      sx={{
-        '& > :not(style)': { m: 1, width: '180px' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <TextField id="outlined-basic" label='korisničko ime' variant="outlined" />
-    </Box>
-  );
-}
+//MUI ICONS
+import AddIcon from '@mui/icons-material/Add';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 const NewClient = () => {
-  const authState = useSelector((state: state) => state.auth);
-  const [showUserProfile, setShowUserProfile] = useState(false);
-  const [value, setValue] = useState('client');
-  const [projectsList, setProjectsList] = useState([]) as string[] | any
-  const [projectID, setProjectID] = useState('');
-
+  const token = useAppSelector((state: RootState) => state.user.JWT)
+  const types = useAppSelector((state: RootState) => state.filter.userTypes)
+  const navigate = useNavigate()
+  const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
+  const [value, setValue] = useState(types[types.length - 1].userTypeName);
+  const [projectsList, setProjectsList] = useState<any>([])
+  const [projectID, setProjectID] = useState<string>('');
+  const [connectionsList, setConnectionsList] = useState<CompanyProject[] | []>([])
+  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  //input usestate instead userefs
+  const [firstName, setFirstName] = useState<string>('')
+  const [lastName, setLastName] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+  const [phone, setPhone] = useState<string>('')
+  const [userName, setUserName] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
 
   useEffect(() => {
-    console.log(projectsList);
-  }, [projectsList])
+    if (successMessage || errorMessage) {
+      setTimeout(() => { setSuccessMessage(''); setErrorMessage('') }, 4000)
+    } else {
+      fetchAllConnections()
+    }
+  }, [successMessage, errorMessage])
 
+
+  //MUI CONFIG
+  const ColorButtonSubmit = styled(Button)<ButtonProps>(({ theme }) => ({
+    color: theme.palette.getContrastText('#398b93'),
+    backgroundColor: '#f9a235',
+    '&:hover': {
+      backgroundColor: '#19467c',
+    },
+  }));
+
+  const ColorButtonDiscard = styled(Button)<ButtonProps>(({ theme }) => ({
+    color: theme.palette.getContrastText('#398b93'),
+    backgroundColor: '#19467c4a',
+    '&:hover': {
+      backgroundColor: '#19467c',
+    },
+  }));
+
+  function ButtonDiscard() {
+    return (<ColorButtonDiscard variant='contained' disabled={!!successMessage || !!errorMessage} onClick={() => navigate('/allclients')}>Zanemari</ColorButtonDiscard>)
+  }
+
+  function ButtonSubmit() {
+    return (
+      <ColorButtonSubmit variant="contained" disabled={!!successMessage || !!errorMessage} onClick={handleSaveClient}>Sačuvaj korisnika</ColorButtonSubmit>
+    );
+  }
+
+  function BasicSelect(props: any) {
+
+    const { heading, value, setValue } = props
+    const handleChange = (event: SelectChangeEvent) => {
+      setValue(event.target.value as string);
+    };
+
+    return (
+      <Box sx={{ minWidth: 150 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={value}
+            label={heading}
+            onChange={handleChange}
+            sx={{ color: 'white' }}
+          >
+            {types.map((type: UserTypes) => {
+              return <MenuItem value={type.userTypeName} key={type.userTypeId}>{type.userTypeName}</MenuItem>
+            }
+            )}
+          </Select>
+        </FormControl>
+      </Box>
+    );
+  }
+
+  function ConnectionSelect(props: any) {
+
+    const { heading, projectID, setProjectID } = props
+    const handleChange = (event: SelectChangeEvent) => {
+      setProjectID(event.target.value as string)
+    };
+
+    return (
+      <Box sx={{ width: 180 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={projectID}
+            label={heading}
+            onChange={handleChange}
+            sx={{ color: 'white' }}
+          >
+            {connectionsList.map((connection: CompanyProject) => {
+              return <MenuItem value={connection.companyProjectId} key={connection.companyProjectId}>{connection.companyProjectName}</MenuItem>
+            }
+            )}
+          </Select>
+        </FormControl>
+      </Box>
+    );
+  }
+
+
+  //fetch connection
+  async function fetchAllConnections() {
+    const list = await allCompProjConnectionCall(token)
+    setConnectionsList(list)
+  }
+
+  // save client click
+  async function handleSaveClient() {
+    if (firstName && lastName && email && phone && userName && password) {
+      const userData = {
+        firstName,
+        lastName,
+        email,
+        phone,
+        userName,
+        password,
+        userTypeId: types.find((type: UserTypes) => type.userTypeName === value)?.userTypeId
+      }
+      const response = await createNewUserCall(token, userData)
+      if (response) {
+        if (response.userType.userTypeId === 1 || response.userType.userTypeId === 2) {
+          setSuccessMessage('Uspešno kreiran korisnik')
+          setFirstName('')
+          setLastName('')
+          setEmail('')
+          setPhone('')
+          setUserName('')
+          setPassword('')
+        }
+        else {
+          if (projectsList.length === 0) {
+            setErrorMessage('Sva polja su obavezna')
+          } else {
+            const id = response.userId
+            const companyProjectId = projectsList
+            const connectResponse = projectsList.length === 1 ? await createSingleConnectionCall(token, id, projectsList[0]) : await createCompProjUserConnectionCall(token, id, companyProjectId)
+            if (connectResponse) {
+              setSuccessMessage('Uspešno kreiran korisnik')
+              setFirstName('')
+              setLastName('')
+              setEmail('')
+              setPhone('')
+              setUserName('')
+              setPassword('')
+              setProjectsList([])
+            } else {
+              setErrorMessage('Došlo je do greške')
+              setProjectsList([])
+            }
+          }
+        }
+      } else {
+        setErrorMessage('Došlo je do greške')
+        setProjectsList([])
+      }
+    } else {
+      setErrorMessage('Sva polja su obavezna')
+    }
+  }
+
+  //adding connection
   function handleAddProject(value: string) {
     if (!projectsList.includes(value) && value !== '') {
       setProjectsList((oldList: string[]) => [...oldList, value])
@@ -238,6 +207,7 @@ const NewClient = () => {
     setProjectID('')
   }
 
+  //deleting connection
   function handleDeleteProject(value: string) {
     setProjectsList((oldList: string[]) => [...oldList.filter((id) => id !== value)])
   }
@@ -245,41 +215,124 @@ const NewClient = () => {
 
   return <div className='new_client_container'>
     <Toolbar handleClickAccount={() => {
-      if (authState["token"]) setShowUserProfile(true);
+      if (token) setShowUserProfile(true);
     }} />
+    <UserProfile
+      show={showUserProfile}
+      onClose={() => setShowUserProfile(false)}
+    />
     <div className='new_client_wrapper'>
+      {successMessage &&
+        <span style={{ position: 'absolute', top: '90px', display: 'flex', alignItems: 'center', color: '#19467c' }}>
+          <p>{successMessage}</p>
+          <CheckCircleOutlineIcon style={{ color: 'green' }} />
+        </span>}
+      {errorMessage &&
+        <span style={{ position: 'absolute', top: '90px', display: "flex", alignItems: 'center', color: 'red' }}>
+          <p>{errorMessage}</p>
+          <ErrorOutlineIcon style={{ color: 'red' }} />
+        </span>}
       <div className='input_field_wrapper_type'>
         <p>Tip korisnika:</p>
-        <BasicSelect heading='type' value={value} setValue={setValue} />
+        <BasicSelect heading='tip' value={value} setValue={setValue} />
       </div>
       <div className='form_wrapper'>
         <div className='input_field_wrapper'>
           <p>Ime korisnika:</p>
-          <FirstNameTextField />
+          <OutlinedInput
+            style={{
+              width: "180px",
+              margin: "10px",
+              height: '50px',
+              backgroundColor: 'white'
+            }}
+            type="text"
+            placeholder="ime"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
         </div>
         <div className='input_field_wrapper'>
           <p>Prezime korisnika:</p>
-          <LastNameTextField />
+          <OutlinedInput
+            style={{
+              width: "180px",
+              margin: "10px",
+              height: '50px',
+              backgroundColor: 'white'
+            }}
+            type="text"
+            placeholder="prezime"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
         </div>
         <div className='input_field_wrapper'>
           <p>E-mail korisnika:</p>
-          <EmailTextField />
+          <OutlinedInput
+            style={{
+              width: "180px",
+              margin: "10px",
+              height: '50px',
+              backgroundColor: 'white'
+            }}
+            type="email"
+            placeholder="e-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
         <div className='input_field_wrapper'>
           <p>Broj telefona korisnika:</p>
-          <PhoneTextField />
+          <OutlinedInput
+            style={{
+              width: "180px",
+              margin: "10px",
+              height: '50px',
+              backgroundColor: 'white'
+            }}
+            type="number"
+            value={phone}
+            placeholder="broj telefona"
+            onChange={(e) => setPhone(e.target.value)}
+          />
         </div>
         <div className='input_field_wrapper'>
           <p>Jedinstveno korisničko ime:</p>
-          <UserNameTextField />
+          <OutlinedInput
+            style={{
+              width: "180px",
+              margin: "10px",
+              height: '50px',
+              backgroundColor: 'white'
+            }}
+            type="text"
+            placeholder="korisničko ime"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+          />
+        </div>
+        <div className='input_field_wrapper'>
+          <p>Šifra:</p>
+          <OutlinedInput
+            style={{
+              width: "180px",
+              margin: "10px",
+              height: '50px',
+              backgroundColor: 'white'
+            }}
+            type="text"
+            placeholder="šifra"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
       </div>
-      {(value === 'client' || value === 'client_admin') && <div className='form_wrapper'>
+      {(value === 'Client' || value === 'Client_Admin') && <div className='form_wrapper'>
         <div className='input_field_wrapper_type'>
           <p>Izabrati korisnikovu vezu sa kompanijama i projektima:</p>
-          <CompaniesSelect heading='company' />
-          <ProjectsSelect heading='project' projectID={projectID} setProjectID={setProjectID} />
-          <Tooltip title='ADD PROJECT TO A LIST'>
+          <ConnectionSelect heading='uvezani projekti' projectID={projectID} setProjectID={setProjectID} />
+          <Tooltip title='DODAJ KORISNIKOV PROJEKAT NA LISTU'>
             <span onClick={() => handleAddProject(projectID)}>
               <AddIcon style={{ width: '40px', height: '40px' }} />
             </span>
@@ -287,10 +340,10 @@ const NewClient = () => {
         </div>
         {projectsList.length > 0 &&
           (<div className='input_field_wrapper_projects'>
-            <p>Korisnikovi projekti:</p>
+            <p>Projekti:</p>
             {projectsList.map((id: string) => {
-              return <Tooltip title='KLIKNI DA OBRIŠEŠ PROJEKAT SA LISTE'>
-                <div className='project_field' onClick={() => handleDeleteProject(id)}>{id}</div>
+              return <Tooltip key={id} title='KLIKNI DA OBRIŠEŠ PROJEKAT SA LISTE'>
+                <div className='project_field' onClick={() => handleDeleteProject(id)}>{connectionsList.find((connection: CompanyProject) => connection.companyProjectId === id)?.companyProjectName}</div>
               </Tooltip>
             }
             )}

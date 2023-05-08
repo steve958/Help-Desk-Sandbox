@@ -309,3 +309,8 @@
     position: static;
     scale: 1.5;
 }
+
+.MuiTableBody-root .MuiTableRow-root:hover {
+    background-color: #f9a235;
+    cursor: pointer;
+}

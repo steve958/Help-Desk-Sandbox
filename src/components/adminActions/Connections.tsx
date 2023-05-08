@@ -52,7 +52,7 @@ export default function Connections() {
     const ColorButtonDiscard = styled(Button)<ButtonProps>(({ theme }) => ({
         color: theme.palette.getContrastText('#398b93'),
         marginRight: '10px',
-        backgroundColor: '#19467c4a',
+        backgroundColor: '#19467c8a',
         '&:hover': {
             backgroundColor: '#19467c',
         },

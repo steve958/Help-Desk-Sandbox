@@ -4,7 +4,7 @@ import { User, UserSlicePayload } from '../../interfaces'
 
 interface UserState {
     JWT: string,
-    userData: User | {},
+    userData: User | any,
 }
 
 const initialState: UserState = {
