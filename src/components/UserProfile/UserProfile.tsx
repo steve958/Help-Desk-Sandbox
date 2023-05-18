@@ -3,15 +3,16 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Button from "@mui/material/Button";
-import { useAppSelector } from '../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { logout } from "../../features/user/userSlice";
 
 const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
-
+  const dispatch = useAppDispatch()
   const user: User | any = useAppSelector(state => state.user)
 
   let labelStyle = {
     margin: "20px 0 0 0",
-    fontSize: "small",
+    fontSize: "18px",
     color: "grey",
   };
 
@@ -22,8 +23,8 @@ const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
           <div
             style={{
               display: "flex",
-              flexFlow: "column",
-              paddingLeft: "20px",
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
             <div style={{ display: "flex" }}>
@@ -32,7 +33,7 @@ const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
               style={{
                 display: "flex",
                 flexFlow: "column",
-                alignItems: "flex-start",
+                alignItems: "center",
               }}
             >
               <label style={labelStyle}>First Name</label>
@@ -63,11 +64,11 @@ const UserProfile: React.FC<ShowProp> = ({ show, onClose }) => {
             variant="contained"
             style={{
               marginTop: "10px",
-              width: "400px",
+              width: "300px",
               backgroundColor: "#19467c",
               color: "white",
             }}
-            onClick={onClose}
+            onClick={() => { dispatch(logout()); onClose() }}
           >
             Logout
           </Button>

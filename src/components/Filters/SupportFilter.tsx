@@ -1,88 +1,236 @@
 import react, { useState } from 'react';
+import './AllFilters.css'
+//LOCAL HELPERS
+import { RootState } from '../../app/store';
+import { useAppSelector } from '../../app/hooks';
+//MUI COMPONENTS AND TYPES
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import './AllFilters.css'
-import { styled } from '@mui/material/styles';
-import Button, { ButtonProps } from '@mui/material/Button';
+import { Company, Project, TicketPriority, TicketStatus, TicketType } from '../../interfaces';
+import { InputAdornment, OutlinedInput } from '@mui/material';
+//MUI ICONS
+import SearchIcon from "@mui/icons-material/Search";
 
 
-const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-    color: theme.palette.getContrastText('#398b93'),
-    backgroundColor: '#f9a235',
-    '&:hover': {
-        backgroundColor: '#19467c',
-    },
-}));
-
-function ButtonSubmit() {
-    return (
-        <ColorButton variant="contained">Primeni filtere</ColorButton>
-    );
+interface SupportFiltersProps {
+    selectedCompany: string
+    selectedProject: string
+    selectedStatus: string
+    selectedPriority: string
+    selectedType: string
+    setSelectedCompany: React.Dispatch<React.SetStateAction<string>>
+    setSelectedProject: React.Dispatch<React.SetStateAction<string>>
+    setSelectedStatus: React.Dispatch<React.SetStateAction<string>>
+    setSelectedPriority: React.Dispatch<React.SetStateAction<string>>
+    setSelectedType: React.Dispatch<React.SetStateAction<string>>
+    setTimeTableFrom: React.Dispatch<React.SetStateAction<any>>
+    setTimeTableTo: React.Dispatch<React.SetStateAction<any>>
+    query: string
+    setQuery: React.Dispatch<React.SetStateAction<string>>
 }
 
-function BasicSelect(props: any) {
-    const [age, setAge] = useState('all');
+export default function SupportFilters(props: SupportFiltersProps) {
 
-    const { heading } = props
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value as string);
-    };
+    const { selectedCompany, selectedProject, selectedPriority,
+        selectedStatus, selectedType, query, setSelectedCompany,
+        setSelectedProject, setSelectedPriority, setSelectedStatus,
+        setSelectedType, setTimeTableFrom, setTimeTableTo, setQuery
+    } = props
 
-    return (
-        <Box sx={{ minWidth: 180 }}>
-            <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={age}
-                    label={heading}
-                    onChange={handleChange}
-                >
-                    <MenuItem value='all'>All</MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-            </FormControl>
-        </Box>
-    );
-}
+    const companies = useAppSelector((state: RootState) => state.filter.allCompanies)
+    const projects = useAppSelector((state: RootState) => state.filter.allProjects)
+    const statuses = useAppSelector((state: RootState) => state.filter.ticketStatuses)
+    const priorities = useAppSelector((state: RootState) => state.filter.ticketPriorities)
+    const types = useAppSelector((state: RootState) => state.filter.ticketTypes)
 
-export default function SupportFilters() {
+    //MUI CONFIG
+    function CompanySelect(props: any) {
+
+        const { heading } = props
+        const handleChange = (event: SelectChangeEvent) => {
+            setSelectedCompany(event.target.value as string);
+        };
+
+        return (
+            <Box sx={{ minWidth: 300 }}>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        defaultValue={selectedCompany}
+                        label={heading}
+                        onChange={handleChange}
+                    >
+                        <MenuItem value='Sve'>Sve</MenuItem>
+                        {companies.map((company: Company) => {
+                            return <MenuItem key={company.companyId} value={company.companyName}>{company.companyName}</MenuItem>
+                        })}
+                    </Select>
+                </FormControl>
+            </Box>
+        );
+    }
+
+    function ProjectSelect(props: any) {
+
+        const { heading } = props
+        const handleChange = (event: SelectChangeEvent) => {
+            setSelectedProject(event.target.value as string);
+        };
+
+        return (
+            <Box sx={{ minWidth: 300 }}>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        defaultValue={selectedProject}
+                        label={heading}
+                        onChange={handleChange}
+                    >
+                        <MenuItem value='Svi'>Svi</MenuItem>
+                        {projects.map((project: Project) => {
+                            return <MenuItem key={project.projectId} value={project.projectName}>{project.projectName}</MenuItem>
+                        })}
+                    </Select>
+                </FormControl>
+            </Box>
+        );
+    }
+
+    function StatusSelect(props: any) {
+
+        const { heading } = props
+        const handleChange = (event: SelectChangeEvent) => {
+            setSelectedStatus(event.target.value as string);
+        };
+
+        return (
+            <Box sx={{ minWidth: 300 }}>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        defaultValue={selectedStatus}
+                        label={heading}
+                        onChange={handleChange}
+                    >
+                        <MenuItem value='Svi'>Svi</MenuItem>
+                        {statuses.map((status: TicketStatus) => {
+                            return <MenuItem key={status.ticketStatusId} value={status.ticketStatusId}>{status.ticketStatusName}</MenuItem>
+                        })}
+                    </Select>
+                </FormControl>
+            </Box>
+        );
+    }
+
+    function PrioritiesSelect(props: any) {
+
+        const { heading } = props
+        const handleChange = (event: SelectChangeEvent) => {
+            setSelectedPriority(event.target.value as string);
+        };
+
+        return (
+            <Box sx={{ minWidth: 300 }}>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        defaultValue={selectedPriority}
+                        label={heading}
+                        onChange={handleChange}
+                    >
+                        <MenuItem value='Svi'>Svi</MenuItem>
+                        {priorities.map((priority: TicketPriority) => {
+                            return <MenuItem key={priority.ticketPriorityId} value={priority.ticketPriorityId}>{priority.ticketPriorityName}</MenuItem>
+                        })}
+                    </Select>
+                </FormControl>
+            </Box>
+        );
+    }
+
+    function TypeSelect(props: any) {
+
+        const { heading } = props
+        const handleChange = (event: SelectChangeEvent) => {
+            setSelectedType(event.target.value as string);
+        };
+
+        return (
+            <Box sx={{ minWidth: 300 }}>
+                <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        defaultValue={selectedType}
+                        label={heading}
+                        onChange={handleChange}
+                    >
+                        <MenuItem value='Svi'>Svi</MenuItem>
+                        {types.map((type: TicketType) => {
+                            return <MenuItem key={type.ticketTypeId} value={type.ticketTypeId}>{type.ticketTypeName}</MenuItem>
+                        })}
+                    </Select>
+                </FormControl>
+            </Box>
+        );
+    }
+
     return <div className='filter_wrapper'>
         <span className='column_filters'>
             <span>
-                <BasicSelect heading='kompanija'></BasicSelect>
-                <BasicSelect heading='projekat'></BasicSelect>
-                <BasicSelect heading='status'></BasicSelect>
+                <CompanySelect heading='kompanija'></CompanySelect>
+                <ProjectSelect heading='projekat'></ProjectSelect>
+                <StatusSelect heading='status'></StatusSelect>
             </span>
             <span>
-                <BasicSelect heading='korisnik'></BasicSelect>
-                <BasicSelect heading='prioritet'></BasicSelect>
-                <BasicSelect heading='tip'></BasicSelect>
+                <FormControl>
+                    <InputLabel htmlFor='display-name'>korisnikovo ime</InputLabel>
+                    <OutlinedInput
+                        style={{
+                            width: "300px", fontFamily: 'Arial', paddingLeft: '10px', height: '60px'
+                        }}
+                        startAdornment={
+                            <InputAdornment position="end">
+                                <SearchIcon style={{ marginRight: '10px' }} />
+                            </InputAdornment>
+                        }
+                        label='korisnikovo ime'
+                        type="text"
+                        placeholder="Pretraži po korisnikovom imenu"
+                        defaultValue={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                    />
+                </FormControl>
+                <PrioritiesSelect heading='prioritet'></PrioritiesSelect>
+                <TypeSelect heading='tip'></TypeSelect>
             </span>
         </span>
         <span className='calendars_wrapper'>
-            <span style={{ width: '20%' }}>
+            <span style={{ marginLeft: '0' }}>
                 <p>Filtriraj tikete</p>
             </span>
-            <span className='calendars_field'>
+            <span className='calendars_field' style={{ display: 'flex' }}>
                 <span>
                     <p>od</p>
-                    <input type="datetime-local" />
+                    <input type="datetime-local" onChange={(e) => setTimeTableFrom(e.target.value)} />
                 </span>
                 <span>
                     <p>do</p>
-                    <input type="datetime-local" />
+                    <input type="datetime-local" onChange={(e) => setTimeTableTo(e.target.value)} />
                 </span>
             </span>
-            <span className='filters_button_field'>
-                <ButtonSubmit />
-            </span>
         </span>
-    </div>
+    </div >
 }

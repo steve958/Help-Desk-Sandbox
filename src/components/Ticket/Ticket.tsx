@@ -1,28 +1,43 @@
 import { useState } from "react";
-import Toolbar from "../Toolbar/Toolbar";
 import './Ticket.css'
-import { useSelector } from "react-redux";
-import { state } from "../../main";
+//CUSTOM COMPONENTS
+import UserProfile from "../UserProfile/UserProfile";
+import Toolbar from "../Toolbar/Toolbar";
 import ClientViewTicket from "./ClientViewTicket";
 import SupportViewTicket from "./SupportViewTicket";
+//LOCAL HELPERS
+import { useAppSelector } from "../../app/hooks";
+import { RootState } from "../../app/store";
 
 
 const Ticket = () => {
 
-  const authState = useSelector((state: state) => state.auth);
+  const token = useAppSelector((state: RootState) => state.user.JWT)
+  const user = useAppSelector((state: RootState) => state.user.userData)
   const [showUserProfile, setShowUserProfile] = useState(false);
-  const [showTicketDetails, setShowTicketDetails] = useState('client')
+
+  function dahsboardProvider() {
+    switch (user.userType.userTypeId) {
+      case 2:
+        return <SupportViewTicket />
+      case 3:
+        return <ClientViewTicket />
+      case 4:
+        return <ClientViewTicket />
+      default:
+        break;
+    }
+  }
 
   return <div className="ticket_container">
     <Toolbar handleClickAccount={() => {
-      if (authState["token"]) setShowUserProfile(true)
+      if (token) setShowUserProfile(true)
     }} />
-    <div className="display_change">
-      <button onClick={() => setShowTicketDetails('client')}>client</button>
-      <button onClick={() => setShowTicketDetails('support')}>support</button>
-    </div>
-    {showTicketDetails === 'client' && <ClientViewTicket />}
-    {showTicketDetails === 'support' && <SupportViewTicket />}
+    <UserProfile
+      show={showUserProfile}
+      onClose={() => setShowUserProfile(false)}
+    />
+    {dahsboardProvider()}
   </div >
 }
 

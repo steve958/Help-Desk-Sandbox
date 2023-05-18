@@ -14,21 +14,24 @@
     margin: 5px;
 }
 
-.icon_cable {
-    transition: all 0.3s !important;
-}
-
-.icon_people {
-    transition: all 0.3s !important;
-}
 
 .icon_cable:hover {
-    position: sticky !important;
-    scale: 1.5 !important;
-    rotate: 180deg;
+    opacity: 0.5;
+}
+
+.icon_people_disabled {
+    opacity: 0.2;
 }
 
 .icon_people:hover {
-    position: sticky !important;
-    scale: 1.5 !important;
+    opacity: 0.5;
+}
+
+.icon_delete:hover {
+    opacity: 0.5;
+}
+
+.table_cell {
+    font-weight: 600 !important;
+    color: #19467c !important;
 }

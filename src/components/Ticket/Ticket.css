@@ -64,7 +64,7 @@
 }
 
 .client {
-    background-color: #19467c4a;
+    background-color: #19467c2a;
     color: #19467c;
     display: flex;
     padding: 3px;
@@ -142,9 +142,15 @@
     margin: 5px;
 }
 
+.send_message_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
 .send_message_wrapper {
-    width: 95%;
-    height: 300px;
+    width: 100%;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -153,28 +159,26 @@
     color: #19467c;
     font-size: 18px;
     border: 2px solid #19467c;
-    padding: 5px;
-    background-color: #19467c4a;
+    padding-top: 5px;
+    background-color: #19467c2a;
     margin-bottom: 15px;
 }
 
 .send_message_wrapper_support {
     width: 95%;
-    height: 300px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
     font-weight: 600;
     color: #19467c;
     font-size: 18px;
-    padding: 5px;
     margin-bottom: 15px;
 }
 
 .send_message_wrapper_support span {
     display: flex;
     height: 100%;
-    width: 95%;
+    width: 100%;
     flex-direction: column;
     justify-content: space-around;
     align-items: self-end;
@@ -185,18 +189,19 @@
     height: 100%;
     width: 95%;
     flex-direction: column;
-    justify-content: space-around;
     align-items: self-end;
 }
 
 .add_files {
-    width: calc(100% - 4px);
+    width: 450px;
+    align-self: flex-start;
     border: 2px solid #19467c;
     font-size: 18px;
     height: 50px;
     border-radius: 5px;
     background-color: white;
     cursor: pointer;
+    margin-top: 10px;
 }
 
 .send_message_field {
@@ -206,6 +211,7 @@
     border-radius: 5px;
     height: 160px;
     border: 2px solid #19467c;
+    font-family: Arial, Helvetica, sans-serif !important;
 }
 
 .add_files::-webkit-file-upload-button {
@@ -222,6 +228,7 @@
 .messages_container {
     width: 95%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
@@ -234,7 +241,7 @@
 }
 
 .messages_wrapper {
-    width: 100%;
+    width: 95vw;
     border: 2px solid #19467c;
     border-radius: 5px;
     overflow: auto;
@@ -242,7 +249,6 @@
     flex-direction: column;
     align-items: center;
     align-content: space-around;
-    margin-bottom: 50px;
 }
 
 .message_client {
@@ -250,7 +256,7 @@
     justify-content: center;
     align-items: center;
     align-self: flex-start;
-    background-color: #19467c4a;
+    background-color: #19467c2a;
     color: #19467c;
     display: flex;
     padding: 3px;
@@ -258,6 +264,30 @@
     margin: 2px;
     margin-left: 15px;
     margin-right: 15px;
+    height: 80px;
+}
+
+.message_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 83vw;
+    border-right: 2px solid white;
+    border-left: 2px solid white;
+    padding: 5px;
+}
+
+.message_content span {
+    width: 100%;
+}
+
+.message_icon_wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+    margin-left: 20px;
+    align-items: center;
+    font-weight: 600;
 }
 
 .message_support {
@@ -273,6 +303,7 @@
     margin: 2px;
     margin-right: 15px;
     margin-left: 15px;
+    height: 80px;
 }
 
 .message_support p {
@@ -291,9 +322,14 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    z-index: 1;
 }
 
 .icon_wrapper span {
+    margin: 20px;
+}
+
+.icon_wrapper_absolute span {
     margin: 20px;
 }
 
@@ -305,12 +341,69 @@
 }
 
 .send_message_icon:hover {
-    transition: all 0.3s;
-    position: static;
-    scale: 1.5;
+    opacity: 0.5;
 }
 
 .MuiTableBody-root .MuiTableRow-root:hover {
-    background-color: #f9a235;
     cursor: pointer;
+}
+
+.ticket_buttons_wrapper {
+    position: absolute;
+    bottom: 0;
+    height: 80px;
+    width: 95%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.ticket_buttons_wrapper span {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ticket_cover {
+    position: absolute;
+    width: 100vw;
+    height: 90vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 2;
+    top: 10vh;
+    backdrop-filter: blur(5px);
+}
+
+.ticket_cover_text {
+    user-select: none;
+    position: absolute;
+    z-index: 3;
+    top: 45vh;
+    font-size: 24px;
+    color: #19467c;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.time_spent_wrapper {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 452px;
+    height: 50px;
+    color: #19467c;
+    justify-content: space-between;
+    align-self: flex-start;
+}
+
+.time_spent_wrapper input {
+    text-align: center;
+    max-height: 50px;
+    max-width: 100px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #19467c;
+    border-radius: 5px;
+    border: 2px solid #19467c;
 }

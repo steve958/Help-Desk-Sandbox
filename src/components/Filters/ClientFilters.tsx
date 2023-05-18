@@ -1,76 +1,107 @@
-import react, { useState } from "react";
+import react, { useState, useEffect } from "react";
+import "./AllFilters.css";
+//LOCAL HELPERS
+import { useAppSelector } from "../../app/hooks";
+import { RootState } from "../../app/store";
+import { CompanyProjectUser, TicketStatus } from "../../interfaces";
+//MUI COMPONENTS AND TYPES
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import "./AllFilters.css";
-import { styled } from "@mui/material/styles";
-import Button, { ButtonProps } from "@mui/material/Button";
 
-const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-  color: theme.palette.getContrastText("#398b93"),
-  backgroundColor: "#f9a235",
-  "&:hover": {
-    backgroundColor: "#19467c",
-  },
-}));
 
-function ButtonSubmit() {
-  return <ColorButton variant="contained">Primeni filtere</ColorButton>;
+interface ClientFiltersProps {
+  setSelectedConnection: React.Dispatch<React.SetStateAction<string>>
+  setSelectedStatus: React.Dispatch<React.SetStateAction<string>>
+  selectedConnection: string
+  selectedStatus: string
+  setTimeTableFrom: React.Dispatch<React.SetStateAction<any>>
+  setTimeTableTo: React.Dispatch<React.SetStateAction<any>>
 }
 
-function BasicSelect(props: any) {
-  const [value, setValue] = useState('all');
+export default function ClientFilters(props: ClientFiltersProps) {
+  const {
+    setSelectedConnection,
+    setSelectedStatus,
+    selectedStatus,
+    selectedConnection,
+    setTimeTableTo,
+    setTimeTableFrom,
+  } = props
 
-  const { heading } = props
-  const handleChange = (event: SelectChangeEvent) => {
-    setValue(event.target.value as string);
-  };
+  //MUI CONFIG
+  function Connections(props: any) {
+    const { heading } = props
+    const connections = useAppSelector((state: RootState) => state.user.userConnections)
+
+    const handleChange = (event: SelectChangeEvent) => {
+      setSelectedConnection(event.target.value);
+    };
+
+    return (
+      <Box sx={{ minWidth: 250 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label={heading}
+            onChange={handleChange}
+            defaultValue={selectedConnection}
+          >
+            <MenuItem value='Svi'>Svi</MenuItem>
+            {connections.map((connection: CompanyProjectUser) => {
+              return <MenuItem key={connection.companyProjectUserId} value={connection.companyProjectUserId}>{connection.companyProjectUserName.slice(0, connection.companyProjectUserName.lastIndexOf('-'))}</MenuItem>
+            })}
+          </Select>
+        </FormControl>
+      </Box>
+    );
+  }
+
+  function Statuses(props: any) {
+    const { heading } = props
+    const statuses = useAppSelector((state: RootState) => state.filter.ticketStatuses)
+
+    const handleChange = (event: SelectChangeEvent) => {
+      setSelectedStatus(event.target.value as string);
+    };
+
+    return (
+      <Box sx={{ minWidth: 250 }}>
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            defaultValue={selectedStatus}
+            label={heading}
+            onChange={handleChange}
+          >
+            <MenuItem value='Svi'>Svi</MenuItem>
+            {statuses.map((status: TicketStatus) => {
+              return <MenuItem key={status.ticketStatusId} value={status.ticketStatusName}>{status.ticketStatusName}</MenuItem>
+            })}
+          </Select>
+        </FormControl>
+      </Box>
+    );
+  }
 
   return (
-    <Box sx={{ minWidth: 180 }}>
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={value}
-          label={heading}
-          onChange={handleChange}
-        >
-          <MenuItem value='all'>All</MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-      </FormControl>
-    </Box>
-  );
-}
-
-export default function ClientFilters() {
-  return (
-    <div className="filter_wrapper">
-      <BasicSelect heading="kompanija"></BasicSelect>
-      <BasicSelect heading="projekat"></BasicSelect>
-      <BasicSelect heading="status"></BasicSelect>
-      <span className='calendars_wrapper'>
-        <span style={{ width: '20%' }}>
-          <p>Filtriraj tikete</p>
-        </span>
-        <span className='calendars_field'>
-          <span>
-            <p>od</p>
-            <input type="datetime-local" />
-          </span>
-          <span>
-            <p>do</p>
-            <input type="datetime-local" />
-          </span>
-        </span>
-        <span className='filters_button_field'>
-          <ButtonSubmit />
+    <div className="filter_wrapper" style={{ width: '100%' }}>
+      <span style={{ display: 'flex', width: '30%', justifyContent: 'space-between' }}>
+        <Connections heading="projekat" setSelectedConnection={setSelectedConnection} selectedConnection={selectedConnection}></Connections>
+        <Statuses heading="status" setSelectedStatus={setSelectedStatus} selectedStatus={selectedStatus}></Statuses>
+      </span>
+      <span className='calendars_wrapper' style={{ width: '70%' }}>
+        <span className='calendars_field' style={{ width: '100%' }}>
+          <p style={{ marginRight: '10px', marginLeft: '10px' }}>Filtriraj tikete od</p>
+          <input type="datetime-local" onChange={(e) => setTimeTableFrom(e.target.value)} />
+          <p style={{ marginRight: '10px', marginLeft: '10px' }}>do</p>
+          <input type="datetime-local" onChange={(e) => setTimeTableTo(e.target.value)} />
         </span>
       </span>
     </div>

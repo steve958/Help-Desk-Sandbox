@@ -30,7 +30,7 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import CableIcon from '@mui/icons-material/Cable';
 import PeopleIcon from '@mui/icons-material/People';
-import DomainDisabledIcon from '@mui/icons-material/DomainDisabled';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // MUI CONFIG 
 
@@ -127,7 +127,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
-        backgroundColor: "#19467c4a",
+        backgroundColor: "#19467c2a",
     },
     "&:last-child td": {
         border: 0,
@@ -143,7 +143,7 @@ interface CompaniesTableProps {
 
 export default function CompaniesTable(props: CompaniesTableProps) {
     const [page, setPage] = useState<number>(0);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(-1);
     const [deleteId, setDeleteId] = useState<string>('')
     const [selectedCompanyName, setSelectedCompanyName] = useState<string>('')
     const [selectedCompanyId, setSelectedCompanyId] = useState<string>('')
@@ -327,26 +327,26 @@ export default function CompaniesTable(props: CompaniesTableProps) {
                             <TableCell align="center">
                                 <Tooltip title='KLIKNI DA VIDIŠ POVEZANE PROJEKTE'>
                                     <span onClick={() => { setShowProjectConnections(true); setSelectedCompanyId(company.companyId); setSelectedCompanyName(company.companyName) }}>
-                                        <CableIcon className="icon_cable" style={{ color: "#19467c" }} />
+                                        <CableIcon className="icon_cable" />
                                     </span>
                                 </Tooltip>
                             </TableCell>
                             <TableCell align="center">
                                 <Tooltip title='KLIKNI DA VIDIŠ POVEZANE KORISNIKE'>
                                     <span onClick={() => { setShowUsersConnections(true); setSelectedCompanyName(company.companyName) }}>
-                                        <PeopleIcon className="icon_people" style={{ color: "#19467c" }} />
+                                        <PeopleIcon className="icon_people" />
                                     </span>
                                 </Tooltip>
                             </TableCell>
                             <TableCell align="center" >
                                 <Tooltip title="KLIKNI DA OBRIŠEŠ KOMPANIJU">
                                     <span onClick={() => handleDeleteCompany(company.companyId, company.companyName)}>
-                                        <DomainDisabledIcon className="icon_people" style={{ color: "#19467c" }} />
+                                        <DeleteIcon className="icon_people" />
                                     </span>
                                 </Tooltip>
                             </TableCell>
                         </StyledTableRow>
-                    })}
+                    }).reverse()}
                 </TableBody>
                 <TableFooter>
                     <TableRow>

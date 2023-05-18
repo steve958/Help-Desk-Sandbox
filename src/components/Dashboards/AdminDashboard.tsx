@@ -39,8 +39,7 @@ const AdminDashboard = () => {
     backgroundColor: "#f9a235",
     transition: 'all 0.3s',
     "&:hover": {
-      backgroundColor: "#19467c",
-      scale: '1.2',
+      backgroundColor: "#19467c"
     },
   }));
 
@@ -64,7 +63,6 @@ const AdminDashboard = () => {
         onClose={() => setShowUserProfile(false)}
       />
       <div className="content_container">
-        <span className="background"></span>
         <div className="admin_container">
           <span className='admin_icon_wrapper'>
             <h3 className="headings">Admin panel</h3>
@@ -91,27 +89,27 @@ const AdminDashboard = () => {
               >
                 <InsertDriveFileIcon style={{ marginRight: '10px' }} />
                 Projekti
-              </ColorButton></span>
-            <span className="button_wrapper"><ColorButton
-              variant="contained"
-              onClick={() => {
-                navigate("/connections");
-              }}
-              style={{ width: "400px", height: '50px', margin: '10px' }}
-            >
-              <CableIcon style={{ marginRight: '10px' }} />
-              Veze između kompanija i projekata
-            </ColorButton></span>
-            <span className="button_wrapper"><ColorButton
-              variant="contained"
-              onClick={() => {
-                navigate("/allclients");
-              }}
-              style={{ width: "400px", height: '50px', margin: '10px' }}
-            >
-              <PeopleIcon style={{ marginRight: '10px' }} />
-              Korisnici i podrška
-            </ColorButton>
+              </ColorButton>
+              <ColorButton
+                variant="contained"
+                onClick={() => {
+                  navigate("/connections");
+                }}
+                style={{ width: "400px", height: '50px', margin: '10px' }}
+              >
+                <CableIcon style={{ marginRight: '10px' }} />
+                Veze između kompanija i projekata
+              </ColorButton>
+              <ColorButton
+                variant="contained"
+                onClick={() => {
+                  navigate("/allclients");
+                }}
+                style={{ width: "400px", height: '50px', margin: '10px' }}
+              >
+                <PeopleIcon style={{ marginRight: '10px' }} />
+                Korisnici i podrška
+              </ColorButton>
               <ColorButton
                 variant="contained"
                 onClick={() => {
@@ -121,7 +119,8 @@ const AdminDashboard = () => {
               >
                 <SupportAgentIcon style={{ marginRight: '10px' }} />
                 Uloga podrške
-              </ColorButton></span>
+              </ColorButton>
+            </span>
           </div>
         </div>
       </div>

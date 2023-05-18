@@ -125,7 +125,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
-        backgroundColor: "#19467c4a",
+        backgroundColor: "#19467c2a",
     },
     "&:last-child td": {
         border: 0,
@@ -141,7 +141,7 @@ interface ProjectsTableProps {
 
 export default function ProjectsTable(props: ProjectsTableProps) {
     const [page, setPage] = useState<number>(0);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(5);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(-1);
     const [deleteId, setDeleteId] = useState<string>('')
     const [selectedProjectName, setSelectedProjectName] = useState<string>('')
     const [selectedProject, setSelectedProject] = useState<string>('')
@@ -322,26 +322,26 @@ export default function ProjectsTable(props: ProjectsTableProps) {
                             <TableCell align="center">
                                 <Tooltip title='KLIKNI DA VIDIŠ POVEZANE KOMPANIJE'>
                                     <span onClick={() => { setShowCompanyConnections(true); setSelectedProject(project.projectId); setSelectedProjectName(project.projectName) }}>
-                                        <CableIcon className="icon_cable" style={{ color: "#19467c" }} />
+                                        <CableIcon className="icon_cable" />
                                     </span>
                                 </Tooltip>
                             </TableCell>
                             <TableCell align="center">
                                 <Tooltip title='KLIKNI DA VIDIŠ POVEZANE KORISNIKE'>
                                     <span onClick={() => { setSelectedProjectName(project.projectName); setShowUsersConnections(true) }}>
-                                        <PeopleIcon className="icon_people" style={{ color: "#19467c" }} />
+                                        <PeopleIcon className="icon_people" />
                                     </span>
                                 </Tooltip>
                             </TableCell>
                             <TableCell align="center" >
                                 <Tooltip title="KLIKNI DA OBRIŠEŠ KOMPANIJU">
                                     <span onClick={() => handleDeleteProject(project.projectId, project.projectName)}>
-                                        <DeleteIcon className="icon_people" style={{ color: "#19467c" }} />
+                                        <DeleteIcon className="icon_people" />
                                     </span>
                                 </Tooltip>
                             </TableCell>
                         </StyledTableRow>
-                    })}
+                    }).reverse()}
                 </TableBody>
                 <TableFooter>
                     <TableRow>

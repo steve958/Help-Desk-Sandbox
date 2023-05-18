@@ -49,6 +49,7 @@ const AllClients = () => {
   const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText("#398b93"),
     backgroundColor: "#f9a235",
+    padding: '14px',
     "&:hover": {
       backgroundColor: "#19467c",
     },
@@ -101,14 +102,14 @@ const AllClients = () => {
           </span>
           <span style={{ position: 'absolute', width: '300px', left: '40%', fontWeight: '600' }}>
             {successMessage &&
-              <span style={{ display: 'flex', alignItems: 'center', color: '#19467c' }}>
+              <span style={{ display: 'flex', alignItems: 'center', color: 'green' }}>
+                <CheckCircleOutlineIcon style={{ color: 'green', marginRight: '6px' }} />
                 <p>{successMessage}</p>
-                <CheckCircleOutlineIcon style={{ color: 'green' }} />
               </span>}
             {errorMessage &&
               <span style={{ display: "flex", alignItems: 'center', color: 'red' }}>
+                <ErrorOutlineIcon style={{ color: 'red', marginRight: '6px' }} />
                 <p>{errorMessage}</p>
-                <ErrorOutlineIcon style={{ color: 'red' }} />
               </span>}
           </span>
           <ColorButton

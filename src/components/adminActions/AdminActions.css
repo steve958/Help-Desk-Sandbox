@@ -3,52 +3,63 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .new_client_wrapper {
-    width: 95%;
+    width: 40vw;
     display: flex;
     align-items: center;
     flex-direction: column;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 600;
     color: #19467c;
-    margin-top: 30px;
-    padding: 15px;
+    border: 2px solid #19467c;
     user-select: none;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.form_wrapper_expanded {
+    width: 30vw;
 }
 
 .input_field_wrapper_type {
-    width: 40vw;
-    padding: 10px;
+    width: 30vw;
     display: flex;
-    justify-content: space-evenly;
-    background-color: #19467c;
-    color: white;
+    justify-content: space-between;
+    color: #19467c;
     border-radius: 5px;
     align-items: center;
-    border: 4px solid #f9a235;
+    text-align: left;
     position: relative;
-    text-align: center;
 }
 
-.input_field_wrapper_type span {
+.add_icon {
     position: absolute;
     height: 100%;
     display: flex;
     align-items: center;
-    right: 20px;
+    right: -40px;
 }
 
-.input_field_wrapper_type span:hover {
+.clear_icon {
+    position: absolute;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    right: -80px;
+}
+
+
+.input_field_wrapper span:hover {
     transition: all 0.3s;
-    scale: 1.5;
+    opacity: 0.7;
     cursor: pointer;
-    rotate: 180deg;
 }
 
 .input_field_wrapper {
-    width: 40vw;
+    width: 30vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -56,15 +67,19 @@
 
 .input_field_wrapper_projects {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    max-width: 40vw;
+    justify-content: center;
+    width: 30vw;
     overflow: auto;
+    background-color: #19467c2a;
+    max-height: 22vh;
 }
 
 .project_field {
     white-space: nowrap;
     background-color: #f9a235;
-    border-radius: 10px;
+    border-radius: 5px;
     margin: 10px;
     padding: 5px;
     color: white;
@@ -77,10 +92,7 @@
 }
 
 .submit_buttons_wrapper {
-    margin: 10px;
-    width: 40vw;
-    display: flex;
-    justify-content: space-evenly;
+    margin-top: 30px;
 }
 
 .connection_wrapper {
@@ -92,10 +104,11 @@
 }
 
 .list_wrapper {
-    width: 60vw;
+    width: 80vw;
     max-height: 70vh;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
 }
 
 .list_field {
@@ -110,12 +123,12 @@
     background-color: white;
 }
 
+
 .list_field p {
     padding: 5px;
     margin: 5px;
     cursor: pointer;
     font-weight: 600;
-    border-radius: 10px;
     color: #19467c;
 }
 

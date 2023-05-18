@@ -29,8 +29,8 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import CableIcon from '@mui/icons-material/Cable';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface UsersTableProps {
   query: string
@@ -167,7 +167,7 @@ export default function UsersTable(props: UsersTableProps) {
 
   const StyledTableRow = styled(TableRow)(({ theme }) => ({
     "&:nth-of-type(odd)": {
-      backgroundColor: "#19467c4a",
+      backgroundColor: "#19467c2a",
     },
     "&:last-child td": {
       border: 0
@@ -187,6 +187,16 @@ export default function UsersTable(props: UsersTableProps) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  //handle user delete click 
+  function handleUserDeleteClick(row: User) {
+    if (row.userId !== '13656f4e-d780-42e1-a13e-c30e8ee4f753') {
+      setShowModal(true)
+      setDeleteUserId(row.userId)
+      setSelectedUserName(row.username)
+    }
+  }
+
 
   //fetch all connections between user and company/projects
   async function fetchAllConnections() {
@@ -268,7 +278,7 @@ export default function UsersTable(props: UsersTableProps) {
             <p style={{ color: '#19467c', fontWeight: '600' }}>{selectedUserName.toUpperCase()}</p>
             {filterConnections().length > 0 ? filterConnections().map((connection: CompanyProjectUser) => {
               return <span key={connection.companyProjectUserId} className="connection_display"><p>{connection.companyProjectUserName.slice(0, connection.companyProjectUserName.lastIndexOf('-'))}</p></span>
-            }) : <p>Nema povezanih korisnika</p>}
+            }) : <p>Nema povezanih projekata i kompanija</p>}
           </div>
         </DialogContent>
         <DialogActions style={{ display: "flex", justifyContent: "center" }}>
@@ -301,11 +311,11 @@ export default function UsersTable(props: UsersTableProps) {
         </TableHead>
         <TableBody sx={{ color: "white" }}>
           {(rowsPerPage > 0
-            ? filteredList.filter((user: User) => user.username.toLowerCase().includes(query)).slice(
+            ? filteredList.filter((user: User) => user.firstName.toLowerCase().includes(query) || user.lastName.toLowerCase().includes(query)).slice(
               page * rowsPerPage,
               page * rowsPerPage + rowsPerPage
             )
-            : filteredList.filter((user: User) => user.username.includes(query))
+            : filteredList.filter((user: User) => user.firstName.toLowerCase().includes(query) || user.lastName.toLowerCase().includes(query))
           ).map((row: User | any) => (
             <StyledTableRow key={row.userId}>
               <TableCell align="center">{row.username}</TableCell>
@@ -317,19 +327,21 @@ export default function UsersTable(props: UsersTableProps) {
               <TableCell align="center">
                 <span onClick={() => { setSelectedUserId(row.userId); setShowConnections(true); setSelectedUserName(row.username) }}>
                   <Tooltip title="KLIKNI DA VIDIŠ POVEZANE KOMPANIJE I PROJEKTE">
-                    <CableIcon className="icon_cable" style={{ color: "#19467c" }} />
+                    <CableIcon className="icon_cable" />
                   </Tooltip>
                 </span>
               </TableCell>
               <TableCell align="center">
-                <span onClick={() => { setShowModal(true); setDeleteUserId(row.userId); setSelectedUserName(row.username) }}>
-                  <Tooltip title="KLIKNI DA OBRIŠEŠ KORISNIKA">
-                    <PersonRemoveIcon className="icon_people" style={{ color: "#19467c" }} />
-                  </Tooltip>
+                <span onClick={() => { handleUserDeleteClick(row) }}>
+                  {row.userId !== '13656f4e-d780-42e1-a13e-c30e8ee4f753' ? <Tooltip title="KLIKNI DA OBRIŠEŠ KORISNIKA">
+                    <DeleteIcon className="icon_people" />
+                  </Tooltip> : <Tooltip title="NEMOGUĆE OBRISATI ADMINA">
+                    <DeleteIcon className="icon_people_disabled" />
+                  </Tooltip>}
                 </span>
               </TableCell>
             </StyledTableRow>
-          ))}
+          )).reverse()}
         </TableBody>
         <TableFooter>
           <TableRow>

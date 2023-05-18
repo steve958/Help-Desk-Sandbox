@@ -44,6 +44,7 @@ export default function Connections() {
     const ColorButtonSubmit = styled(Button)<ButtonProps>(({ theme }) => ({
         color: theme.palette.getContrastText('#398b93'),
         backgroundColor: '#f9a235',
+        width: '200px',
         '&:hover': {
             backgroundColor: '#19467c',
         },
@@ -51,7 +52,8 @@ export default function Connections() {
 
     const ColorButtonDiscard = styled(Button)<ButtonProps>(({ theme }) => ({
         color: theme.palette.getContrastText('#398b93'),
-        marginRight: '10px',
+        marginLeft: '50px',
+        width: '200px',
         backgroundColor: '#19467c8a',
         '&:hover': {
             backgroundColor: '#19467c',
@@ -64,7 +66,7 @@ export default function Connections() {
     }
 
     function ButtonDiscard(props: ButtonDiscardProps) {
-        return (<ColorButtonDiscard variant='contained' disabled={!!successMessage || !!errorMessage} onClick={props.handleDeleteConnection}>Obriši vezu</ColorButtonDiscard>)
+        return (<ColorButtonDiscard variant='contained' disabled={!!successMessage || !!errorMessage} onClick={props.handleDeleteConnection}>Obriši konekciju</ColorButtonDiscard>)
     }
 
     interface ButtonSubmitProps {
@@ -73,7 +75,7 @@ export default function Connections() {
 
     function ButtonSubmit(props: ButtonSubmitProps) {
         return (
-            <ColorButtonSubmit variant="contained" disabled={!!successMessage || !!errorMessage} onClick={props.handleCreateConnection}>Sačuvaj vezu</ColorButtonSubmit>
+            <ColorButtonSubmit variant="contained" disabled={!!successMessage || !!errorMessage} onClick={props.handleCreateConnection}>Sačuvaj konekciju</ColorButtonSubmit>
         );
     }
 
@@ -96,7 +98,7 @@ export default function Connections() {
         if (selectedCompany && selectedProject) {
             const response = await createCompProjConnectionCall(token, selectedCompany, selectedProject)
             if (response) {
-                setSuccessMessage('Uspešno kreirana konekcija između kompanije i projekta')
+                setSuccessMessage('Uspešno kreirana konekcija')
             } else {
                 setErrorMessage('Konekcija je već kreirana')
             }
@@ -110,7 +112,7 @@ export default function Connections() {
             if (deleteId[0]?.companyProjectId) {
                 const response = await deleteCompProjeConnectionCall(token, deleteId[0].companyProjectId)
                 if (response) {
-                    setSuccessMessage('Uspešno obrisana konekcija između kompanije i projekta')
+                    setSuccessMessage('Uspešno obrisana konekcija')
                     fetchAllConnections()
                 }
             } else {
@@ -131,57 +133,62 @@ export default function Connections() {
                 onClose={() => setShowUserProfile(false)}
             />
             <div className='connection_wrapper'>
-                <span style={{ position: 'absolute', top: '120px', width: '600px', left: '40%', fontWeight: '600' }}>
+                <span style={{ position: 'absolute', top: '120px', width: '600px', left: '38%', fontWeight: '600' }}>
                     {successMessage &&
-                        <span style={{ display: 'flex', alignItems: 'center', color: '#19467c' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', color: 'green' }}>
+                            <CheckCircleOutlineIcon style={{ color: 'green', marginRight: '6px' }} />
                             <p>{successMessage}</p>
-                            <CheckCircleOutlineIcon style={{ color: 'green' }} />
                         </span>}
                     {errorMessage &&
                         <span style={{ display: "flex", alignItems: 'center', color: 'red' }}>
+                            <ErrorOutlineIcon style={{ color: 'red', marginRight: '6px' }} />
                             <p>{errorMessage}</p>
-                            <ErrorOutlineIcon style={{ color: 'red' }} />
                         </span>}
                 </span>
-                <span className="background" style={{ height: '80vh' }}></span>
-                <span className="heading_icon_wrapper">
+                <span className="heading_icon_wrapper" style={{ width: '80vw' }}>
                     <h3 className="headings">Povezivanje kompanija i projekata</h3>
                     <CableIcon style={{ color: '#19467c' }} />
                 </span>
                 <div className='list_wrapper'>
                     <span className='list_field'>
-                        <span className="heading_icon_wrapper" >
+                        <span className="heading_icon_wrapper" style={{ position: "fixed" }}>
                             <h3 className="headings" style={{ fontSize: '20px' }}>Lista svih kompanija</h3>
                             <BusinessIcon style={{ color: '#19467c' }} />
                         </span>
-                        {companiesList.length > 0 && companiesList.map((company: Company) => {
-                            return <p className={selectedCompany === company.companyId ? 'selected' : undefined} onClick={() => { setSelectedCompany(company.companyId); setSelectedProject('') }} key={company.companyId}>{company.companyName}</p>
-                        })}
+                        <span style={{ marginTop: '50px' }}>
+                            {companiesList.length > 0 && companiesList.map((company: Company) => {
+                                return <p className={selectedCompany === company.companyId ? 'selected' : undefined} onClick={() => { setSelectedCompany(company.companyId); setSelectedProject('') }} key={company.companyId}>{company.companyName}</p>
+                            })}
+                        </span>
                     </span>
                     <span className='list_field'>
-                        <span className="heading_icon_wrapper">
+                        <span className="heading_icon_wrapper" style={{ position: 'fixed' }}>
                             <h3 className="headings" style={{ fontSize: '20px' }}>Lista svih projekata</h3>
                             <InsertDriveFileIcon style={{ color: '#19467c' }} />
                         </span>
-                        {projectsList.length > 0 && projectsList.map((project: Project) => {
-                            return <p className={selectedProject === project.projectId ? 'selected' : undefined} onClick={() => setSelectedProject(project.projectId)} key={project.projectId}>{project.projectName}</p>
-                        })}
+                        <span style={{ marginTop: '50px' }}>
+                            {projectsList.length > 0 && projectsList.map((project: Project) => {
+                                return <p className={selectedProject === project.projectId ? 'selected' : undefined} onClick={() => setSelectedProject(project.projectId)} key={project.projectId}>{project.projectName}</p>
+                            })}
+                        </span>
                     </span>
                     <span className='list_field_connections'>
-                        <span className="heading_icon_wrapper">
-                            <h3 className="headings" style={{ fontSize: '20px' }}>Lista konekcija</h3>
+                        <span className="heading_icon_wrapper" style={{ position: 'fixed' }}>
+                            <h3 className="headings" style={{ fontSize: '20px' }}>Lista napravljenih konekcija</h3>
                             <BusinessIcon style={{ color: '#19467c' }} />
                             <CableIcon style={{ color: '#19467c' }} />
                             <InsertDriveFileIcon style={{ color: '#19467c' }} />
                         </span>
-                        {connectionsList.length > 0 && connectionsList.filter((connection: CompanyProject) => connection.companyId === selectedCompany).map((connection: CompanyProject) => {
-                            return <p key={connection.companyProjectId}>{connection.companyProjectName}</p>
-                        })}
+                        <span style={{ marginTop: '50px' }}>
+                            {connectionsList.length > 0 && connectionsList.filter((connection: CompanyProject) => connection.companyId === selectedCompany).map((connection: CompanyProject) => {
+                                return <p key={connection.companyProjectId}>{connection.companyProjectName}</p>
+                            })}
+                        </span>
                     </span>
                 </div>
                 {selectedCompany && <span style={{ margin: '10px' }}>
-                    <ButtonDiscard handleDeleteConnection={handleDeleteConnection} />
                     <ButtonSubmit handleCreateConnection={handleCreateConnection} />
+                    <ButtonDiscard handleDeleteConnection={handleDeleteConnection} />
                 </span>}
             </div>
         </div >

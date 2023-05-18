@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import logo from "../assets/comdata.png";
+import logo from "../assets/help_desk_logo_3.png";
 import { User } from "../interfaces";
 
 let activeStyle = {

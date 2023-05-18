@@ -1,16 +1,16 @@
 .filter_wrapper {
     display: flex;
     width: 100%;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     user-select: none;
-    animation: show 0.3s ease-in;
 }
 
 .column_filters {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 60%;
+    align-items: self-end;
 }
 
 .column_filters span {
@@ -18,12 +18,12 @@
     width: 100%;
     justify-content: space-around;
     align-items: center;
-    margin: 10px 0;
+    margin: 5px 30px 10px 0;
 }
 
 .calendars_wrapper {
     display: flex;
-    width: 50%;
+    width: 40%;
     border-radius: 10px;
     transition: all 0.3s;
     align-items: center;
@@ -31,40 +31,35 @@
     color: #19467c;
     font-weight: 600;
     font-size: 20px;
-    margin-left: 1vw;
-    margin-right: 1vw;
 }
 
 .calendars_field {
     width: 80%;
     display: flex;
-    flex-direction: column;
     align-items: center;
 }
 
 .calendars_field span {
-    width: 80%;
+    width: 70%;
     display: flex;
     justify-content: space-around;
     align-items: center;
 }
 
-.filters_button_field {
-    width: 30%;
-}
-
 .calendars_wrapper input {
     height: 50px;
-    width: 300px;
+    width: 200px;
     border: 1px solid lightgrey;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
+    padding: 5px;
     font-size: 18px;
     color: gray;
     display: flex;
     justify-content: center;
 }
+
 
 .calendars_wrapper input:hover {
     border: 1px solid gray;

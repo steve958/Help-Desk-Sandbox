@@ -11,7 +11,7 @@ import { store } from './app/store'
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <ToastContainer autoClose={2000} />
+      {/* <ToastContainer autoClose={2000} /> */}
       <RouterProvider router={router} />
     </Provider>
   </React.StrictMode>

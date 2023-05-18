@@ -1,4 +1,5 @@
-import { createBrowserRouter, Navigate, useLocation } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
+//CUSTOM COMPONENTS
 import App from "./App";
 import LoginPage from "./components/LoginPage/LoginPage";
 import HelpPage from "./components/HelpPage/HelpPage";
@@ -7,24 +8,24 @@ import ClientDashboard from "./components/Dashboards/ClientDashboard";
 import NewTicket from "./components/NewTicket/NewTicket";
 import AdminDashboard from "./components/Dashboards/AdminDashboard";
 import SupportDashboard from "./components/Dashboards/SupportDashboard";
-import { useSelector } from "react-redux";
-import { state } from "./main";
-import { isAuthenticated } from "./interfaces";
 import AllClients from "./components/adminActions/AllClients";
 import NewClient from "./components/adminActions/NewClient";
 import AllProjects from "./components/adminActions/AllProjects";
 import AllCompanies from "./components/adminActions/AllCompanies";
 import Connections from "./components/adminActions/Connections"
+//LOCAL HELPERS
+import { isAuthenticated } from "./interfaces";
+import { useAppSelector } from "./app/hooks";
+import { RootState } from "./app/store";
 
 
 const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
   component: Component,
 }) => {
-  const authState = useSelector((state: state) => state.auth);
-  // if (authState["token"] !== null) return <Component />;
-  return <Component />;
+  const token = useAppSelector((state: RootState) => state.user.JWT);
+  if (token) return <Component />;
 
-  //return <Navigate to="/" replace />;
+  return <Navigate to="/" replace />;
 };
 
 export const router = createBrowserRouter([

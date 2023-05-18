@@ -23,6 +23,8 @@ import Button, { ButtonProps } from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ClearIcon from '@mui/icons-material/Clear';
+import CreateIcon from '@mui/icons-material/Create';
 
 const NewClient = () => {
   const token = useAppSelector((state: RootState) => state.user.JWT)
@@ -56,6 +58,8 @@ const NewClient = () => {
   const ColorButtonSubmit = styled(Button)<ButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText('#398b93'),
     backgroundColor: '#f9a235',
+    width: '200px',
+    marginRight: '50px',
     '&:hover': {
       backgroundColor: '#19467c',
     },
@@ -63,7 +67,8 @@ const NewClient = () => {
 
   const ColorButtonDiscard = styled(Button)<ButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText('#398b93'),
-    backgroundColor: '#19467c4a',
+    backgroundColor: '#19467c8a',
+    width: '200px',
     '&:hover': {
       backgroundColor: '#19467c',
     },
@@ -87,16 +92,15 @@ const NewClient = () => {
     };
 
     return (
-      <Box sx={{ minWidth: 150 }}>
+      <Box>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+          <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={value}
-            label={heading}
             onChange={handleChange}
-            sx={{ color: 'white' }}
+            sx={{ color: '#19467c', marginTop: '5px', marginBottom: '5px', height: '50px', width: '180px' }}
           >
             {types.map((type: UserTypes) => {
               return <MenuItem value={type.userTypeName} key={type.userTypeId}>{type.userTypeName}</MenuItem>
@@ -118,14 +122,14 @@ const NewClient = () => {
     return (
       <Box sx={{ width: 180 }}>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
+          <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={projectID}
-            label={heading}
             onChange={handleChange}
-            sx={{ color: 'white' }}
+            placeholder='uvezani projekti'
+            sx={{ color: '#19467c', height: '50px', width: '180px', marginTop: '5px' }}
           >
             {connectionsList.map((connection: CompanyProject) => {
               return <MenuItem value={connection.companyProjectId} key={connection.companyProjectId}>{connection.companyProjectName}</MenuItem>
@@ -221,28 +225,31 @@ const NewClient = () => {
       show={showUserProfile}
       onClose={() => setShowUserProfile(false)}
     />
+    <span className='admin_icon_wrapper' style={{ width: '40vw' }}>
+      <h3 className="headings">Podaci korisnika</h3>
+      <CreateIcon style={{ color: '#19467c' }} />
+    </span>
     <div className='new_client_wrapper'>
       {successMessage &&
-        <span style={{ position: 'absolute', top: '90px', display: 'flex', alignItems: 'center', color: '#19467c' }}>
+        <span style={{ position: 'absolute', top: '120px', display: 'flex', alignItems: 'center', color: 'green' }}>
+          <CheckCircleOutlineIcon style={{ color: 'green', marginRight: '6px' }} />
           <p>{successMessage}</p>
-          <CheckCircleOutlineIcon style={{ color: 'green' }} />
         </span>}
       {errorMessage &&
-        <span style={{ position: 'absolute', top: '90px', display: "flex", alignItems: 'center', color: 'red' }}>
+        <span style={{ position: 'absolute', top: '120px', display: "flex", alignItems: 'center', color: 'red' }}>
+          <ErrorOutlineIcon style={{ color: 'red', marginRight: '6px' }} />
           <p>{errorMessage}</p>
-          <ErrorOutlineIcon style={{ color: 'red' }} />
         </span>}
-      <div className='input_field_wrapper_type'>
-        <p>Tip korisnika:</p>
-        <BasicSelect heading='tip' value={value} setValue={setValue} />
-      </div>
       <div className='form_wrapper'>
+        <div className='input_field_wrapper'>
+          <p>Tip korisnika:</p>
+          <BasicSelect heading='tip' value={value} setValue={setValue} />
+        </div>
         <div className='input_field_wrapper'>
           <p>Ime korisnika:</p>
           <OutlinedInput
             style={{
               width: "180px",
-              margin: "10px",
               height: '50px',
               backgroundColor: 'white'
             }}
@@ -257,7 +264,6 @@ const NewClient = () => {
           <OutlinedInput
             style={{
               width: "180px",
-              margin: "10px",
               height: '50px',
               backgroundColor: 'white'
             }}
@@ -272,7 +278,6 @@ const NewClient = () => {
           <OutlinedInput
             style={{
               width: "180px",
-              margin: "10px",
               height: '50px',
               backgroundColor: 'white'
             }}
@@ -287,7 +292,6 @@ const NewClient = () => {
           <OutlinedInput
             style={{
               width: "180px",
-              margin: "10px",
               height: '50px',
               backgroundColor: 'white'
             }}
@@ -302,7 +306,6 @@ const NewClient = () => {
           <OutlinedInput
             style={{
               width: "180px",
-              margin: "10px",
               height: '50px',
               backgroundColor: 'white'
             }}
@@ -317,7 +320,6 @@ const NewClient = () => {
           <OutlinedInput
             style={{
               width: "180px",
-              margin: "10px",
               height: '50px',
               backgroundColor: 'white'
             }}
@@ -328,13 +330,18 @@ const NewClient = () => {
           />
         </div>
       </div>
-      {(value === 'Client' || value === 'Client_Admin') && <div className='form_wrapper'>
-        <div className='input_field_wrapper_type'>
-          <p>Izabrati korisnikovu vezu sa kompanijama i projektima:</p>
+      {(value === 'Client' || value === 'Client_Admin') && <div className='form_wrapper_expanded'>
+        <div className='input_field_wrapper' style={{ position: 'relative' }}>
+          <p>Izabrati korisnikovu vezu sa projektima:</p>
           <ConnectionSelect heading='uvezani projekti' projectID={projectID} setProjectID={setProjectID} />
           <Tooltip title='DODAJ KORISNIKOV PROJEKAT NA LISTU'>
-            <span onClick={() => handleAddProject(projectID)}>
+            <span onClick={() => handleAddProject(projectID)} className='add_icon'>
               <AddIcon style={{ width: '40px', height: '40px' }} />
+            </span>
+          </Tooltip>
+          <Tooltip title='OBRIŠI SVE PROJEKTE SA LISTE'>
+            <span className='clear_icon' onClick={() => setProjectsList([])}>
+              <ClearIcon style={{ width: '40px', height: '40px' }} />
             </span>
           </Tooltip>
         </div>
@@ -351,8 +358,8 @@ const NewClient = () => {
       </div>}
     </div>
     <span className='submit_buttons_wrapper'>
-      <ButtonDiscard></ButtonDiscard>
       <ButtonSubmit></ButtonSubmit>
+      <ButtonDiscard></ButtonDiscard>
     </span>
   </div>;
 };

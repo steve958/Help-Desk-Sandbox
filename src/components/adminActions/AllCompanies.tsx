@@ -47,6 +47,7 @@ const AllCompanies = () => {
   const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText("#398b93"),
     backgroundColor: "#f9a235",
+    padding: '14px',
     "&:hover": {
       backgroundColor: "#19467c",
     },
@@ -57,7 +58,7 @@ const AllCompanies = () => {
       <Box
         component="form"
         sx={{
-          '& > :not(style)': { width: '400px', marginRight: '20px' },
+          '& > :not(style)': { width: '400px', marginRight: '20px', height: '50px' },
         }}
         noValidate
         autoComplete="off"
@@ -70,7 +71,9 @@ const AllCompanies = () => {
   //handle company submit
   async function companySubmit() {
     let companyName: string = companyNameRef.current.value
-    if (!companyName) return
+    if (!companyName) {
+      setErrorMessage('Obavezno uneti ime kompanije')
+    }
     else {
       try {
         const postCompany = await newCompanyCall(token, companyName)
@@ -113,18 +116,18 @@ const AllCompanies = () => {
         >
           <span style={{ position: 'absolute', width: '300px', left: '40%', fontWeight: '600' }}>
             {successMessage &&
-              <span style={{ display: 'flex', alignItems: 'center', color: '#19467c' }}>
+              <span style={{ display: 'flex', alignItems: 'center', color: 'green' }}>
+                <CheckCircleOutlineIcon style={{ color: 'green', marginRight: '6px' }} />
                 <p>{successMessage}</p>
-                <CheckCircleOutlineIcon style={{ color: 'green' }} />
               </span>}
             {errorMessage &&
               <span style={{ display: "flex", alignItems: 'center', color: 'red' }}>
+                <ErrorOutlineIcon style={{ color: 'red', marginRight: '6px' }} />
                 <p>{errorMessage}</p>
-                <ErrorOutlineIcon style={{ color: 'red' }} />
               </span>}
           </span>
           <NewCompanyTextField />
-          <ColorButton onClick={companySubmit}>
+          <ColorButton onClick={companySubmit} variant='contained' disabled={!!successMessage || !!errorMessage} style={{ innerHeight: '50px' }}>
             Dodaj kompaniju
           </ColorButton>
         </div>
