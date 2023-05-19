@@ -40,6 +40,7 @@ export default function ClientViewTicket() {
     const token = useAppSelector((state: RootState) => state.user.JWT)
     const ticket = useAppSelector((state: RootState) => state.user.userSelectedTicket)
     const navigate = useNavigate()
+    const user = useAppSelector((state: RootState) => state.user.userData)
 
     useEffect(() => {
         if (sendMessageClicked) {
@@ -239,7 +240,7 @@ export default function ClientViewTicket() {
                 </span>
             </div>
             <span className='heading_icon_wrapper'>
-                <h3 className="headings">Poruke pristigle od podrške</h3>
+                <h3 className="headings">Poruke pristigle na tiket</h3>
                 <ForumIcon style={{ color: '#19467c' }} />
             </span>
             <div className='messages_container'>
@@ -257,7 +258,7 @@ export default function ClientViewTicket() {
                                         </span>
                                     </span>}
                             </span>
-                            <span>{message.timeSpent ? message.timeSpent : ''}</span>
+                            <span>{(user.userType.userTypeId === 1 || user.userType.userTypeId === 2) && message.timeSpent ? message.timeSpent : ''}</span>
                             <span className='message_content'>
                                 <span>{message.message}</span>
                                 <span style={{ textAlign: 'end', fontWeight: '600', marginRight: '15px' }}>{message.sentTime ? dateConverter(message.sentTime) : ''}</span>
@@ -274,7 +275,7 @@ export default function ClientViewTicket() {
                                     </span>}
                             </span>
                         </span>
-                    }).reverse()}
+                    })}
                 </span>
                 <span className='icon_wrapper'>
                     <Tooltip title='OSVEŽI DA VIDIŠ PRISTIGLE PORUKE'>
@@ -292,7 +293,7 @@ export default function ClientViewTicket() {
                 </span>
                 {sendMessageClicked && (
                     <>
-                        <span className="heading_icon_wrapper">
+                        <span className="heading_icon_wrapper" style={{ width: '100%' }}>
                             <h3 className="headings">Slanje poruke korisničkoj podršci</h3>
                             <CreateIcon style={{ color: '#19467c' }} />
                         </span>

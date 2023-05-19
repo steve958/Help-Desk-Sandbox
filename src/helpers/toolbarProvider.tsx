@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/help_desk_logo_3.png";
 import { User } from "../interfaces";
+import { useAppSelector } from "../app/hooks";
+import { RootState } from "../app/store";
 
 let activeStyle = {
   color: "white",
@@ -8,10 +10,26 @@ let activeStyle = {
 };
 
 export const getLeftToolbar = (user_type: string): JSX.Element => {
+  const user = useAppSelector((state: RootState) => state.user.userData)
+  function navigationProvider(id: number) {
+    switch (id) {
+      case 1:
+        return "admindashboard";
+        break;
+      case 2:
+        return "supportdashboard"
+        break;
+      default:
+        return "clientdashboard"
+        break;
+    }
+  }
   let leftToolbar: JSX.Element = <></>;
   let logoItem = (
     <li>
-      <img src={logo} alt="logo" />
+      <NavLink to={`/${navigationProvider(user.userType.userTypeId)}`}>
+        <img src={logo} alt="logo" />
+      </NavLink>
     </li>
   );
   let helpItem: JSX.Element = (

@@ -14,12 +14,14 @@ import LockIcon from "@mui/icons-material/Lock";
 import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import Loader from "../Loader/Loader";
 
 const LoginPage = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [showPassword, setShowPassword] = useState<boolean>(false)
+  const [loader, setLoader] = useState<boolean>(false)
   const navigate = useNavigate();
   const dispatch = useAppDispatch()
 
@@ -34,6 +36,7 @@ const LoginPage = () => {
       setUsername("");
       setPassword("");
       try {
+        setLoader(true)
         const response = await loginCall(username, password)
         if (response) {
           dispatch(login({
@@ -56,7 +59,9 @@ const LoginPage = () => {
             default:
               break;
           }
+          setTimeout(() => setLoader(false), 1000)
         } else {
+          setLoader(false)
           setErrorMessage('Došlo je do greške')
           setPassword('')
           setUsername('')
@@ -76,7 +81,7 @@ const LoginPage = () => {
           <ErrorOutlineIcon style={{ color: 'red', marginRight: '6px' }} />
           <p>{errorMessage}</p>
         </span>}
-      <div className="login_form">
+      {loader ? <Loader /> : <div className="login_form">
         <span className="logo_help_desk">
         </span>
         <OutlinedInput
@@ -132,7 +137,7 @@ const LoginPage = () => {
         >
           PRIJAVA
         </Button>
-      </div>
+      </div>}
     </div>
   );
 };

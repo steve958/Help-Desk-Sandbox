@@ -28,6 +28,7 @@ import ForumIcon from '@mui/icons-material/Forum';
 import CreateIcon from '@mui/icons-material/Create';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 export default function SupportViewTicket() {
 
@@ -229,6 +230,18 @@ export default function SupportViewTicket() {
         }
     }
 
+    //calc time spent on resolving the ticket
+    function timeSpentCalculator() {
+        let time = 0
+        const filtered = messages.filter((message: Message) => message.timeSpent)
+        filtered.forEach((message: Message) => {
+            time += message.timeSpent
+        })
+        return time
+
+    }
+
+
     //sync messages 
     function syncData() {
         fetchMessages()
@@ -245,7 +258,7 @@ export default function SupportViewTicket() {
     //send message 
     async function handleSendMessage() {
         if (!newMessage || !timeSpent) {
-            setErrorMessage('Sadržaj poruke i potrošeno vreme su obavezna polja')
+            setErrorMessage('Sadržaj poruke i utrošeno vreme su obavezna polja')
         } else {
             const response = await createNewMessageCall(token, ticket.ticketId, newMessage, timeSpent)
             if (response) {
@@ -289,13 +302,14 @@ export default function SupportViewTicket() {
                     </span>
                 </span>
                 <span className='details_section_support'>
+                    <span className='support' style={{ display: 'flex', alignItems: 'center' }}>
+                        <p>Utrošeno vreme u rešavanju tiketa:</p>
+                        <AccessTimeIcon />
+                        <p>{timeSpentCalculator()} minuta</p>
+                    </span>
                     <span className='client'>
                         <p>Povezan projekat:</p>
                         <p>{ticket.companyProjectUser.companyProjectUserName.slice(0, ticket.companyProjectUser.companyProjectUserName.lastIndexOf('-'))}</p>
-                    </span>
-                    <span className='client'>
-                        <p>Tiket kreirao:</p>
-                        <p>{ticket.creator.username}</p>
                     </span>
                 </span>
             </div>
@@ -359,12 +373,12 @@ export default function SupportViewTicket() {
                                         </span>
                                     </span>}
                             </span>
-                            <span>{message.timeSpent ? message.timeSpent : ''}</span>
                             <span className='message_content'>
                                 <span>{message.message}</span>
                                 <span style={{ textAlign: 'end', fontWeight: '600', marginRight: '15px' }}>{message.sentTime ? dateConverter(message.sentTime) : ''}</span>
                             </span>
-                            <span className='message_icon_wrapper'>
+                            <span className='message_icon_wrapper' style={{ position: 'relative' }}>
+                                <span style={{ position: 'absolute', right: '10px' }}>{message.timeSpent ? message.timeSpent : ''}</span>
                                 {(message.sentBy.userType.userTypeId === 1 || message.sentBy.userType.userTypeId === 2) &&
                                     <span style={{ width: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                         <span>
@@ -376,7 +390,7 @@ export default function SupportViewTicket() {
                                     </span>}
                             </span>
                         </span>
-                    }).reverse()}
+                    })}
                 </span>
                 <span className='icon_wrapper'>
                     <Tooltip title='OSVEŽI DA VIDIŠ PRISTIGLE PORUKE'>

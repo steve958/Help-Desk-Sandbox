@@ -74,6 +74,7 @@
     overflow: auto;
     background-color: #19467c2a;
     max-height: 22vh;
+    margin-top: 10px;
 }
 
 .project_field {

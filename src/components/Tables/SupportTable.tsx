@@ -54,13 +54,10 @@ export default function SupportTable(props: SupportTableProps) {
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(10);
     const [filteredData, setFilteredData] = useState<Ticket[]>([])
-    const [loader, setLoader] = useState<boolean>(false)
 
 
     useEffect(() => {
-        setLoader(true)
         fetchAllTickets()
-        setTimeout(() => setLoader(false), 1000)
     }, [])
 
     useEffect(() => {
@@ -217,58 +214,57 @@ export default function SupportTable(props: SupportTableProps) {
     return (
         <TableContainer component={Paper}>
             {!filteredData && <span style={{ position: 'absolute', bottom: '50%', right: '50%', fontSize: '18px' }}>nema kreiranih tiketa</span>}
-            {loader ? <Loader /> :
-                <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-                    <TableHead>
-                        <StyledTableRow>
-                            <StyledTableCell align="center">Projekat</StyledTableCell>
-                            <StyledTableCell align="center">Tiket kreiran</StyledTableCell>
-                            <StyledTableCell align="center">Korisnikovo ime</StyledTableCell>
-                            <StyledTableCell align="center">Naslov</StyledTableCell>
-                            <StyledTableCell align="center">Prioritet</StyledTableCell>
-                            <StyledTableCell align="center">Status</StyledTableCell>
-                            <StyledTableCell align="center">Tip</StyledTableCell>
-                            <StyledTableCell align="center">Poslednja promena</StyledTableCell>
+            <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+                <TableHead>
+                    <StyledTableRow>
+                        <StyledTableCell align="center">Projekat</StyledTableCell>
+                        <StyledTableCell align="center">Tiket kreiran</StyledTableCell>
+                        <StyledTableCell align="center">Korisnikovo ime</StyledTableCell>
+                        <StyledTableCell align="center">Naslov</StyledTableCell>
+                        <StyledTableCell align="center">Prioritet</StyledTableCell>
+                        <StyledTableCell align="center">Status</StyledTableCell>
+                        <StyledTableCell align="center">Tip</StyledTableCell>
+                        <StyledTableCell align="center">Poslednja promena</StyledTableCell>
+                    </StyledTableRow>
+                </TableHead>
+                <TableBody sx={{ color: 'white' }}>
+                    {filteredData && ((rowsPerPage > 0
+                        ? filteredData.filter((ticket: Ticket) => ticket.creator.firstName.toLowerCase().includes(query) || ticket.creator.lastName.toLowerCase().includes(query)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : filteredData.filter((ticket: Ticket) => ticket.creator.firstName.toLowerCase().includes(query) || ticket.creator.lastName.toLowerCase().includes(query))
+                    ).map((row: Ticket) => (
+                        <StyledTableRow key={row.ticketId} onClick={() => handleSingleTicketOpen(row.ticketId, row)}>
+                            <TableCell align="center">{row.companyProjectUser.companyProjectUserName.slice(0, row.companyProjectUser.companyProjectUserName.lastIndexOf('-'))}</TableCell>
+                            <TableCell align="center">{dateConverter(row.created)}</TableCell>
+                            <TableCell align="center">{row.creator.firstName} {row.creator.lastName}</TableCell>
+                            <TableCell align="center">{row.title}</TableCell>
+                            <TableCell align="center" className='table_cell'>{row.ticketPriority.ticketPriorityName}</TableCell>
+                            <TableCell align="center" className='table_cell'>{row.ticketStatus.ticketStatusName}</TableCell>
+                            <TableCell align="center" className='table_cell'>{row.ticketType.ticketTypeName}</TableCell>
+                            <TableCell align="center">{dateConverter(row.lastUpdated)}</TableCell>
                         </StyledTableRow>
-                    </TableHead>
-                    <TableBody sx={{ color: 'white' }}>
-                        {filteredData && ((rowsPerPage > 0
-                            ? filteredData.filter((ticket: Ticket) => ticket.creator.firstName.toLowerCase().includes(query) || ticket.creator.lastName.toLowerCase().includes(query)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            : filteredData.filter((ticket: Ticket) => ticket.creator.firstName.toLowerCase().includes(query) || ticket.creator.lastName.toLowerCase().includes(query))
-                        ).map((row: Ticket) => (
-                            <StyledTableRow key={row.ticketId} onClick={() => handleSingleTicketOpen(row.ticketId, row)}>
-                                <TableCell align="center">{row.companyProjectUser.companyProjectUserName.slice(0, row.companyProjectUser.companyProjectUserName.lastIndexOf('-'))}</TableCell>
-                                <TableCell align="center">{dateConverter(row.created)}</TableCell>
-                                <TableCell align="center">{row.creator.firstName} {row.creator.lastName}</TableCell>
-                                <TableCell align="center">{row.title}</TableCell>
-                                <TableCell align="center" className='table_cell'>{row.ticketPriority.ticketPriorityName}</TableCell>
-                                <TableCell align="center" className='table_cell'>{row.ticketStatus.ticketStatusName}</TableCell>
-                                <TableCell align="center" className='table_cell'>{row.ticketType.ticketTypeName}</TableCell>
-                                <TableCell align="center">{dateConverter(row.lastUpdated)}</TableCell>
-                            </StyledTableRow>
-                        )).reverse())}
-                    </TableBody>
-                    <TableFooter>
-                        <TableRow>
-                            <TablePagination
-                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                colSpan={10}
-                                count={filteredData?.length}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                SelectProps={{
-                                    inputProps: {
-                                        'aria-label': 'rows per page',
-                                    },
-                                    native: true,
-                                }}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                                ActionsComponent={TablePaginationActions}
-                            />
-                        </TableRow>
-                    </TableFooter>
-                </Table>}
+                    )).reverse())}
+                </TableBody>
+                <TableFooter>
+                    <TableRow>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                            colSpan={10}
+                            count={filteredData?.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            SelectProps={{
+                                inputProps: {
+                                    'aria-label': 'rows per page',
+                                },
+                                native: true,
+                            }}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            ActionsComponent={TablePaginationActions}
+                        />
+                    </TableRow>
+                </TableFooter>
+            </Table>
         </TableContainer>
     );
 }

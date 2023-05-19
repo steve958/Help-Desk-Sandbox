@@ -6,7 +6,7 @@ import Toolbar from "../Toolbar/Toolbar";
 import UserProfile from "../UserProfile/UserProfile";
 import { RootState } from "../../app/store";
 //LOCAL HELPERS
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { CompanyProjectUser } from "../../interfaces";
 import { createNewMessageCall, createNewTicketCall } from "../../helpers/apiCalls";
 //MUI COMPONENTS AND TYPES
@@ -22,8 +22,8 @@ import TextField from '@mui/material/TextField';
 import InfoIcon from '@mui/icons-material/Info';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CreateIcon from '@mui/icons-material/Create';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { setSelectedTicket } from "../../features/user/userSlice";
 
 const NewTicket = () => {
   const token = useAppSelector((state: RootState) => state.user.JWT)
@@ -31,6 +31,7 @@ const NewTicket = () => {
   const navigate = useNavigate()
   const messageRef = useRef<any>('')
   const titleRef = useRef<any>('')
+  const dispatch = useAppDispatch()
 
   const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
   const [selectedConnection, setSelectedConnection] = useState<string>('')
@@ -125,6 +126,7 @@ const NewTicket = () => {
       const response = await createNewTicketCall(token, title, selectedConnection)
       if (response) {
         setSuccessMessage('Uspešno kreiran tiket')
+        dispatch(setSelectedTicket(response))
         const messageResponse = await createNewMessageCall(token, response.ticketId, message)
         if (messageResponse) {
           navigate(`/ticket/${response.ticketId}`)

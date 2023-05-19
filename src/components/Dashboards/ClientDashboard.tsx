@@ -5,7 +5,6 @@ import Toolbar from "../Toolbar/Toolbar";
 import ClientTable from "../Tables/ClientTable";
 import ClientFilters from "../Filters/ClientFilters";
 import UserProfile from "../UserProfile/UserProfile";
-import ClientAdminFilters from "../Filters/ClientAdminFilters";
 import ClientAdminTable from "../Tables/ClientAdminTable";
 //LOCAL HELPERS
 import { Ticket } from "../../interfaces";
@@ -14,6 +13,7 @@ import { setTicketStatuses } from "../../features/user/filterSlice";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { setConnections } from "../../features/user/userSlice";
+import { allTicketsFromCompanyCall } from "../../helpers/apiCalls";
 //MUI ICONS
 import FilterListIcon from '@mui/icons-material/FilterList';
 import StorageIcon from '@mui/icons-material/Storage';
@@ -39,11 +39,12 @@ const ClientDashboard = () => {
   //fetch various data for the user
   async function fetchData() {
     try {
+
       const connections = await getUsersConnectionsCall(token, user.userId)
       if (connections) {
         dispatch(setConnections({ connections: [...connections] }))
       }
-      const tickets = await allTicketsFromUserCall(token, user.userId)
+      const tickets = user.userType.userTypeName === 'Client' ? await allTicketsFromUserCall(token, user.userId) : await allTicketsFromUserCall(token, user.userId)
       if (tickets) {
         setTicketList(tickets)
       }
@@ -74,17 +75,13 @@ const ClientDashboard = () => {
           <FilterListIcon style={{ color: '#19467c' }} />
         </span>
         <div className="filter_container_client">
-          {user.userType.userTypeName === 'Client'
-            ?
-            <ClientFilters
-              setSelectedConnection={setSelectedConnection}
-              setSelectedStatus={setSelectedStatus}
-              selectedStatus={selectedStatus}
-              selectedConnection={selectedConnection}
-              setTimeTableTo={setTimeTableTo}
-              setTimeTableFrom={setTimeTableFrom} />
-            :
-            <ClientAdminFilters />}
+          <ClientFilters
+            setSelectedConnection={setSelectedConnection}
+            setSelectedStatus={setSelectedStatus}
+            selectedStatus={selectedStatus}
+            selectedConnection={selectedConnection}
+            setTimeTableTo={setTimeTableTo}
+            setTimeTableFrom={setTimeTableFrom} />
         </div>
         <span className="heading_icon_wrapper">
           <h3 className="headings">Tiketi</h3>
@@ -93,9 +90,19 @@ const ClientDashboard = () => {
         <div className="table_container">
           {user.userType.userTypeName === 'Client'
             ?
-            <ClientTable data={ticketList} selectedConnection={selectedConnection} selectedStatus={selectedStatus} timeTableFrom={timeTableFrom} timeTableTo={timeTableTo} />
+            <ClientTable
+              data={ticketList}
+              selectedConnection={selectedConnection}
+              selectedStatus={selectedStatus}
+              timeTableFrom={timeTableFrom}
+              timeTableTo={timeTableTo} />
             :
-            <ClientAdminTable />
+            <ClientAdminTable
+              data={ticketList}
+              selectedConnection={selectedConnection}
+              selectedStatus={selectedStatus}
+              timeTableFrom={timeTableFrom}
+              timeTableTo={timeTableTo} />
           }
         </div>
       </div>

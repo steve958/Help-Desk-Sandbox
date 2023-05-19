@@ -1,4 +1,15 @@
 import react, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+//LOCAL HELPERS
+import { dateConverter } from '../../helpers/dateConverter'
+import { Ticket } from '../../interfaces';
+import { allTicketsFromUserCall } from '../../helpers/apiCalls';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { RootState } from '../../app/store';
+import { setSelectedTicket } from '../../features/user/userSlice';
+//CUSTOM COMPONENTS
+import Loader from '../Loader/Loader';
+//MUI COMPONENTS AND TYPES
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -9,111 +20,146 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/material/styles';
+import TableHead from '@mui/material/TableHead';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+//MUI ICONS
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { styled } from '@mui/material/styles';
-import TableHead from '@mui/material/TableHead';
-import FeedbackRoundedIcon from '@mui/icons-material/FeedbackRounded';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import { data } from '../../helpers/fakeData'
-import { dateConverter } from '../../helpers/dateConverter'
-import { useNavigate } from "react-router-dom";
 
-interface TablePaginationActionsProps {
-    count: number;
-    page: number;
-    rowsPerPage: number;
-    onPageChange: (
-        event: React.MouseEvent<HTMLButtonElement>,
-        newPage: number,
-    ) => void;
+interface ClientTableProps {
+    data: Ticket[]
+    selectedStatus: string
+    selectedConnection: string
+    timeTableFrom: Date
+    timeTableTo: Date
 }
 
-function TablePaginationActions(props: TablePaginationActionsProps) {
-    const theme = useTheme();
-    const { count, page, rowsPerPage, onPageChange } = props;
+export default function ClientAdminTable(props: ClientTableProps) {
+    const { data, selectedConnection, selectedStatus, timeTableFrom, timeTableTo } = props
 
-    const handleFirstPageButtonClick = (
-        event: React.MouseEvent<HTMLButtonElement>,
-    ) => {
-        onPageChange(event, 0);
-    };
+    const token = useAppSelector((state: RootState) => state.user.JWT)
+    const user = useAppSelector((state: RootState) => state.user.userData)
 
-    const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        onPageChange(event, page - 1);
-    };
-
-    const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        onPageChange(event, page + 1);
-    };
-
-    const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-    };
-
-    return (
-        <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-            <IconButton
-                onClick={handleFirstPageButtonClick}
-                disabled={page === 0}
-                aria-label="first page"
-            >
-                {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
-            </IconButton>
-            <IconButton
-                onClick={handleBackButtonClick}
-                disabled={page === 0}
-                aria-label="previous page"
-            >
-                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-            </IconButton>
-            <IconButton
-                onClick={handleNextButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="next page"
-            >
-                {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-            </IconButton>
-            <IconButton
-                onClick={handleLastPageButtonClick}
-                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="last page"
-            >
-                {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
-            </IconButton>
-        </Box>
-    );
-}
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: "#19467c",
-        color: theme.palette.common.white,
-        fontSize: 18
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14,
-    },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-        backgroundColor: "#19467c4a",
-    },
-    '&:last-child td': {
-        border: 0,
-    },
-    '&:hover': {
-        color: 'white',
-    },
-}));
-export default function ClientAdminTable() {
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [page, setPage] = useState<number>(0);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(-1);
+    const [filteredData, setFilteredData] = useState<Ticket[]>([])
 
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
+    useEffect(() => {
+        fetchTickets()
+    }, [])
+
+    useEffect(() => {
+
+        let filtered = data.filter((ticket: Ticket) => {
+            const created = new Date(ticket.created).getTime();
+            const from = new Date(timeTableFrom ? timeTableFrom : new Date('2023-01-01T08:51')).getTime();
+            const to = new Date(timeTableTo ? timeTableTo : new Date('2030-01-01T08:53')).getTime();
+
+            return created >= from && created <= to;
+        });
+        if (selectedConnection !== 'Svi') {
+            filtered = filtered.filter((ticket: Ticket) => ticket.companyProjectUser.companyProjectUserId === selectedConnection);
+        }
+        if (selectedStatus !== 'Svi') {
+            filtered = filtered.filter((ticket: Ticket) => ticket.ticketStatus.ticketStatusName === selectedStatus);
+        }
+        setFilteredData(filtered);
+    }, [selectedConnection, selectedStatus, timeTableFrom, timeTableTo])
+
+    //MUI CONFIG
+    interface TablePaginationActionsProps {
+        count: number;
+        page: number;
+        rowsPerPage: number;
+        onPageChange: (
+            event: React.MouseEvent<HTMLButtonElement>,
+            newPage: number,
+        ) => void;
+    }
+
+    function TablePaginationActions(props: TablePaginationActionsProps) {
+        const theme = useTheme();
+        const { count, page, rowsPerPage, onPageChange } = props;
+
+        const handleFirstPageButtonClick = (
+            event: React.MouseEvent<HTMLButtonElement>,
+        ) => {
+            onPageChange(event, 0);
+        };
+
+        const handleBackButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+            onPageChange(event, page - 1);
+        };
+
+        const handleNextButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+            onPageChange(event, page + 1);
+        };
+
+        const handleLastPageButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+            onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+        };
+
+        return (
+            <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+                <IconButton
+                    onClick={handleFirstPageButtonClick}
+                    disabled={page === 0}
+                    aria-label="first page"
+                >
+                    {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+                </IconButton>
+                <IconButton
+                    onClick={handleBackButtonClick}
+                    disabled={page === 0}
+                    aria-label="previous page"
+                >
+                    {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                </IconButton>
+                <IconButton
+                    onClick={handleNextButtonClick}
+                    disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+                    aria-label="next page"
+                >
+                    {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                </IconButton>
+                <IconButton
+                    onClick={handleLastPageButtonClick}
+                    disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+                    aria-label="last page"
+                >
+                    {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+                </IconButton>
+            </Box>
+        );
+    }
+
+    const StyledTableCell = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: "#19467c",
+            color: theme.palette.common.white,
+            fontSize: 18
+        },
+        [`&.${tableCellClasses.body}`]: {
+            fontSize: 14,
+        },
+    }));
+
+    const StyledTableRow = styled(TableRow)(({ theme }) => ({
+        '&:nth-of-type(odd)': {
+            backgroundColor: "#19467c4a",
+        },
+        '&:last-child td': {
+            border: 0,
+        },
+        '&:hover': {
+            backgroundColor: "#f9a235",
+        }
+    }));
 
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -129,45 +175,52 @@ export default function ClientAdminTable() {
         setPage(0);
     };
 
+    async function fetchTickets() {
+        const tickets = await allTicketsFromUserCall(token, user.userId)
+        setFilteredData(tickets)
+    }
+
+    //handle ticket open
+    function handleSingleTicketOpen(id: string, ticket: Ticket) {
+        dispatch(setSelectedTicket(ticket))
+        navigate(`/ticket/${id}`)
+    }
 
     return (
         <TableContainer component={Paper}>
+            {!filteredData && <span style={{ position: 'absolute', bottom: '50%', right: '50%', fontSize: '18px' }}>nema kreiranih tiketa</span>}
             <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                 <TableHead>
                     <StyledTableRow>
-                        <StyledTableCell align="center">Tiket kreiran</StyledTableCell>
-                        <StyledTableCell align="center">Status</StyledTableCell>
-                        <StyledTableCell align="center">Poslednja promena</StyledTableCell>
-                        <StyledTableCell align="center">Naslov</StyledTableCell>
-                        <StyledTableCell align="center">Odgovor</StyledTableCell>
                         <StyledTableCell align="center">Projekat</StyledTableCell>
-                        <StyledTableCell align="center">Kompanija</StyledTableCell>
-                        <StyledTableCell align="center">Korisnikov ID</StyledTableCell>
+                        <StyledTableCell align="center">Korisnik</StyledTableCell>
+                        <StyledTableCell align="center">Tiket kreiran</StyledTableCell>
+                        <StyledTableCell align="center">Naslov</StyledTableCell>
+                        <StyledTableCell align="center">Status</StyledTableCell>
+                        <StyledTableCell align="center">Poslednje promene</StyledTableCell>
                     </StyledTableRow>
                 </TableHead>
                 <TableBody sx={{ color: 'white' }}>
-                    {(rowsPerPage > 0
-                        ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : data
-                    ).map((row) => (
-                        <StyledTableRow key={row.id} onClick={() => navigate(`/ticket/${row.id}`)}>
-                            <TableCell align="center">{dateConverter(row.created)}</TableCell>
-                            <TableCell align="center">{row.status}</TableCell>
-                            <TableCell align="center">{dateConverter(row.last_update)}</TableCell>
-                            <TableCell align="center">{row.title}</TableCell>
-                            <TableCell align="center"><FeedbackRoundedIcon /></TableCell>
-                            <TableCell align="center">{row.project}</TableCell>
-                            <TableCell align="center">{row.company}</TableCell>
-                            <TableCell align="center">{row.id}</TableCell>
+                    {filteredData && (((rowsPerPage > 0)
+                        ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : filteredData
+                    ).map((row: Ticket) => (
+                        <StyledTableRow key={row.ticketId} onClick={() => handleSingleTicketOpen(row.ticketId, row)}>
+                            <TableCell align="center">{row.companyProjectUser.companyProjectUserName.slice(0, row.companyProjectUser.companyProjectUserName.lastIndexOf('-'))}</TableCell>
+                            <TableCell align='center'>{row.creator.firstName} {row.creator.lastName}</TableCell>
+                            <TableCell align="center" >{dateConverter(row.created)}</TableCell>
+                            <TableCell align="center" >{row.title}</TableCell>
+                            <TableCell align="center" className='table_cell'>{row.ticketStatus.ticketStatusName}</TableCell>
+                            <TableCell align="center" className='table_cell'>{dateConverter(row.lastUpdated)}</TableCell>
                         </StyledTableRow>
-                    ))}
+                    )).reverse())}
                 </TableBody>
                 <TableFooter>
                     <TableRow>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                             colSpan={10}
-                            count={data.length}
+                            count={filteredData?.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             SelectProps={{

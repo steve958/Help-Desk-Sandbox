@@ -70,7 +70,7 @@ export default function ClientFilters(props: ClientFiltersProps) {
     };
 
     return (
-      <Box sx={{ minWidth: 250 }}>
+      <Box sx={{ minWidth: 250, marginLeft: '35px' }}>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
           <Select
@@ -92,7 +92,7 @@ export default function ClientFilters(props: ClientFiltersProps) {
 
   return (
     <div className="filter_wrapper" style={{ width: '100%' }}>
-      <span style={{ display: 'flex', width: '30%', justifyContent: 'space-between' }}>
+      <span style={{ display: 'flex' }}>
         <Connections heading="projekat" setSelectedConnection={setSelectedConnection} selectedConnection={selectedConnection}></Connections>
         <Statuses heading="status" setSelectedStatus={setSelectedStatus} selectedStatus={selectedStatus}></Statuses>
       </span>
