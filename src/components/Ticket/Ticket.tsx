@@ -18,6 +18,8 @@ const Ticket = () => {
 
   function dahsboardProvider() {
     switch (user.userType.userTypeId) {
+      case 1:
+        return <SupportViewTicket />
       case 2:
         return <SupportViewTicket />
       case 3:
