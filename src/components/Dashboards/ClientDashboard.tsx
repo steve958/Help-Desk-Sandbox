@@ -44,7 +44,7 @@ const ClientDashboard = () => {
       if (connections) {
         dispatch(setConnections({ connections: [...connections] }))
       }
-      const tickets = user.userType.userTypeName === 'Client' ? await allTicketsFromUserCall(token, user.userId) : await allTicketsFromUserCall(token, user.userId)
+      const tickets = await allTicketsFromUserCall(token, user.userId)
       if (tickets) {
         setTicketList(tickets)
       }

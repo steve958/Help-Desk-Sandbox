@@ -151,7 +151,7 @@ export default function ClientTable(props: ClientTableProps) {
 
     const StyledTableRow = styled(TableRow)(({ theme }) => ({
         '&:nth-of-type(odd)': {
-            backgroundColor: "#19467c4a",
+            backgroundColor: "#19467c2a",
         },
         '&:last-child td': {
             border: 0,
@@ -195,7 +195,9 @@ export default function ClientTable(props: ClientTableProps) {
                         <StyledTableCell align="center">Projekat</StyledTableCell>
                         <StyledTableCell align="center">Tiket kreiran</StyledTableCell>
                         <StyledTableCell align="center">Naslov</StyledTableCell>
+                        <StyledTableCell align="center">Prioritet</StyledTableCell>
                         <StyledTableCell align="center">Status</StyledTableCell>
+                        <StyledTableCell align="center">Tip</StyledTableCell>
                         <StyledTableCell align="center">Poslednje promene</StyledTableCell>
                     </StyledTableRow>
                 </TableHead>
@@ -208,7 +210,9 @@ export default function ClientTable(props: ClientTableProps) {
                             <TableCell align="center">{row.companyProjectUser.companyProjectUserName.slice(0, row.companyProjectUser.companyProjectUserName.lastIndexOf('-'))}</TableCell>
                             <TableCell align="center" >{dateConverter(row.created)}</TableCell>
                             <TableCell align="center" >{row.title}</TableCell>
+                            <TableCell align="center" className='table_cell'>{row.ticketPriority.ticketPriorityName}</TableCell>
                             <TableCell align="center" className='table_cell'>{row.ticketStatus.ticketStatusName}</TableCell>
+                            <TableCell align="center" className='table_cell'>{row.ticketType.ticketTypeName}</TableCell>
                             <TableCell align="center" className='table_cell'>{dateConverter(row.lastUpdated)}</TableCell>
                         </StyledTableRow>
                     )).reverse())}

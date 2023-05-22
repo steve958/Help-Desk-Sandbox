@@ -3,10 +3,11 @@ import './Ticket.css'
 import { useNavigate } from 'react-router';
 //LOCAL HELPERS
 import { dateConverter } from '../../helpers/dateConverter'
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Message } from '../../interfaces';
 import { RootState } from '../../app/store';
-import { allMessagesFromTicketCall, cancelTicketCall, createNewMessageCall } from '../../helpers/apiCalls';
+import { allMessagesFromTicketCall, cancelTicketCall, createNewMessageCall, getSpecificTicketCall } from '../../helpers/apiCalls';
+import { setSelectedTicket } from '../../features/user/userSlice';
 //MUI COMPONENTS AND TYPES
 import { styled } from '@mui/material/styles';
 import Button, { ButtonProps } from '@mui/material/Button';
@@ -25,7 +26,8 @@ import ForumIcon from '@mui/icons-material/Forum';
 import CreateIcon from '@mui/icons-material/Create';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export default function ClientViewTicket() {
 
@@ -37,6 +39,7 @@ export default function ClientViewTicket() {
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [successMessage, setSuccessMessage] = useState<string>('')
 
+    const dispatch = useAppDispatch()
     const token = useAppSelector((state: RootState) => state.user.JWT)
     const ticket = useAppSelector((state: RootState) => state.user.userSelectedTicket)
     const navigate = useNavigate()
@@ -121,11 +124,20 @@ export default function ClientViewTicket() {
         }
     }
 
+    //sync ticket settings
+    async function syncTicketData() {
+        const response = await getSpecificTicketCall(token, ticket.ticketId)
+        if (response) {
+            dispatch(setSelectedTicket(response))
+        }
+    }
+
     //fetch all messages from ticket
     async function fetchMessages() {
         const response = await allMessagesFromTicketCall(token, ticket.ticketId)
         if (response) {
             setMessages(response)
+            console.log(response);
         } else {
             console.log('greska pri dopremanju poruka');
         }
@@ -140,12 +152,24 @@ export default function ClientViewTicket() {
             if (response) {
                 setSuccessMessage('Uspešno ste poslali poruku')
                 fetchMessages()
+                syncTicketData()
                 setNewMessage('')
                 setSendMessageClicked(false)
             } else {
                 setErrorMessage('Došlo je do greške pri slanju poruke')
             }
         }
+    }
+
+    //calc time spent on resolving the ticket
+    function timeSpentCalculator() {
+        let time = 0
+        const filtered = messages.filter((message: Message) => message.timeSpent)
+        filtered.forEach((message: Message) => {
+            time += message.timeSpent
+        })
+        return time
+
     }
 
     //sync messages 
@@ -217,25 +241,38 @@ export default function ClientViewTicket() {
                         <p>Naslov:</p>
                         <p>{ticket.title}</p>
                     </span>
-                </span>
-                <span className='details_section'>
-                    <span className='client'>
-                        <p>Povezan projekat:</p>
-                        <p>{ticket.companyProjectUser.companyProjectUserName.slice(0, ticket.companyProjectUser.companyProjectUserName.lastIndexOf('-'))}</p>
-                    </span>
                     <span className='client'>
                         <p>Tiket kreirao:</p>
                         <p>{`${ticket.creator.firstName} ${ticket.creator.lastName}`}</p>
                     </span>
                 </span>
                 <span className='details_section'>
+                    <span className='client'>
+                        <p>Povezan projekat:</p>
+                        <p>{ticket.companyProjectUser.companyProjectUserName.slice(0, ticket.companyProjectUser.companyProjectUserName.lastIndexOf('-'))}</p>
+                    </span>
                     <span className='support'>
                         <p>Poslednja promena:</p>
                         <p>{dateConverter(ticket.lastUpdated)}</p>
                     </span>
+                    <span className='support' style={{ display: 'flex', alignItems: 'center' }}>
+                        <p>Utrošeno vreme u rešavanju tiketa:</p>
+                        <AccessTimeIcon />
+                        <p>{timeSpentCalculator()} minuta</p>
+                    </span>
+                </span>
+                <span className='details_section'>
                     <span className='support'>
-                        <p>Status tiketa:</p>
+                        <p>Prioritet:</p>
+                        <p>{ticket.ticketPriority.ticketPriorityName}</p>
+                    </span>
+                    <span className='support'>
+                        <p>Status:</p>
                         <p>{ticket.ticketStatus.ticketStatusName}</p>
+                    </span>
+                    <span className='support'>
+                        <p>Tip:</p>
+                        <p>{ticket.ticketType.ticketTypeName}</p>
                     </span>
                 </span>
             </div>
@@ -263,7 +300,8 @@ export default function ClientViewTicket() {
                                 <span>{message.message}</span>
                                 <span style={{ textAlign: 'end', fontWeight: '600', marginRight: '15px' }}>{message.sentTime ? dateConverter(message.sentTime) : ''}</span>
                             </span>
-                            <span className='message_icon_wrapper'>
+                            <span className='message_icon_wrapper' style={{ position: 'relative' }}>
+                                <span style={{ position: 'absolute', right: '10px' }}>{message.timeSpent ? message.timeSpent : ''}</span>
                                 {(message.sentBy.userType.userTypeId === 1 || message.sentBy.userType.userTypeId === 2) &&
                                     <span style={{ width: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                         <span>
@@ -316,3 +354,4 @@ export default function ClientViewTicket() {
         </div >
     )
 }
+

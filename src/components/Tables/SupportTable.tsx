@@ -52,7 +52,7 @@ export default function SupportTable(props: SupportTableProps) {
         query, timeTableFrom, timeTableTo } = props
 
     const [page, setPage] = useState<number>(0);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(-1);
     const [filteredData, setFilteredData] = useState<Ticket[]>([])
 
 

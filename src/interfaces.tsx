@@ -82,12 +82,6 @@ export interface TicketState {
   tickets: Ticket[]
 }
 
-export interface AuthState {
-  user: User;
-  token: string | null
-  error: string;
-}
-
 export interface UserTypes {
   userTypeId: number
   userTypeName: string

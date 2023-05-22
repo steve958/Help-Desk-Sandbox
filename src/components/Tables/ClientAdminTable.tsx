@@ -197,6 +197,8 @@ export default function ClientAdminTable(props: ClientTableProps) {
                         <StyledTableCell align="center">Tiket kreiran</StyledTableCell>
                         <StyledTableCell align="center">Naslov</StyledTableCell>
                         <StyledTableCell align="center">Status</StyledTableCell>
+                        <StyledTableCell align="center">Prioritet</StyledTableCell>
+                        <StyledTableCell align="center">Tip</StyledTableCell>
                         <StyledTableCell align="center">Poslednje promene</StyledTableCell>
                     </StyledTableRow>
                 </TableHead>
@@ -211,6 +213,8 @@ export default function ClientAdminTable(props: ClientTableProps) {
                             <TableCell align="center" >{dateConverter(row.created)}</TableCell>
                             <TableCell align="center" >{row.title}</TableCell>
                             <TableCell align="center" className='table_cell'>{row.ticketStatus.ticketStatusName}</TableCell>
+                            <TableCell align="center" className='table_cell'>{row.ticketPriority.ticketPriorityName}</TableCell>
+                            <TableCell align="center" className='table_cell'>{row.ticketType.ticketTypeName}</TableCell>
                             <TableCell align="center" className='table_cell'>{dateConverter(row.lastUpdated)}</TableCell>
                         </StyledTableRow>
                     )).reverse())}

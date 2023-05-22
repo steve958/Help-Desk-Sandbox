@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './Ticket.css'
 //LOCAL HELPERS
 import { setSelectedTicket } from '../../features/user/userSlice';
-import { allMessagesFromTicketCall, changeTicketPriorityCall, changeTicketStatusCall, changeTicketTypeCall, createNewMessageCall, getSpecificTicketCall } from '../../helpers/apiCalls';
+import { allMessagesFromTicketCall, changeTicketSettingsCall, createNewMessageCall, getSpecificTicketCall } from '../../helpers/apiCalls';
 import { RootState } from '../../app/store';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { Message, TicketPriority, TicketStatus, TicketType } from '../../interfaces';
@@ -176,7 +176,7 @@ export default function SupportViewTicket() {
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={String(selectedStatus)}
+                        defaultValue={String(selectedStatus)}
                         label={heading}
                         onChange={handleChange}
                         disabled={!!errorMessage || !!successMessage}
@@ -207,20 +207,14 @@ export default function SupportViewTicket() {
         let statusResponse, priorityResponse, typeResponse
 
         try {
-            if (ticket.ticketType.ticketTypeId !== selectedType) {
-                typeResponse = await changeTicketTypeCall(token, ticket.ticketId, selectedType)
-                syncTicketData()
-            }
-            if (ticket.ticketPriority.ticketPriorityId !== selectedPriority) {
-                priorityResponse = await changeTicketPriorityCall(token, ticket.ticketId, selectedPriority)
-                syncTicketData()
-            }
-            if (ticket.ticketStatus.ticketStatusId !== selectedStatus) {
-                statusResponse = await changeTicketStatusCall(token, ticket.ticketId, selectedStatus)
-                syncTicketData()
-            }
+
             if (typeResponse || statusResponse || priorityResponse) {
-                setSuccessMessage('Uspešno promenjena podešavanja tiketa')
+                const message = `*Prioritet:${ticket.ticketPriority.ticketPriorityName} | Status:${ticket.ticketStatus.ticketStatusName} | Tip:${ticket.ticketType.ticketTypeName}`
+                const response = await createNewMessageCall(token, ticket.ticketId, message)
+                if (response) {
+                    setSuccessMessage('Uspešno promenjena podešavanja tiketa')
+                    syncData()
+                }
             } else {
                 setErrorMessage('Došlo je do greške pri promeni podešavanja')
             }
@@ -240,7 +234,6 @@ export default function SupportViewTicket() {
         return time
 
     }
-
 
     //sync messages 
     function syncData() {

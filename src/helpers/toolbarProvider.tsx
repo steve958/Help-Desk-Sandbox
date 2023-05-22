@@ -1,6 +1,5 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/help_desk_logo_3.png";
-import { User } from "../interfaces";
 import { useAppSelector } from "../app/hooks";
 import { RootState } from "../app/store";
 
@@ -26,11 +25,11 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
   }
   let leftToolbar: JSX.Element = <></>;
   let logoItem = (
-    <li>
+    <span>
       <NavLink to={`/${navigationProvider(user.userType.userTypeId)}`}>
         <img src={logo} alt="logo" />
       </NavLink>
-    </li>
+    </span>
   );
   let helpItem: JSX.Element = (
     <li>
@@ -87,13 +86,5 @@ export const getLeftToolbar = (user_type: string): JSX.Element => {
       leftToolbar = <></>;
   }
   return leftToolbar;
-};
-
-export const searchClientUsers = (clients: User[], query: string): User[] => {
-  if (query !== "")
-    return clients.filter((x) => x.username.toLowerCase().includes(query));
-  else {
-    return clients;
-  }
 };
 

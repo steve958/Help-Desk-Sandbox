@@ -36,23 +36,6 @@ body {
   background-color: #19467c2a;
 }
 
-.background {
-  width: 90vw;
-  height: 90vh;
-  position: absolute;
-  z-index: -1;
-  background-image: url('./assets/pozadina1.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  -webkit-filter: blur(6px);
-  -moz-filter: blur(6px);
-  -o-filter: blur(6px);
-  -ms-filter: blur(6px);
-  filter: blur(6px);
-
-}
-
 .span_validation {
   font-size: 16px;
   padding: 3px;
@@ -110,11 +93,15 @@ body {
 
 .Toolbar_left img {
   vertical-align: text-top;
-  width: 60%;
+  width: 50%;
   background-color: white;
   padding: 5px;
   margin-left: 20px;
   border-radius: 5px;
+}
+
+.Toolbar_left img:hover {
+  opacity: 0.7;
 }
 
 .Toolbar nav {
@@ -138,8 +125,18 @@ body {
 .Toolbar_right li a {
   display: block;
   color: white;
-  padding: 8px 16px;
   text-decoration: none;
+}
+
+.Toolbar_left li {
+  margin-right: 0;
+  margin-right: 150px;
+}
+
+
+
+.Toolbar_left li:hover {
+  opacity: 0.7;
 }
 
 .Toolbar_right li a {
