@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import './NewTicket.css'
 import { useNavigate } from "react-router";
+import FormData from 'form-data';
+import { Client } from '@microsoft/microsoft-graph-client';
 //CUSTOM COMPONENTS
 import Toolbar from "../Toolbar/Toolbar";
 import UserProfile from "../UserProfile/UserProfile";
@@ -9,6 +11,7 @@ import { RootState } from "../../app/store";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { CompanyProjectUser } from "../../interfaces";
 import { createNewMessageCall, createNewTicketCall } from "../../helpers/apiCalls";
+import { setSelectedTicket } from "../../features/user/userSlice";
 //MUI COMPONENTS AND TYPES
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -23,7 +26,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CreateIcon from '@mui/icons-material/Create';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { setSelectedTicket } from "../../features/user/userSlice";
+
 
 const NewTicket = () => {
   const token = useAppSelector((state: RootState) => state.user.JWT)
@@ -115,6 +118,28 @@ const NewTicket = () => {
   }
 
 
+  //upload logic
+  const uploadFileToOneDrive = async (file: any) => {
+    const accessToken = '471281ae-d811-4fe3-a1eb-2fa05f3db4fb'
+    const client = Client.init({
+      authProvider: (done) => {
+        done(null, accessToken); // Provide the access token obtained previously
+      }
+    });
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      await client
+        .api('/me/drive/root/children')
+        .put(formData);
+      console.log('File uploaded successfully.');
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+  };
+
   //handle create ticket 
   async function handleCreateTicket() {
     let message = messageRef.current.value
@@ -181,7 +206,7 @@ const NewTicket = () => {
       <AttachFileIcon style={{ color: '#19467c' }} />
     </span>
     <div className="add_files_wrapper">
-      <input type="file" className="add_files_field" multiple />
+      <input type="file" className="add_files_field" multiple onChange={(e: any) => uploadFileToOneDrive(e.target.files)} />
     </div>
     <div className="submit_wrapper">
       <span>
