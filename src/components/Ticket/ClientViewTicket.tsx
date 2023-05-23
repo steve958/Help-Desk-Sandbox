@@ -137,7 +137,6 @@ export default function ClientViewTicket() {
         const response = await allMessagesFromTicketCall(token, ticket.ticketId)
         if (response) {
             setMessages(response)
-            console.log(response);
         } else {
             console.log('greska pri dopremanju poruka');
         }

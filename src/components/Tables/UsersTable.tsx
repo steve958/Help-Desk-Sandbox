@@ -69,7 +69,6 @@ export default function UsersTable(props: UsersTableProps) {
 
   useEffect(() => {
     if (selectedType === 'Svi') {
-      console.log(data);
       setFilteredList(data)
     } else {
       const filtered = data.filter((user: User) => user.userType.userTypeName === selectedType)

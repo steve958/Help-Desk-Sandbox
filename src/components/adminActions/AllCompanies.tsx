@@ -39,10 +39,6 @@ const AllCompanies = () => {
     fetchAllCompanies()
   }, [successMessage, errorMessage])
 
-  useEffect(() => {
-    console.log(companiesList);
-  }, [companiesList])
-
   //MUI CONFIG
   const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
     color: theme.palette.getContrastText("#398b93"),
@@ -80,7 +76,6 @@ const AllCompanies = () => {
         if (postCompany) {
           setSuccessMessage('Uspešno kreirana kompanija')
         } else {
-          console.log(postCompany);
           setErrorMessage('Došlo je do problema')
         }
       } catch (err: any) {

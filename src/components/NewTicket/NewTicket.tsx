@@ -117,10 +117,9 @@ const NewTicket = () => {
     );
   }
 
-
   //upload logic
   const uploadFileToOneDrive = async (file: any) => {
-    const accessToken = '471281ae-d811-4fe3-a1eb-2fa05f3db4fb'
+    const accessToken = '5dd388dc-b510-47c3-9a15-160348ecde67'
     const client = Client.init({
       authProvider: (done) => {
         done(null, accessToken); // Provide the access token obtained previously

@@ -38,9 +38,6 @@ const AllProjects = () => {
     fetchAllProjects()
   }, [successMessage, errorMessage])
 
-  useEffect(() => {
-    console.log(projectsList);
-  }, [projectsList])
 
   //MUI CONFIG
   const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
@@ -79,7 +76,6 @@ const AllProjects = () => {
         if (postProject) {
           setSuccessMessage('Uspešno kreiran projekat')
         } else {
-          console.log(postProject);
           setErrorMessage('Došlo je do problema')
         }
       } catch (error: any) {

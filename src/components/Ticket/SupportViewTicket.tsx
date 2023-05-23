@@ -63,7 +63,6 @@ export default function SupportViewTicket() {
 
     useEffect(() => {
         if (sendMessageClicked) {
-            console.log(selectedStatus, selectedPriority, selectedType);
             if (selectedType !== 4 && selectedPriority !== 4 && selectedStatus !== 6) {
                 const element = document.getElementsByClassName('send_message_field')
                 element[0]?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -110,7 +109,6 @@ export default function SupportViewTicket() {
 
         const { heading } = props
         const handleChange = (event: SelectChangeEvent) => {
-            console.log(event.target.value);
             setSelectedType(Number(event.target.value))
         };
 
@@ -194,7 +192,6 @@ export default function SupportViewTicket() {
         const response = await allMessagesFromTicketCall(token, ticket.ticketId)
         if (response) {
             setMessages(response)
-            console.log(messages);
 
         } else {
             console.log('greska sa dopremanjem poruka');
@@ -243,7 +240,6 @@ export default function SupportViewTicket() {
         const response = await getSpecificTicketCall(token, ticket.ticketId)
         if (response) {
             dispatch(setSelectedTicket(response))
-            console.log('dispatched');
         }
     }
 

@@ -55,9 +55,17 @@ export default function SupportTable(props: SupportTableProps) {
     const [rowsPerPage, setRowsPerPage] = useState<number>(-1);
     const [filteredData, setFilteredData] = useState<Ticket[]>([])
 
+    let interval: any
 
     useEffect(() => {
         fetchAllTickets()
+        interval = setInterval(() => {
+            fetchAllTickets()
+            console.log('interval');
+        }, 20000)
+        return () => {
+            clearInterval(interval)
+        }
     }, [])
 
     useEffect(() => {
@@ -88,10 +96,6 @@ export default function SupportTable(props: SupportTableProps) {
             console.error(error)
         }
     }, [selectedCompany, selectedPriority, selectedProject, selectedStatus, selectedType, query, timeTableFrom, timeTableTo])
-
-    useEffect(() => {
-        console.log(filteredData);
-    }, [filteredData])
 
     //MUI CONFIG
     interface TablePaginationActionsProps {
@@ -205,7 +209,6 @@ export default function SupportTable(props: SupportTableProps) {
     //fetch all tickets for the first render
     async function fetchAllTickets() {
         const tickets = await allTicketsCall(token)
-        console.log(tickets);
         if (tickets) {
             setFilteredData(tickets)
         }

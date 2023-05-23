@@ -55,11 +55,6 @@ const EditClient = () => {
 
     }, [successMessage, errorMessage])
 
-    useEffect(() => {
-        console.log(connectionsToCreate);
-
-    }, [connectionsToCreate])
-
 
     //MUI CONFIG
     const ColorButtonSubmit = styled(Button)<ButtonProps>(({ theme }) => ({
