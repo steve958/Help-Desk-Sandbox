@@ -7,8 +7,8 @@ import UserProfile from '../UserProfile/UserProfile';
 //LOCAL HELPERS
 import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
-import { CompanyProject, UserTypes } from '../../interfaces';
-import { createNewUserCall, allCompProjConnectionCall, createCompProjUserConnectionCall, createSingleConnectionCall } from '../../helpers/apiCalls';
+import { CompanyProject, UserTypes, CompanyProjectUser } from '../../interfaces';
+import { allCompProjConnectionCall, createCompProjUserConnectionCall, createSingleConnectionCall, allCompProjUserConnectionCall, editUserCall, deleteCompProjUserConnectionCall } from '../../helpers/apiCalls';
 //MUI COMPONENTS AND TYPES
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -29,21 +29,23 @@ import CreateIcon from '@mui/icons-material/Create';
 const EditClient = () => {
     const token = useAppSelector((state: RootState) => state.user.JWT)
     const types = useAppSelector((state: RootState) => state.filter.userTypes)
+    const user = useAppSelector((state: RootState) => state.user.selectedUser)
     const navigate = useNavigate()
     const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
-    const [value, setValue] = useState(types[types.length - 1].userTypeName);
+    const [value, setValue] = useState(user.userType.userTypeName);
     const [projectsList, setProjectsList] = useState<any>([])
     const [projectID, setProjectID] = useState<string>('');
+    const [connectionsToDelete, setConnectionsToDelete] = useState<any>()
+    const [connectionsToCreate, setConnectionsToCreate] = useState<any>()
     const [connectionsList, setConnectionsList] = useState<CompanyProject[] | []>([])
     const [successMessage, setSuccessMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
     //input usestate instead userefs
-    const [firstName, setFirstName] = useState<string>('')
-    const [lastName, setLastName] = useState<string>('')
-    const [email, setEmail] = useState<string>('')
-    const [phone, setPhone] = useState<string>('')
-    const [userName, setUserName] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
+    const [firstName, setFirstName] = useState<string>(user.firstName)
+    const [lastName, setLastName] = useState<string>(user.lastName)
+    const [email, setEmail] = useState<string>(user.email)
+    const [phone, setPhone] = useState<string>(user.phone)
+    const [userName, setUserName] = useState<string>(user.username)
 
     useEffect(() => {
         if (successMessage || errorMessage) {
@@ -75,12 +77,12 @@ const EditClient = () => {
     }));
 
     function ButtonDiscard() {
-        return (<ColorButtonDiscard variant='contained' disabled={!!successMessage || !!errorMessage} onClick={() => navigate('/allclients')}>Zanemari</ColorButtonDiscard>)
+        return (<ColorButtonDiscard variant='contained' disabled={!!successMessage || !!errorMessage} onClick={() => navigate('/allclients')}>Nazad na tabelu</ColorButtonDiscard>)
     }
 
     function ButtonSubmit() {
         return (
-            <ColorButtonSubmit variant="contained" disabled={!!successMessage || !!errorMessage} onClick={handleSaveClient}>Sačuvaj korisnika</ColorButtonSubmit>
+            <ColorButtonSubmit variant="contained" disabled={!!successMessage || !!errorMessage} onClick={handleSaveClient}>Ažuriraj korisnika</ColorButtonSubmit>
         );
     }
 
@@ -100,6 +102,7 @@ const EditClient = () => {
                         id="demo-simple-select"
                         value={value}
                         onChange={handleChange}
+                        disabled
                         sx={{ color: '#19467c', marginTop: '5px', marginBottom: '5px', height: '50px', width: '180px' }}
                     >
                         {types.map((type: UserTypes) => {
@@ -114,9 +117,11 @@ const EditClient = () => {
 
     function ConnectionSelect(props: any) {
 
-        const { heading, projectID, setProjectID } = props
+        const { heading, projectID, setProjectID, setConnectionsToCreate, setConnectionsToDelete } = props
         const handleChange = (event: SelectChangeEvent) => {
             setProjectID(event.target.value as string)
+            setConnectionsToCreate((oldState: any) => [...oldState, event.target.value as string])
+            setConnectionsToDelete((oldState: any) => [...oldState, event.target.value as string])
         };
 
         return (
@@ -129,6 +134,7 @@ const EditClient = () => {
                         value={projectID}
                         onChange={handleChange}
                         placeholder='uvezani projekti'
+                        disabled
                         sx={{ color: '#19467c', height: '50px', width: '180px', marginTop: '5px' }}
                     >
                         {connectionsList.map((connection: CompanyProject) => {
@@ -141,64 +147,60 @@ const EditClient = () => {
         );
     }
 
-
     //fetch connection
     async function fetchAllConnections() {
         const list = await allCompProjConnectionCall(token)
-        setConnectionsList(list)
+        if (list) {
+            setConnectionsList(list)
+            const createdConnections = await allCompProjUserConnectionCall(token)
+            if (createdConnections) {
+                const projectListCreated = [] as string[]
+                const filtered = createdConnections.filter((connection: CompanyProjectUser) => connection.userId === user.userId)
+                filtered.forEach((connection: CompanyProjectUser) => {
+                    projectListCreated.push(connection.companyProjectId)
+                })
+                setProjectsList(projectListCreated)
+            }
+        }
     }
 
-    // save client click
+    // update client click
     async function handleSaveClient() {
-        if (firstName && lastName && email && phone && userName && password) {
-            const userData = {
-                firstName,
-                lastName,
-                email,
-                phone,
-                userName,
-                password,
-                userTypeId: types.find((type: UserTypes) => type.userTypeName === value)?.userTypeId
-            }
-            const response = await createNewUserCall(token, userData)
-            if (response) {
-                if (response.userType.userTypeId === 1 || response.userType.userTypeId === 2) {
-                    setSuccessMessage('Uspešno kreiran korisnik')
-                    setFirstName('')
-                    setLastName('')
-                    setEmail('')
-                    setPhone('')
-                    setUserName('')
-                    setPassword('')
+        try {
+            if (firstName && lastName && email && phone && userName) {
+                const userData = {
+                    firstName,
+                    lastName,
+                    email,
+                    phone,
+                    userName
                 }
-                else {
-                    if (projectsList.length === 0) {
-                        setErrorMessage('Sva polja su obavezna')
-                    } else {
-                        const id = response.userId
-                        const companyProjectId = projectsList
-                        const connectResponse = projectsList.length === 1 ? await createSingleConnectionCall(token, id, projectsList[0]) : await createCompProjUserConnectionCall(token, id, companyProjectId)
-                        if (connectResponse) {
-                            setSuccessMessage('Uspešno kreiran korisnik')
-                            setFirstName('')
-                            setLastName('')
-                            setEmail('')
-                            setPhone('')
-                            setUserName('')
-                            setPassword('')
-                            setProjectsList([])
-                        } else {
-                            setErrorMessage('Došlo je do greške')
-                            setProjectsList([])
+                const response = await editUserCall(token, user.userId, userData)
+                if (response) {
+                    if (response.userType.userTypeId === 1 || response.userType.userTypeId === 2) {
+                        setSuccessMessage('Uspešno ažuriran korisnik')
+                    }
+                    else {
+                        if (connectionsToDelete.length > 0) {
+                            connectionsToDelete.forEach(async (id: string) => {
+                                await deleteCompProjUserConnectionCall(token, id)
+                            })
+                        }
+                        if (connectionsToCreate.length > 0) {
+                            connectionsToCreate.forEach(async (id: string) => {
+                                await createSingleConnectionCall(token, user.userId, id)
+                            })
                         }
                     }
+                    setSuccessMessage('Uspešno ažuriran korisnik')
+                } else {
+                    setErrorMessage('Došlo je do greške')
                 }
             } else {
-                setErrorMessage('Došlo je do greške')
-                setProjectsList([])
+                setErrorMessage('Sva polja su obavezna')
             }
-        } else {
-            setErrorMessage('Sva polja su obavezna')
+        } catch (error) {
+            console.error(error)
         }
     }
 
@@ -211,7 +213,7 @@ const EditClient = () => {
         setProjectID('')
     }
 
-    //deleting connection
+    //deleting connection from the list
     function handleDeleteProject(value: string) {
         setProjectsList((oldList: string[]) => [...oldList.filter((id) => id !== value)])
     }
@@ -315,25 +317,11 @@ const EditClient = () => {
                         onChange={(e) => setUserName(e.target.value)}
                     />
                 </div>
-                <div className='input_field_wrapper'>
-                    <p>Šifra:</p>
-                    <OutlinedInput
-                        style={{
-                            width: "180px",
-                            height: '50px',
-                            backgroundColor: 'white'
-                        }}
-                        type="text"
-                        placeholder="šifra"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
             </div>
             {(value === 'Client' || value === 'Client_Admin') && <div className='form_wrapper_expanded'>
                 <div className='input_field_wrapper' style={{ position: 'relative' }}>
                     <p>Izabrati korisnikovu vezu sa projektima:</p>
-                    <ConnectionSelect heading='uvezani projekti' projectID={projectID} setProjectID={setProjectID} />
+                    <ConnectionSelect heading='uvezani projekti' projectID={projectID} setProjectID={setProjectID} setConnectionsToDelete={setConnectionsToDelete} setConnectionsToCreate={setConnectionsToCreate} />
                     <Tooltip title='DODAJ KORISNIKOV PROJEKAT NA LISTU'>
                         <span onClick={() => handleAddProject(projectID)} className='add_icon'>
                             <AddIcon style={{ width: '40px', height: '40px' }} />

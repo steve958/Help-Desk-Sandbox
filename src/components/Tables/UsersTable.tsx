@@ -1,10 +1,12 @@
 import react, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import "./AllTables.css";
 //LOCAL HELPERS
 import { CompanyProjectUser, User } from "../../interfaces";
 import { allCompProjUserConnectionCall, allUsersCall, deleteUserCall } from "../../helpers/apiCalls";
-import { useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
+import { setSelectedUser } from "../../features/user/userSlice";
 //MUI COMPONENTS AND TYPES
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -54,6 +56,8 @@ export default function UsersTable(props: UsersTableProps) {
   const [selectedUserId, setSelectedUserId] = useState<string>('')
   const [connectionsList, setConnectionsList] = useState<CompanyProjectUser[] | []>([])
 
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const token = useAppSelector((state: RootState) => state.user.JWT)
 
   useEffect(() => {
@@ -172,6 +176,9 @@ export default function UsersTable(props: UsersTableProps) {
     "&:last-child td": {
       border: 0
     },
+    '&:hover': {
+      backgroundColor: "#f9a235",
+    }
   }));
 
   const handleChangePage = (
@@ -233,6 +240,13 @@ export default function UsersTable(props: UsersTableProps) {
   //filter connection based on selected user
   function filterConnections() {
     return connectionsList.filter((connection: CompanyProjectUser) => connection.userId === selectedUserId)
+  }
+
+  //handle user edit click 
+  function userEdit(event: Event, user: User) {
+    event.stopPropagation()
+    dispatch(setSelectedUser(user))
+    navigate(`/client/${user.userId}`)
   }
 
   return (
@@ -310,14 +324,14 @@ export default function UsersTable(props: UsersTableProps) {
           </StyledTableRow>
         </TableHead>
         <TableBody sx={{ color: "white" }}>
-          {(rowsPerPage > 0
+          {filteredList && ((rowsPerPage > 0
             ? filteredList.filter((user: User) => user.firstName.toLowerCase().includes(query) || user.lastName.toLowerCase().includes(query)).slice(
               page * rowsPerPage,
               page * rowsPerPage + rowsPerPage
             )
             : filteredList.filter((user: User) => user.firstName.toLowerCase().includes(query) || user.lastName.toLowerCase().includes(query))
           ).map((row: User | any) => (
-            <StyledTableRow key={row.userId}>
+            <StyledTableRow key={row.userId} onClick={(e: Event) => userEdit(e, row)}>
               <TableCell align="center">{row.username}</TableCell>
               <TableCell align="center">{row.firstName}</TableCell>
               <TableCell align="center">{row.lastName}</TableCell>
@@ -325,14 +339,14 @@ export default function UsersTable(props: UsersTableProps) {
               <TableCell align="center">{row.phone}</TableCell>
               <TableCell align="center">{row.userType.userTypeName}</TableCell>
               <TableCell align="center">
-                <span onClick={() => { setSelectedUserId(row.userId); setShowConnections(true); setSelectedUserName(row.username) }}>
+                <span onClick={(e: any) => { e.stopPropagation(); setSelectedUserId(row.userId); setShowConnections(true); setSelectedUserName(row.username) }}>
                   <Tooltip title="KLIKNI DA VIDIŠ POVEZANE KOMPANIJE I PROJEKTE">
                     <CableIcon className="icon_cable" />
                   </Tooltip>
                 </span>
               </TableCell>
               <TableCell align="center">
-                <span onClick={() => { handleUserDeleteClick(row) }}>
+                <span onClick={(e: any) => { e.stopPropagation(); handleUserDeleteClick(row) }}>
                   {row.userId !== '13656f4e-d780-42e1-a13e-c30e8ee4f753' ? <Tooltip title="KLIKNI DA OBRIŠEŠ KORISNIKA">
                     <DeleteIcon className="icon_people" />
                   </Tooltip> : <Tooltip title="NEMOGUĆE OBRISATI ADMINA">
@@ -341,7 +355,7 @@ export default function UsersTable(props: UsersTableProps) {
                 </span>
               </TableCell>
             </StyledTableRow>
-          )).reverse()}
+          )).reverse())}
         </TableBody>
         <TableFooter>
           <TableRow>

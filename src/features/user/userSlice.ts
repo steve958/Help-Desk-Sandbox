@@ -7,6 +7,7 @@ interface UserState {
     userConnections: CompanyProjectUser[] | any
     allTickets: Ticket[] | any
     userSelectedTicket: Ticket | any
+    selectedUser: User | any
 }
 
 const initialState: UserState = {
@@ -14,7 +15,8 @@ const initialState: UserState = {
     userData: {},
     userConnections: [],
     allTickets: [],
-    userSelectedTicket: {}
+    userSelectedTicket: {},
+    selectedUser: {}
 }
 
 const userSlice = createSlice({
@@ -38,6 +40,10 @@ const userSlice = createSlice({
             state.allTickets = action.payload
         },
 
+        setSelectedUser(state, action: PayloadAction<User>) {
+            state.selectedUser = action.payload
+        },
+
         logout(state) {
             state.JWT = ''
             state.userData = {}
@@ -45,5 +51,5 @@ const userSlice = createSlice({
     }
 })
 
-export const { login, logout, setConnections, setSelectedTicket, setAllTickets } = userSlice.actions
+export const { login, logout, setConnections, setSelectedTicket, setAllTickets, setSelectedUser } = userSlice.actions
 export default userSlice.reducer

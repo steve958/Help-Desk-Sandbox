@@ -7,8 +7,6 @@ import { allTicketsFromUserCall } from '../../helpers/apiCalls';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { setSelectedTicket } from '../../features/user/userSlice';
-//CUSTOM COMPONENTS
-import Loader from '../Loader/Loader';
 //MUI COMPONENTS AND TYPES
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';

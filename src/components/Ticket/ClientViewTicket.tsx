@@ -283,7 +283,7 @@ export default function ClientViewTicket() {
             <div className='messages_container'>
                 <span className='messages_wrapper'>
                     {messages.map((message: Message) => {
-                        return <span key={message.messageId} className={(message.sentBy.userType.userTypeId === 3 || message.sentBy.userType.userTypeId === 4) ? 'message_client' : 'message_support'}>
+                        return <span key={message.messageId} id={message.message[0] === '*' ? 'system_message' : 'djoksa'} className={(message.sentBy.userType.userTypeId === 3 || message.sentBy.userType.userTypeId === 4) ? 'message_client' : 'message_support'}>
                             <span className='message_icon_wrapper'>
                                 {(message.sentBy.userType.userTypeId === 3 || message.sentBy.userType.userTypeId === 4) &&
                                     <span style={{ width: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -297,7 +297,7 @@ export default function ClientViewTicket() {
                             </span>
                             <span>{(user.userType.userTypeId === 1 || user.userType.userTypeId === 2) && message.timeSpent ? message.timeSpent : ''}</span>
                             <span className='message_content'>
-                                <span>{message.message}</span>
+                                <span>{message.message.replace('*', 'promenjena podešavanja tiketa >>> ')}</span>
                                 <span style={{ textAlign: 'end', fontWeight: '600', marginRight: '15px' }}>{message.sentTime ? dateConverter(message.sentTime) : ''}</span>
                             </span>
                             <span className='message_icon_wrapper' style={{ position: 'relative' }}>

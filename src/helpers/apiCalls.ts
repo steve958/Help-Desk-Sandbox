@@ -1,6 +1,6 @@
 import { Ticket } from "../interfaces"
-const url = 'https://helpdesk.comdata.rs'
-
+// const url = 'https://api.helpdesk.comdata.rs'
+const url = 'http://93.87.67.249:60706'
 //LOGIN
 export async function loginCall(username: string, password: string) {
     try {
@@ -231,6 +231,24 @@ export async function deleteUserCall(token: string, id: string) {
         return console.error(err)
     }
 }
+export async function editUserCall(token: string, id: string, userData: any) {
+    try {
+        const res = await fetch(`${url}/api/Users/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                ...userData
+            })
+        })
+        const data = await res.json()
+        return data
+    } catch (err) {
+        return console.error(err)
+    }
+}
 //COMPANY PROJECT USER CONNECTION
 export async function createCompProjUserConnectionCall(token: string, userId: string, projectsList: string[]) {
     try {
@@ -289,6 +307,21 @@ export async function getUsersConnectionsCall(token: string, userId: string) {
     try {
         const res = await fetch(`${url}/api/CompanyProjectUsers/by-user/${userId}`, {
             method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            }
+        })
+        const data = await res.json()
+        return data
+    } catch (err) {
+        return console.error(err)
+    }
+}
+export async function deleteCompProjUserConnectionCall(token: string, id: string) {
+    try {
+        const res = await fetch(`${url}/api/CompanyProjectUsers/${id}`, {
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
@@ -457,14 +490,16 @@ export async function getTicketTypesCall(token: string) {
 }
 export async function changeTicketSettingsCall(token: string, ticketId: string, statusId: number, priorityId: number, typeId: number) {
     try {
-        const res = await fetch(`${url}/api/Tickets/status/${ticketId}`, {
+        const res = await fetch(`${url}/api/Tickets/properties/${ticketId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
             body: JSON.stringify({
-                statusId, typeId, priorityId
+                statusId: statusId,
+                typeId: typeId,
+                priorityId: priorityId
             })
         })
         const data = await res.json()

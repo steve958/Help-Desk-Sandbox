@@ -203,13 +203,11 @@ export default function SupportViewTicket() {
 
     //change ticket settings 
     async function submitSettings() {
-
-        let statusResponse, priorityResponse, typeResponse
-
         try {
-
-            if (typeResponse || statusResponse || priorityResponse) {
-                const message = `*Prioritet:${ticket.ticketPriority.ticketPriorityName} | Status:${ticket.ticketStatus.ticketStatusName} | Tip:${ticket.ticketType.ticketTypeName}`
+            const settingsResponse = await changeTicketSettingsCall(token, ticket.ticketId, selectedStatus, selectedPriority, selectedType)
+            if (settingsResponse) {
+                dispatch(setSelectedTicket(settingsResponse))
+                const message = `*Prioritet:${settingsResponse.ticketPriority.ticketPriorityName} | Status:${settingsResponse.ticketStatus.ticketStatusName} | Tip:${settingsResponse.ticketType.ticketTypeName}`
                 const response = await createNewMessageCall(token, ticket.ticketId, message)
                 if (response) {
                     setSuccessMessage('Uspešno promenjena podešavanja tiketa')
@@ -245,6 +243,7 @@ export default function SupportViewTicket() {
         const response = await getSpecificTicketCall(token, ticket.ticketId)
         if (response) {
             dispatch(setSelectedTicket(response))
+            console.log('dispatched');
         }
     }
 
@@ -354,7 +353,7 @@ export default function SupportViewTicket() {
             <div className='messages_container'>
                 <span className='messages_wrapper'>
                     {messages.map((message: Message) => {
-                        return <span key={message.messageId} className={(message.sentBy.userType.userTypeId === 3 || message.sentBy.userType.userTypeId === 4) ? 'message_client' : 'message_support'}>
+                        return <span key={message.messageId} id={message.message[0] === '*' ? 'system_message' : 'djoksa'} className={(message.sentBy.userType.userTypeId === 3 || message.sentBy.userType.userTypeId === 4) ? 'message_client' : 'message_support'}>
                             <span className='message_icon_wrapper'>
                                 {(message.sentBy.userType.userTypeId === 3 || message.sentBy.userType.userTypeId === 4) &&
                                     <span style={{ width: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -367,7 +366,7 @@ export default function SupportViewTicket() {
                                     </span>}
                             </span>
                             <span className='message_content'>
-                                <span>{message.message}</span>
+                                <span>{message.message.replace('*', 'promenjena podešavanja tiketa >>> ')}</span>
                                 <span style={{ textAlign: 'end', fontWeight: '600', marginRight: '15px' }}>{message.sentTime ? dateConverter(message.sentTime) : ''}</span>
                             </span>
                             <span className='message_icon_wrapper' style={{ position: 'relative' }}>

@@ -17,6 +17,7 @@ import Connections from "./components/adminActions/Connections"
 import { isAuthenticated } from "./interfaces";
 import { useAppSelector } from "./app/hooks";
 import { RootState } from "./app/store";
+import EditClient from "./components/adminActions/EditClient";
 
 
 const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
@@ -82,6 +83,10 @@ export const router = createBrowserRouter([
         path: "/connections",
         element: <CheckIsAuthenticated component={Connections} />,
       },
+      {
+        path: "/client/:id",
+        element: <CheckIsAuthenticated component={EditClient} />
+      }
     ],
   },
 ]);
