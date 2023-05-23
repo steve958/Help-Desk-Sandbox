@@ -35,8 +35,8 @@ const EditClient = () => {
     const [value, setValue] = useState(user.userType.userTypeName);
     const [projectsList, setProjectsList] = useState<any>([])
     const [projectID, setProjectID] = useState<string>('');
-    const [connectionsToDelete, setConnectionsToDelete] = useState<any>()
-    const [connectionsToCreate, setConnectionsToCreate] = useState<any>()
+    const [connectionsToDelete, setConnectionsToDelete] = useState<any>([])
+    const [connectionsToCreate, setConnectionsToCreate] = useState<any>([])
     const [connectionsList, setConnectionsList] = useState<CompanyProject[] | []>([])
     const [successMessage, setSuccessMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
@@ -50,10 +50,15 @@ const EditClient = () => {
     useEffect(() => {
         if (successMessage || errorMessage) {
             setTimeout(() => { setSuccessMessage(''); setErrorMessage('') }, 4000)
-        } else {
-            fetchAllConnections()
         }
+        fetchAllConnections()
+
     }, [successMessage, errorMessage])
+
+    useEffect(() => {
+        console.log(connectionsToCreate);
+
+    }, [connectionsToCreate])
 
 
     //MUI CONFIG
@@ -120,8 +125,6 @@ const EditClient = () => {
         const { heading, projectID, setProjectID, setConnectionsToCreate, setConnectionsToDelete } = props
         const handleChange = (event: SelectChangeEvent) => {
             setProjectID(event.target.value as string)
-            setConnectionsToCreate((oldState: any) => [...oldState, event.target.value as string])
-            setConnectionsToDelete((oldState: any) => [...oldState, event.target.value as string])
         };
 
         return (
@@ -134,7 +137,6 @@ const EditClient = () => {
                         value={projectID}
                         onChange={handleChange}
                         placeholder='uvezani projekti'
-                        disabled
                         sx={{ color: '#19467c', height: '50px', width: '180px', marginTop: '5px' }}
                     >
                         {connectionsList.map((connection: CompanyProject) => {
@@ -149,15 +151,17 @@ const EditClient = () => {
 
     //fetch connection
     async function fetchAllConnections() {
+        setConnectionsToCreate([])
+        setConnectionsToDelete([])
         const list = await allCompProjConnectionCall(token)
         if (list) {
             setConnectionsList(list)
             const createdConnections = await allCompProjUserConnectionCall(token)
             if (createdConnections) {
-                const projectListCreated = [] as string[]
+                const projectListCreated = [] as any
                 const filtered = createdConnections.filter((connection: CompanyProjectUser) => connection.userId === user.userId)
                 filtered.forEach((connection: CompanyProjectUser) => {
-                    projectListCreated.push(connection.companyProjectId)
+                    projectListCreated.push(connection)
                 })
                 setProjectsList(projectListCreated)
             }
@@ -206,16 +210,16 @@ const EditClient = () => {
 
     //adding connection
     function handleAddProject(value: string) {
-        if (!projectsList.includes(value) && value !== '') {
-            setProjectsList((oldList: string[]) => [...oldList, value])
+        if (!projectsList.find((connection: CompanyProjectUser) => connection.companyProjectId === value) && value !== '') {
+            setConnectionsToCreate((oldstate: any) => [...oldstate.filter((id: string) => id !== value), value])
             setProjectID('')
         }
-        setProjectID('')
     }
 
     //deleting connection from the list
     function handleDeleteProject(value: string) {
-        setProjectsList((oldList: string[]) => [...oldList.filter((id) => id !== value)])
+        setConnectionsToDelete((oldstate: any) => [...oldstate, value])
+        setProjectsList((oldList: CompanyProjectUser[]) => [...oldList.filter((connection: CompanyProjectUser) => connection.companyProjectUserId !== value)])
     }
 
 
@@ -335,8 +339,18 @@ const EditClient = () => {
                 </div>
                 {projectsList.length > 0 &&
                     (<div className='input_field_wrapper_projects'>
-                        <p>Projekti:</p>
-                        {projectsList.map((id: string) => {
+                        <p>Već povezani projekti:</p>
+                        {projectsList.map((connection: CompanyProjectUser) => {
+                            return <Tooltip key={connection.companyProjectUserId} title='KLIKNI DA OBRIŠEŠ PROJEKAT SA LISTE'>
+                                <div className='project_field' onClick={() => handleDeleteProject(connection?.companyProjectUserId)}>{connection.companyProjectUserName?.slice(0, connection.companyProjectUserName?.lastIndexOf('-'))}</div>
+                            </Tooltip>
+                        }
+                        )}
+                    </div>)}
+                {connectionsToCreate.length > 0 &&
+                    (<div className='input_field_wrapper_projects'>
+                        <p>Novi projekti:</p>
+                        {connectionsToCreate.map((id: string) => {
                             return <Tooltip key={id} title='KLIKNI DA OBRIŠEŠ PROJEKAT SA LISTE'>
                                 <div className='project_field' onClick={() => handleDeleteProject(id)}>{connectionsList.find((connection: CompanyProject) => connection.companyProjectId === id)?.companyProjectName}</div>
                             </Tooltip>
