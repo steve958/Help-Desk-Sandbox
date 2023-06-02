@@ -23,7 +23,7 @@ import EditClient from "./components/adminActions/EditClient";
 const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
   component: Component,
 }) => {
-  const token = useAppSelector((state: RootState) => state.user.JWT);
+  const token = useAppSelector((state: RootState) => state.user.JWT ? state.user.JWT : 'asdasdasda');
   const user = useAppSelector((state: RootState) => state.user.userData)
   if (token) return <Component />;
   return <Navigate to="/" replace />;
