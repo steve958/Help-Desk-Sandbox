@@ -1,6 +1,6 @@
 import { Ticket } from "../interfaces"
-// const url = 'https://api.helpdesk.comdata.rs'
-const url = 'http://93.87.67.249:60706'
+const url = 'https://api.helpdesk.comdata.rs'
+// const url = 'http://93.87.67.249:60706'
 //LOGIN
 export async function loginCall(username: string, password: string) {
     try {
@@ -193,6 +193,43 @@ export async function createNewUserCall(token: string, userData: any) {
             },
             body: JSON.stringify({
                 ...userData
+            })
+        })
+        const data = await res.json()
+        return data
+    } catch (err) {
+        return console.error(err)
+    }
+}
+export async function changePasswordAdminCall(token: string, userId: string, newPassword: string) {
+    try {
+        const res = await fetch(`${url}/api/Users/Change-Password/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                newPassword
+            })
+        })
+        const data = await res.json()
+        return data
+    } catch (err) {
+        return console.error(err)
+    }
+}
+export async function changePasswordUserCall(token: string, userId: string, oldPassword: string, newPassword: string) {
+    try {
+        const res = await fetch(`${url}/api/Users/Change-Password/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                oldPassword,
+                newPassword
             })
         })
         const data = await res.json()

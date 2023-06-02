@@ -11,7 +11,7 @@ const persistConfig1 = {
 }
 
 const persistConfig2 = {
-    key: 'fiter',
+    key: 'filter',
     storage
 }
 

@@ -323,7 +323,7 @@ export default function UsersTable(props: UsersTableProps) {
           </StyledTableRow>
         </TableHead>
         <TableBody sx={{ color: "white" }}>
-          {filteredList && ((rowsPerPage > 0
+          {filteredList.length > 0 && ((rowsPerPage > 0
             ? filteredList.filter((user: User) => user.firstName.toLowerCase().includes(query) || user.lastName.toLowerCase().includes(query)).slice(
               page * rowsPerPage,
               page * rowsPerPage + rowsPerPage

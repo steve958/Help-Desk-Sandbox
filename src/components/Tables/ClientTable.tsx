@@ -47,12 +47,13 @@ export default function ClientTable(props: ClientTableProps) {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    useEffect(() => {
-        fetchTickets()
-    }, [])
 
     useEffect(() => {
+        filterFetchedData()
+    }, [selectedConnection, selectedStatus, timeTableFrom, timeTableTo, data])
 
+
+    function filterFetchedData() {
         let filtered = data.filter((ticket: Ticket) => {
             const created = new Date(ticket.created).getTime();
             const from = new Date(timeTableFrom ? timeTableFrom : new Date('2023-01-01T08:51')).getTime();
@@ -60,14 +61,17 @@ export default function ClientTable(props: ClientTableProps) {
 
             return created >= from && created <= to;
         });
+        if (selectedStatus !== 'Rešen' && selectedConnection === 'Svi') {
+            filtered = filtered.filter((ticket: Ticket) => ticket.ticketStatus.ticketStatusName !== 'Rešen')
+        }
         if (selectedConnection !== 'Svi') {
             filtered = filtered.filter((ticket: Ticket) => ticket.companyProjectUser.companyProjectUserId === selectedConnection);
         }
         if (selectedStatus !== 'Svi') {
             filtered = filtered.filter((ticket: Ticket) => ticket.ticketStatus.ticketStatusName === selectedStatus);
         }
-        setFilteredData(filtered);
-    }, [selectedConnection, selectedStatus, timeTableFrom, timeTableTo])
+        setFilteredData(filtered)
+    }
 
     //MUI CONFIG
     interface TablePaginationActionsProps {
@@ -173,10 +177,6 @@ export default function ClientTable(props: ClientTableProps) {
         setPage(0);
     };
 
-    async function fetchTickets() {
-        const tickets = await allTicketsFromUserCall(token, user.userId)
-        setFilteredData(tickets)
-    }
 
     //handle ticket open
     function handleSingleTicketOpen(id: string, ticket: Ticket) {
@@ -200,7 +200,7 @@ export default function ClientTable(props: ClientTableProps) {
                     </StyledTableRow>
                 </TableHead>
                 <TableBody sx={{ color: 'white' }}>
-                    {filteredData && (((rowsPerPage > 0)
+                    {filteredData?.length > 0 && (((rowsPerPage > 0)
                         ? filteredData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : filteredData
                     ).map((row: Ticket) => (

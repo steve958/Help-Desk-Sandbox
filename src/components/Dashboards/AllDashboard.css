@@ -102,3 +102,37 @@
   user-select: none;
   font-size: 25px;
 }
+
+@media only screen and (max-width: 1700px) {
+  .filter_wrapper {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .column_filters {
+    width: 100% !important;
+    align-self: flex-start;
+    margin-left: 30px;
+  }
+
+  .column_filters span {
+    position: static;
+  }
+
+  .column_filters span {
+    width: 50%;
+  }
+
+  .calendars_wrapper p {
+    white-space: nowrap;
+    margin: 20px;
+  }
+
+  .calendars_wrapper {
+    justify-content: center !important;
+    margin-top: 20px;
+    width: 750px !important;
+    margin-right: 20px !important;
+  }
+
+}

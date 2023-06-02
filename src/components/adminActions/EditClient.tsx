@@ -8,7 +8,7 @@ import UserProfile from '../UserProfile/UserProfile';
 import { useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 import { CompanyProject, UserTypes, CompanyProjectUser } from '../../interfaces';
-import { allCompProjConnectionCall, createCompProjUserConnectionCall, createSingleConnectionCall, allCompProjUserConnectionCall, editUserCall, deleteCompProjUserConnectionCall } from '../../helpers/apiCalls';
+import { allCompProjConnectionCall, createSingleConnectionCall, allCompProjUserConnectionCall, editUserCall, deleteCompProjUserConnectionCall, changePasswordAdminCall } from '../../helpers/apiCalls';
 //MUI COMPONENTS AND TYPES
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -25,6 +25,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import CreateIcon from '@mui/icons-material/Create';
+import SendIcon from '@mui/icons-material/Send';
 
 const EditClient = () => {
     const token = useAppSelector((state: RootState) => state.user.JWT)
@@ -40,12 +41,14 @@ const EditClient = () => {
     const [connectionsList, setConnectionsList] = useState<CompanyProject[] | []>([])
     const [successMessage, setSuccessMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
+    const [showPasswordInput, setShowPasswordInput] = useState<boolean>(false)
     //input usestate instead userefs
     const [firstName, setFirstName] = useState<string>(user.firstName)
     const [lastName, setLastName] = useState<string>(user.lastName)
     const [email, setEmail] = useState<string>(user.email)
     const [phone, setPhone] = useState<string>(user.phone)
     const [userName, setUserName] = useState<string>(user.username)
+    const [password, setPassword] = useState<string>('')
 
     useEffect(() => {
         if (successMessage || errorMessage) {
@@ -83,6 +86,12 @@ const EditClient = () => {
     function ButtonSubmit() {
         return (
             <ColorButtonSubmit variant="contained" disabled={!!successMessage || !!errorMessage} onClick={handleSaveClient}>Ažuriraj korisnika</ColorButtonSubmit>
+        );
+    }
+
+    function ButtonShowPasswordInput() {
+        return (
+            <ColorButtonSubmit variant="contained" onClick={() => setShowPasswordInput(!showPasswordInput)}>{showPasswordInput ? 'Ne menjaj šifru' : 'Promeni šifru'}</ColorButtonSubmit>
         );
     }
 
@@ -203,6 +212,23 @@ const EditClient = () => {
         }
     }
 
+    async function saveNewPassword() {
+        if (!password) {
+            setErrorMessage('Unesite novu šifru')
+        } else {
+            const response = await changePasswordAdminCall(token, user.userId, password)
+            if (response) {
+                setSuccessMessage('Uspešno ažurirana šifra korisnika')
+                setShowPasswordInput(false)
+                setPassword('')
+            } else {
+                setErrorMessage('Došlo je do greške pri ažuriranju šifre')
+                setShowPasswordInput(false)
+                setPassword('')
+            }
+        }
+    }
+
     //adding connection
     function handleAddProject(value: string) {
         if (!projectsList.find((connection: CompanyProjectUser) => connection.companyProjectId === value) && value !== '') {
@@ -316,6 +342,28 @@ const EditClient = () => {
                         onChange={(e) => setUserName(e.target.value)}
                     />
                 </div>
+                <span style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', marginTop: '5px', marginBottom: '5px' }}>
+                    <ButtonShowPasswordInput></ButtonShowPasswordInput>
+                </span>
+                {showPasswordInput && <div className='input_field_wrapper' style={{ position: 'relative' }}>
+                    <p>Nova šifra korisnika:</p>
+                    <OutlinedInput
+                        style={{
+                            width: "180px",
+                            height: '50px',
+                            backgroundColor: 'white'
+                        }}
+                        type="text"
+                        placeholder="nova šifra"
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <span style={{ position: 'absolute', right: '-30px' }}>
+                        <Tooltip title="AŽURIRAJ KORISNIKOVU ŠIFRU" onClick={saveNewPassword}>
+                            <SendIcon />
+                        </Tooltip>
+                    </span>
+                </div>
+                }
             </div>
             {(value === 'Client' || value === 'Client_Admin') && <div className='form_wrapper_expanded'>
                 <div className='input_field_wrapper' style={{ position: 'relative' }}>
@@ -332,7 +380,7 @@ const EditClient = () => {
                         </span>
                     </Tooltip>
                 </div>
-                {projectsList.length > 0 &&
+                {projectsList?.length > 0 &&
                     (<div className='input_field_wrapper_projects'>
                         <p>Već povezani projekti:</p>
                         {projectsList.map((connection: CompanyProjectUser) => {
@@ -342,7 +390,7 @@ const EditClient = () => {
                         }
                         )}
                     </div>)}
-                {connectionsToCreate.length > 0 &&
+                {connectionsToCreate?.length > 0 &&
                     (<div className='input_field_wrapper_projects'>
                         <p>Novi projekti:</p>
                         {connectionsToCreate.map((id: string) => {
@@ -358,7 +406,7 @@ const EditClient = () => {
             <ButtonSubmit></ButtonSubmit>
             <ButtonDiscard></ButtonDiscard>
         </span>
-    </div>;
+    </div >;
 };
 
 export default EditClient;

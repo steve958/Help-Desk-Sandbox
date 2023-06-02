@@ -75,7 +75,7 @@ const NewClient = () => {
   }));
 
   function ButtonDiscard() {
-    return (<ColorButtonDiscard variant='contained' disabled={!!successMessage || !!errorMessage} onClick={() => navigate('/allclients')}>Zanemari</ColorButtonDiscard>)
+    return (<ColorButtonDiscard variant='contained' disabled={!!successMessage || !!errorMessage} onClick={() => navigate('/allclients')}>Odustani</ColorButtonDiscard>)
   }
 
   function ButtonSubmit() {
@@ -131,10 +131,10 @@ const NewClient = () => {
             placeholder='uvezani projekti'
             sx={{ color: '#19467c', height: '50px', width: '180px', marginTop: '5px' }}
           >
-            {connectionsList.map((connection: CompanyProject) => {
+            {connectionsList?.length > 0 ? connectionsList.map((connection: CompanyProject) => {
               return <MenuItem value={connection.companyProjectId} key={connection.companyProjectId}>{connection.companyProjectName}</MenuItem>
             }
-            )}
+            ) : <p>nema povezanih kompanija i projekata</p>}
           </Select>
         </FormControl>
       </Box>

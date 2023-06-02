@@ -15,6 +15,7 @@ import SupportFilters from "../Filters/SupportFilter";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import StorageIcon from '@mui/icons-material/Storage';
 
+
 const SupportDashboard = () => {
   const token = useAppSelector((state: RootState) => state.user.JWT)
   const dispatch = useAppDispatch()
@@ -33,15 +34,21 @@ const SupportDashboard = () => {
   const [timeTableTo, setTimeTableTo] = useState<Date>(new Date('2030-01-01T08:53'))
   const [query, setQuery] = useState<string>('')
 
-
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+
+    const interval = setInterval(() => {
+      fetchData();
+      console.log('interval');
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   //fetch various data 
   async function fetchData() {
     try {
-      const tickets = await allTicketsCall(token)
+      let tickets = await allTicketsCall(token)
       if (tickets) {
         dispatch(setAllTickets(tickets))
       }

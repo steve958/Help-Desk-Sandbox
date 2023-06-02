@@ -80,7 +80,7 @@ export default function ClientFilters(props: ClientFiltersProps) {
             label={heading}
             onChange={handleChange}
           >
-            <MenuItem value='Svi'>Svi</MenuItem>
+            <MenuItem value='Svi'>{selectedConnection === 'Svi' ? <p style={{ margin: '0' }}>Svi <i>(osim rešenih tiketa)</i></p> : 'Svi'}</MenuItem>
             {statuses.map((status: TicketStatus) => {
               return <MenuItem key={status.ticketStatusId} value={status.ticketStatusName}>{status.ticketStatusName}</MenuItem>
             })}

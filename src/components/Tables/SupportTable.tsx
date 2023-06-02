@@ -55,47 +55,38 @@ export default function SupportTable(props: SupportTableProps) {
     const [rowsPerPage, setRowsPerPage] = useState<number>(-1);
     const [filteredData, setFilteredData] = useState<Ticket[]>([])
 
-    let interval: any
-
     useEffect(() => {
-        fetchAllTickets()
-        interval = setInterval(() => {
-            fetchAllTickets()
-            console.log('interval');
-        }, 20000)
-        return () => {
-            clearInterval(interval)
-        }
-    }, [])
+        filterFetchedData()
+    }, [selectedCompany, selectedPriority, selectedProject, selectedStatus, selectedType, query, timeTableFrom, timeTableTo, allTickets])
 
-    useEffect(() => {
-        try {
-            let filtered = allTickets.filter((ticket: Ticket) => {
-                const created = new Date(ticket.created).getTime();
-                const from = new Date(timeTableFrom ? timeTableFrom : new Date('2023-01-01T08:51')).getTime();
-                const to = new Date(timeTableTo ? timeTableTo : new Date('2030-01-01T08:53')).getTime();
-                return created >= from && created <= to;
-            });
-            if (selectedCompany !== 'Sve') {
-                filtered = filtered.filter((ticket: Ticket) => ticket.companyProjectUser.companyProjectUserName.slice(0, ticket.companyProjectUser.companyProjectUserName.indexOf('-')) === selectedCompany)
-            }
-            if (selectedProject !== 'Svi') {
-                filtered = filtered.filter((ticket: Ticket) => ticket.companyProjectUser.companyProjectUserName.slice(ticket.companyProjectUser.companyProjectUserName.indexOf('-') + 1, ticket.companyProjectUser.companyProjectUserName.lastIndexOf('-')) === selectedProject)
-            }
-            if (selectedStatus !== 'Svi') {
-                filtered = filtered.filter((ticket: Ticket) => ticket.ticketStatus.ticketStatusId === Number(selectedStatus))
-            }
-            if (selectedPriority !== 'Svi') {
-                filtered = filtered.filter((ticket: Ticket) => ticket.ticketPriority.ticketPriorityId === Number(selectedPriority))
-            }
-            if (selectedType !== 'Svi') {
-                filtered = filtered.filter((ticket: Ticket) => ticket.ticketType.ticketTypeId === Number(selectedType))
-            }
-            setFilteredData(filtered);
-        } catch (error) {
-            console.error(error)
+
+    function filterFetchedData() {
+        let filtered = allTickets.filter((ticket: Ticket) => {
+            const created = new Date(ticket.created).getTime();
+            const from = new Date(timeTableFrom ? timeTableFrom : new Date('2023-01-01T08:51')).getTime();
+            const to = new Date(timeTableTo ? timeTableTo : new Date('2030-01-01T08:53')).getTime();
+            return created >= from && created <= to;
+        });
+        if (selectedCompany === 'Sve' && selectedProject === 'Svi' && selectedPriority === 'Svi' && selectedType === 'Svi' && !query && Number(selectedStatus) !== 4) {
+            filtered = filtered.filter((ticket: Ticket) => ticket.ticketStatus.ticketStatusId !== 4)
         }
-    }, [selectedCompany, selectedPriority, selectedProject, selectedStatus, selectedType, query, timeTableFrom, timeTableTo])
+        if (selectedCompany !== 'Sve') {
+            filtered = filtered.filter((ticket: Ticket) => ticket.companyProjectUser.companyProjectUserName.slice(0, ticket.companyProjectUser.companyProjectUserName.indexOf('-')) === selectedCompany)
+        }
+        if (selectedProject !== 'Svi') {
+            filtered = filtered.filter((ticket: Ticket) => ticket.companyProjectUser.companyProjectUserName.slice(ticket.companyProjectUser.companyProjectUserName.indexOf('-') + 1, ticket.companyProjectUser.companyProjectUserName.lastIndexOf('-')) === selectedProject)
+        }
+        if (selectedStatus !== 'Svi') {
+            filtered = filtered.filter((ticket: Ticket) => ticket.ticketStatus.ticketStatusId === Number(selectedStatus))
+        }
+        if (selectedPriority !== 'Svi') {
+            filtered = filtered.filter((ticket: Ticket) => ticket.ticketPriority.ticketPriorityId === Number(selectedPriority))
+        }
+        if (selectedType !== 'Svi') {
+            filtered = filtered.filter((ticket: Ticket) => ticket.ticketType.ticketTypeId === Number(selectedType))
+        }
+        setFilteredData(filtered)
+    }
 
     //MUI CONFIG
     interface TablePaginationActionsProps {
@@ -206,13 +197,6 @@ export default function SupportTable(props: SupportTableProps) {
         navigate(`/ticket/${id}`)
     }
 
-    //fetch all tickets for the first render
-    async function fetchAllTickets() {
-        const tickets = await allTicketsCall(token)
-        if (tickets) {
-            setFilteredData(tickets)
-        }
-    }
 
     return (
         <TableContainer component={Paper}>
@@ -231,9 +215,9 @@ export default function SupportTable(props: SupportTableProps) {
                     </StyledTableRow>
                 </TableHead>
                 <TableBody sx={{ color: 'white' }}>
-                    {filteredData && ((rowsPerPage > 0
-                        ? filteredData.filter((ticket: Ticket) => ticket.creator.firstName.toLowerCase().includes(query) || ticket.creator.lastName.toLowerCase().includes(query)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        : filteredData.filter((ticket: Ticket) => ticket.creator.firstName.toLowerCase().includes(query) || ticket.creator.lastName.toLowerCase().includes(query))
+                    {filteredData?.length > 0 && ((rowsPerPage > 0
+                        ? filteredData?.filter((ticket: Ticket) => ticket.creator.firstName.toLowerCase().includes(query) || ticket.creator.lastName.toLowerCase().includes(query)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : filteredData?.filter((ticket: Ticket) => ticket.creator.firstName.toLowerCase().includes(query) || ticket.creator.lastName.toLowerCase().includes(query))
                     ).map((row: Ticket) => (
                         <StyledTableRow key={row.ticketId} onClick={() => handleSingleTicketOpen(row.ticketId, row)}>
                             <TableCell align="center">{row.companyProjectUser.companyProjectUserName.slice(0, row.companyProjectUser.companyProjectUserName.lastIndexOf('-'))}</TableCell>

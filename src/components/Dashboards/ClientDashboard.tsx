@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./AllDashboard.css";
+import { useNavigate } from "react-router";
 //CUSTOM COMPONENTS
 import Toolbar from "../Toolbar/Toolbar";
 import ClientTable from "../Tables/ClientTable";
@@ -33,13 +34,21 @@ const ClientDashboard = () => {
 
   useEffect(() => {
     fetchData()
+    let interval: any
+    if (user?.userType?.userTypeId === 3) {
+      interval = setInterval(() => {
+        fetchData();
+        console.log('interval');
+      }, 10000);
+    }
+    return () => clearInterval(interval);
   }, [])
+
 
 
   //fetch various data for the user
   async function fetchData() {
     try {
-
       const connections = await getUsersConnectionsCall(token, user.userId)
       if (connections) {
         dispatch(setConnections({ connections: [...connections] }))

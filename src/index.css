@@ -83,7 +83,7 @@ body {
   height: 100px;
   box-sizing: border-box;
   z-index: 1;
-  font-size: 24px;
+  font-size: 24px !important;
 }
 
 .Toolbar_left,
@@ -126,6 +126,7 @@ body {
   display: block;
   color: white;
   text-decoration: none;
+  width: 100% !important;
 }
 
 .Toolbar_left li {
@@ -133,15 +134,12 @@ body {
   margin-right: 150px;
 }
 
-
-
 .Toolbar_left li:hover {
   opacity: 0.7;
 }
 
 .Toolbar_right li a {
-  width: 160px;
-  font-size: 12px;
+  font-size: 18px !important;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -191,4 +189,32 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.modal_heading {
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: space-around;
+  width: 90%;
+  cursor: pointer;
+  user-select: none;
+}
+
+.modal_heading span {
+  border-top: 2px solid #19467c;
+  border-bottom: 2px solid #19467c;
+  width: 50%;
+  padding: 10px;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.modal_heading span:last-child {
+  border-left: 2px solid #19467c;
+  border-right: 2px solid #19467c;
+}
+
+.modal_heading span:first-child {
+  border-left: 2px solid #19467c;
 }

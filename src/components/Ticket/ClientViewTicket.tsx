@@ -27,7 +27,9 @@ import CreateIcon from '@mui/icons-material/Create';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import SettingsIcon from '@mui/icons-material/Settings';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 
 export default function ClientViewTicket() {
 
@@ -38,6 +40,10 @@ export default function ClientViewTicket() {
     const [newMessage, setNewMessage] = useState<string>('')
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [successMessage, setSuccessMessage] = useState<string>('')
+    const [validateMessage, setValidateMessage] = useState<boolean>(false)
+    const [formatBold, setFormatBold] = useState<boolean>(false)
+    const [formatItalic, setFormatItalic] = useState<boolean>(false)
+    const [formatUnderline, setFormatUnderline] = useState<boolean>(false)
 
     const dispatch = useAppDispatch()
     const token = useAppSelector((state: RootState) => state.user.JWT)
@@ -51,6 +57,12 @@ export default function ClientViewTicket() {
             element[0].scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
     }, [sendMessageClicked])
+
+    useEffect(() => {
+        if (newMessage) {
+            setValidateMessage(false)
+        }
+    }, [newMessage])
 
     useEffect(() => {
         if (errorMessage || successMessage) {
@@ -68,14 +80,12 @@ export default function ClientViewTicket() {
         }
     }, [])
 
-
     //MUI CONFIG
     const ColorButtonSubmit = styled(Button)<ButtonProps>(({ theme }) => ({
         color: theme.palette.getContrastText('#398b93'),
         backgroundColor: '#f9a235',
-        marginTop: '5px',
-        marginBottom: '10px',
-        marginRight: '10px',
+        marginRight: '50px',
+        width: '200px',
         '&:hover': {
             backgroundColor: '#19467c',
         },
@@ -93,10 +103,10 @@ export default function ClientViewTicket() {
 
     const ColorButtonBack = styled(Button)<ButtonProps>(({ theme }) => ({
         color: theme.palette.getContrastText('#398b93'),
-        backgroundColor: '#19467c7a',
+        backgroundColor: '#19467c',
         width: '200px',
         '&:hover': {
-            backgroundColor: '#19467c',
+            backgroundColor: '#19467c12a',
         },
     }));
 
@@ -111,7 +121,11 @@ export default function ClientViewTicket() {
     }
 
     function ButtonBack() {
-        return <ColorButtonBack variant="contained" onClick={() => navigate("/clientdashboard")}>Nazad na tabelu</ColorButtonBack>
+        return <ColorButtonBack variant="contained" onClick={() => navigate("/clientdashboard")}>Nazad</ColorButtonBack>
+    }
+
+    function ButtonClose() {
+        return <ColorButtonBack variant="contained" onClick={() => { setSendMessageClicked(false); setNewMessage('') }}>Odustani</ColorButtonBack>
     }
 
     //cancel ticket
@@ -142,14 +156,37 @@ export default function ClientViewTicket() {
         }
     }
 
+    //create message with line break
+    function createNewMessage(e: React.ChangeEvent<HTMLTextAreaElement> | any) {
+        let messageContent = e.target.value
+        if (e?.nativeEvent?.inputType === 'insertLineBreak') {
+            messageContent = messageContent + '<br>'
+        }
+        setNewMessage(messageContent)
+    }
+
     //send message 
     async function handleSendMessage() {
+        let result = newMessage
         if (!newMessage) {
-            setErrorMessage('Dodajte sadržaj poruke')
+            setErrorMessage('Sadržaj poruke je obavezno polje')
+            setValidateMessage(true)
         } else {
-            const response = await createNewMessageCall(token, ticket.ticketId, newMessage)
+            if (formatBold) {
+                result = result + '<b>'
+            }
+            if (formatItalic) {
+                result = result + '<i>'
+            }
+            if (formatUnderline) {
+                result = result + '<u>'
+            }
+            const response = await createNewMessageCall(token, ticket.ticketId, result)
             if (response) {
                 setSuccessMessage('Uspešno ste poslali poruku')
+                setFormatBold(false)
+                setFormatItalic(false)
+                setFormatUnderline(false)
                 fetchMessages()
                 syncTicketData()
                 setNewMessage('')
@@ -158,6 +195,14 @@ export default function ClientViewTicket() {
                 setErrorMessage('Došlo je do greške pri slanju poruke')
             }
         }
+    }
+
+    //convert time spent to a string
+    function stringConverter(time: number) {
+        const string = time.toString()
+        if (string[string.length - 1] === '1' && string !== '11') {
+            return 'minut'
+        } return 'minuta'
     }
 
     //calc time spent on resolving the ticket
@@ -283,33 +328,33 @@ export default function ClientViewTicket() {
                 <span className='messages_wrapper'>
                     {messages.map((message: Message) => {
                         return <span key={message.messageId} id={message.message[0] === '*' ? 'system_message' : 'djoksa'} className={(message.sentBy.userType.userTypeId === 3 || message.sentBy.userType.userTypeId === 4) ? 'message_client' : 'message_support'}>
-                            <span className='message_icon_wrapper'>
-                                {(message.sentBy.userType.userTypeId === 3 || message.sentBy.userType.userTypeId === 4) &&
-                                    <span style={{ width: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                        <span>
-                                            <AccountCircleIcon style={{ width: '40px', height: '40px' }} />
+                            {(message.sentBy.userType.userTypeId === 3 || message.sentBy.userType.userTypeId === 4) ?
+                                <span className='message_heading_client'>
+                                    <span className='message_icon_wrapper' title={message.sentBy.userType.userTypeName}>
+                                        <AccountCircleIcon style={{ width: '40px', height: '40px' }} />
+                                        {message.sentBy.firstName}
+                                        {' '}
+                                        {message.sentBy.lastName}
+                                        <span className='time_wrapper_client'>
+                                            {message.sentTime ? dateConverter(message.sentTime) : ''}
                                         </span>
-                                        <span>
-                                            {message.sentBy.firstName}{message.sentBy.lastName}
+
+                                    </span>
+                                </span> :
+                                <span className='message_heading_support'>
+                                    {message.timeSpent && <span className='time_spent_display'>utrošeno vreme na rešavanje {message.timeSpent} {stringConverter(message.timeSpent)}</span>}
+                                    <span className='message_icon_wrapper' title={message.sentBy.userType.userTypeName}>
+                                        <span className='time_wrapper_support'>
+                                            {message.sentTime ? dateConverter(message.sentTime) : ''}
                                         </span>
-                                    </span>}
-                            </span>
-                            <span>{(user.userType.userTypeId === 1 || user.userType.userTypeId === 2) && message.timeSpent ? message.timeSpent : ''}</span>
-                            <span className='message_content'>
-                                <span>{message.message.replace('*', 'promenjena podešavanja tiketa >>> ')}</span>
-                                <span style={{ textAlign: 'end', fontWeight: '600', marginRight: '15px' }}>{message.sentTime ? dateConverter(message.sentTime) : ''}</span>
-                            </span>
-                            <span className='message_icon_wrapper' style={{ position: 'relative' }}>
-                                <span style={{ position: 'absolute', right: '10px' }}>{message.timeSpent ? message.timeSpent : ''}</span>
-                                {(message.sentBy.userType.userTypeId === 1 || message.sentBy.userType.userTypeId === 2) &&
-                                    <span style={{ width: '100px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                        <span>
-                                            <SupervisedUserCircle style={{ width: '40px', height: '40px' }} />
-                                        </span>
-                                        <span style={{ textAlign: 'center' }}>
-                                            {`${message.sentBy.firstName} ${message.sentBy.lastName}`}
-                                        </span>
-                                    </span>}
+                                        {message.sentBy.firstName}
+                                        {' '}
+                                        {message.sentBy.lastName}
+                                        <SupervisedUserCircle style={{ width: '40px', height: '40px' }} />
+                                    </span>
+                                </span>}
+                            <span className='message_content' style={{ fontWeight: message.message.includes('<b>') ? '600' : '400', fontStyle: message.message.includes('<i>') ? 'italic' : 'normal', textDecoration: message.message.includes('<u>') ? 'underline' : 'none' }}>
+                                <span><p>{message.message.replace('*', `${dateConverter(message.sentTime)} korisnik ${message.sentBy.firstName} ${message.sentBy.lastName} ${message.sentBy.firstName[message.sentBy.firstName.length - 1] === 'a' ? 'promenila' : 'promenio'} podešavanja tiketa >>> `).replace('<b>', '').replace('<i>', '').replace('<u>', '').replace('<br>', ' \n')}</p></span>
                             </span>
                         </span>
                     })}
@@ -328,28 +373,42 @@ export default function ClientViewTicket() {
                         </span>
                     </Tooltip>
                 </span>
-                {sendMessageClicked && (
-                    <>
-                        <span className="heading_icon_wrapper" style={{ width: '100%' }}>
-                            <h3 className="headings">Slanje poruke korisničkoj podršci</h3>
-                            <CreateIcon style={{ color: '#19467c' }} />
-                        </span>
-                        <div className='send_message_wrapper'>
-                            <span>
-                                <textarea className="send_message_field" style={{ marginTop: '10px' }} value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
-                                <input type="file" className='add_files' multiple />
-                                <ButtonSubmit />
-                            </span>
-                        </div>
-                    </>
-                )}
-                {!sendMessageClicked && <span className='ticket_buttons_wrapper'>
-                    <span>
-                        <ButtonCancel />
-                        <ButtonBack />
-                    </span>
-                </span>}
             </div >
+            {sendMessageClicked && (
+                <span style={{ width: '95%', height: 'fit-content' }}>
+                    <span className="heading_icon_wrapper" style={{ width: '100%' }}>
+                        <h3 className="headings">Slanje poruke korisničkoj podršci</h3>
+                        <CreateIcon style={{ color: '#19467c' }} />
+                    </span>
+                    <div className='send_message_wrapper'>
+                        <span>
+                            <span className='format_text_wrapper'>
+                                <span className='format_text_icon' id={formatBold ? 'active' : ''} onClick={() => formatBold ? setFormatBold(false) : setFormatBold(true)} style={{ marginLeft: '0' }}>
+                                    <FormatBoldIcon />
+                                </span>
+                                <span className='format_text_icon' id={formatItalic ? 'active' : ''} onClick={() => formatItalic ? setFormatItalic(false) : setFormatItalic(true)}>
+                                    <FormatItalicIcon />
+                                </span>
+                                <span className='format_text_icon' id={formatUnderline ? 'active' : ''} onClick={() => formatUnderline ? setFormatUnderline(false) : setFormatUnderline(true)}>
+                                    <FormatUnderlinedIcon />
+                                </span>
+                            </span>
+                            <textarea className="send_message_field" id={validateMessage ? 'warning' : ''} placeholder={validateMessage ? 'potrebno uneti sadržaj poruke' : ''} style={{ marginTop: '10px', fontWeight: formatBold ? '600' : '400', textDecoration: formatUnderline ? 'underline' : 'none', fontStyle: formatItalic ? 'italic' : 'normal' }} onChange={(e) => createNewMessage(e)} />
+                            <input type="file" className='add_files' multiple />
+                            <span style={{ display: 'flex', flexDirection: 'row', width: 'fit-content', marginBottom: '10px' }}>
+                                <ButtonSubmit />
+                                <ButtonClose />
+                            </span>
+                        </span>
+                    </div>
+                </span>
+            )}
+            {!sendMessageClicked && <span className='ticket_buttons_wrapper'>
+                <span>
+                    <ButtonCancel />
+                    <ButtonBack />
+                </span>
+            </span>}
         </div >
     )
 }

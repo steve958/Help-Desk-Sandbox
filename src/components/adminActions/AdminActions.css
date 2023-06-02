@@ -98,7 +98,7 @@
 
 .connection_wrapper {
     width: 95%;
-    height: 80vh;
+    overflow: auto;
     display: flex;
     flex-direction: column;
     align-items: center;

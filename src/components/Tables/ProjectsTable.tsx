@@ -219,6 +219,7 @@ export default function ProjectsTable(props: ProjectsTableProps) {
 
     return (
         <TableContainer component={Paper}>
+            {!props.data && <span style={{ position: 'absolute', bottom: '50%', right: '50%', fontSize: '18px' }}>nema kreiranih projekata</span>}
             {/*delete project modal*/}
             {showModal && <Dialog open={showModal} onClose={() => setShowModal(false)}>
                 <DialogContent>
@@ -313,7 +314,7 @@ export default function ProjectsTable(props: ProjectsTableProps) {
                     </StyledTableRow>
                 </TableHead>
                 <TableBody sx={{ color: "white" }}>
-                    {(props.data.length > 0 && rowsPerPage > 0
+                    {props?.data?.length > 0 && ((props.data.length > 0 && rowsPerPage > 0
                         ? props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : props.data
                     ).map((project: Project) => {
@@ -341,14 +342,14 @@ export default function ProjectsTable(props: ProjectsTableProps) {
                                 </Tooltip>
                             </TableCell>
                         </StyledTableRow>
-                    }).reverse()}
+                    }).reverse())}
                 </TableBody>
                 <TableFooter>
                     <TableRow>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
                             colSpan={10}
-                            count={props.data.length}
+                            count={props?.data?.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             SelectProps={{

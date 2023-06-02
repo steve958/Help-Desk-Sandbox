@@ -26,20 +26,42 @@ import InfoIcon from '@mui/icons-material/Info';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CreateIcon from '@mui/icons-material/Create';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { OutlinedInput } from "@mui/material";
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 
 
 const NewTicket = () => {
   const token = useAppSelector((state: RootState) => state.user.JWT)
   const connectionList = useAppSelector((state: RootState) => state.user.userConnections)
   const navigate = useNavigate()
-  const messageRef = useRef<any>('')
-  const titleRef = useRef<any>('')
   const dispatch = useAppDispatch()
 
   const [showUserProfile, setShowUserProfile] = useState<boolean>(false);
   const [selectedConnection, setSelectedConnection] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [validateConnection, setValidateConnection] = useState<boolean>(false)
+  const [validateTitle, setValidateTitle] = useState<boolean>(false)
+  const [validateMessage, setValidateMessage] = useState<boolean>(false)
+  const [message, setMessage] = useState<string>('')
+  const [title, setTitle] = useState<string>('')
+  const [formatBold, setFormatBold] = useState<boolean>(false)
+  const [formatItalic, setFormatItalic] = useState<boolean>(false)
+  const [formatUnderline, setFormatUnderline] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (message) {
+      setValidateMessage(false)
+    }
+    if (title) {
+      setValidateTitle(false)
+    }
+    if (selectedConnection) {
+      setValidateConnection(false)
+    }
+  }, [message, title, selectedConnection])
 
   useEffect(() => {
     if (successMessage || errorMessage) {
@@ -68,27 +90,12 @@ const NewTicket = () => {
   }));
 
   function ButtonDiscard() {
-    return (<ColorButtonDiscard variant='contained' onClick={() => navigate("/clientdashboard")}>Zanemari</ColorButtonDiscard>)
+    return (<ColorButtonDiscard variant='contained' onClick={() => navigate("/clientdashboard")}>Odustani</ColorButtonDiscard>)
   }
 
   function ButtonSubmit() {
     return (
       <ColorButtonSubmit variant="contained" onClick={() => handleCreateTicket()}>Kreiraj tiket</ColorButtonSubmit>
-    );
-  }
-
-  function BasicTextFields() {
-    return (
-      <Box
-        component="form"
-        sx={{
-          '& > :not(style)': { m: 1, width: '500px' },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <TextField id="outlined-basic" label="naslov" variant="outlined" inputRef={titleRef} />
-      </Box>
     );
   }
 
@@ -104,7 +111,7 @@ const NewTicket = () => {
           <InputLabel id="demo-simple-select-label">{heading}</InputLabel>
           <Select
             labelId="demo-simple-select-label"
-            id="demo-simple-select"
+            id={validateConnection ? 'warning' : ''}
             value={selectedConnection}
             label={heading}
             onChange={handleChange}
@@ -141,11 +148,22 @@ const NewTicket = () => {
 
   //handle create ticket 
   async function handleCreateTicket() {
-    let message = messageRef.current.value
-    let title = titleRef.current.value
-    if (!message || !title) {
-      setErrorMessage('Povezani projekat, naslov i opis tiketa su obavezna polja')
-      return
+    if (!message || !title || !selectedConnection) {
+      if (!selectedConnection) {
+        setErrorMessage('Povezani projekat je obavezno polje')
+        setValidateConnection(true)
+        return
+      }
+      if (!title) {
+        setErrorMessage('Naslov tiketa je obevezno polje')
+        setValidateTitle(true)
+        return
+      }
+      if (!message) {
+        setErrorMessage('Opis tiketa je obavezno polje')
+        setValidateMessage(true)
+        return
+      }
     } else {
       const response = await createNewTicketCall(token, title, selectedConnection)
       if (response) {
@@ -161,8 +179,6 @@ const NewTicket = () => {
         setErrorMessage('Došlo je do greške pri kreiranju tiketa')
       }
     }
-    message = ''
-    title = ''
   }
 
   return <div className="new_ticket_container">
@@ -190,7 +206,16 @@ const NewTicket = () => {
       </span>
       <span style={{ width: '50%' }}>
         <p>Naslov tiketa:</p>
-        <BasicTextFields />
+        <FormControl>
+          <InputLabel htmlFor='display-name'>naslov</InputLabel>
+          <OutlinedInput
+            id={validateTitle ? 'warning' : ''}
+            label='naslov'
+            type="text"
+            placeholder="Pretraži po korisnikovom imenu"
+            defaultValue={title}
+            onChange={(e) => setTitle(e.target.value)} />
+        </FormControl>
       </span>
     </div>
     <span className="heading_icon_wrapper">
@@ -198,7 +223,18 @@ const NewTicket = () => {
       <CreateIcon style={{ color: '#19467c' }} />
     </span>
     <div className="description_wrapper">
-      <textarea className="description_field" ref={messageRef} />
+      <span className='format_text_wrapper' style={{ marginTop: '0', color: '#19467c' }}>
+        <span className='format_text_icon' id={formatBold ? 'active' : ''} onClick={() => formatBold ? setFormatBold(false) : setFormatBold(true)} style={{ marginLeft: '0' }}>
+          <FormatBoldIcon />
+        </span>
+        <span className='format_text_icon' id={formatItalic ? 'active' : ''} onClick={() => formatItalic ? setFormatItalic(false) : setFormatItalic(true)}>
+          <FormatItalicIcon />
+        </span>
+        <span className='format_text_icon' id={formatUnderline ? 'active' : ''} onClick={() => formatUnderline ? setFormatUnderline(false) : setFormatUnderline(true)}>
+          <FormatUnderlinedIcon />
+        </span>
+      </span>
+      <textarea className="description_field" style={{ fontWeight: formatBold ? '600' : '400', textDecoration: formatUnderline ? 'underline' : 'none', fontStyle: formatItalic ? 'italic' : 'normal' }} id={validateMessage ? 'warning' : ''} defaultValue={message} onChange={(e: any) => setMessage(e.target.value)} />
     </div>
     <span className="heading_icon_wrapper">
       <h3 className="headings">Priloži dokument ili sliku ekrana</h3>

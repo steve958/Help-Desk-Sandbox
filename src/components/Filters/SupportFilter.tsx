@@ -121,13 +121,13 @@ export default function SupportFilters(props: SupportFiltersProps) {
                         label={heading}
                         onChange={handleChange}
                     >
-                        <MenuItem value='Svi'>Svi</MenuItem>
+                        <MenuItem value='Svi'>{selectedCompany === 'Sve' && selectedProject === 'Svi' && selectedPriority === 'Svi' && selectedType === 'Svi' && !query ? <p style={{ margin: '0' }}>Svi <i>(osim rešenih tiketa)</i></p> : 'Svi'}</MenuItem>
                         {statuses.map((status: TicketStatus) => {
                             return <MenuItem key={status.ticketStatusId} value={status.ticketStatusId}>{status.ticketStatusName}</MenuItem>
                         })}
                     </Select>
                 </FormControl>
-            </Box>
+            </Box >
         );
     }
 
@@ -199,7 +199,7 @@ export default function SupportFilters(props: SupportFiltersProps) {
                     <InputLabel htmlFor='display-name'>korisnikovo ime</InputLabel>
                     <OutlinedInput
                         style={{
-                            width: "300px", fontFamily: 'Arial', paddingLeft: '10px', height: '60px'
+                            minWidth: "300px", fontFamily: 'Arial', paddingLeft: '10px', height: '60px'
                         }}
                         startAdornment={
                             <InputAdornment position="end">
@@ -218,7 +218,7 @@ export default function SupportFilters(props: SupportFiltersProps) {
             </span>
         </span>
         <span className='calendars_wrapper'>
-            <span style={{ marginLeft: '0' }}>
+            <span style={{ marginLeft: '0', whiteSpace: 'nowrap' }}>
                 <p>Filtriraj tikete</p>
             </span>
             <span className='calendars_field' style={{ display: 'flex' }}>

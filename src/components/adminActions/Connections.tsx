@@ -151,36 +151,36 @@ export default function Connections() {
                 </span>
                 <div className='list_wrapper'>
                     <span className='list_field'>
-                        <span className="heading_icon_wrapper" style={{ position: "fixed" }}>
-                            <h3 className="headings" style={{ fontSize: '20px' }}>Lista svih kompanija</h3>
+                        <span className="heading_icon_wrapper" style={{ position: "absolute" }}>
+                            <h3 className="headings" style={{ fontSize: '20px', backgroundColor: 'white' }}>Lista svih kompanija</h3>
                             <BusinessIcon style={{ color: '#19467c' }} />
                         </span>
                         <span style={{ marginTop: '50px' }}>
-                            {companiesList.length > 0 && companiesList.map((company: Company) => {
+                            {companiesList?.length > 0 && companiesList.map((company: Company) => {
                                 return <p className={selectedCompany === company.companyId ? 'selected' : undefined} onClick={() => { setSelectedCompany(company.companyId); setSelectedProject('') }} key={company.companyId}>{company.companyName}</p>
                             })}
                         </span>
                     </span>
                     <span className='list_field'>
-                        <span className="heading_icon_wrapper" style={{ position: 'fixed' }}>
-                            <h3 className="headings" style={{ fontSize: '20px' }}>Lista svih projekata</h3>
+                        <span className="heading_icon_wrapper" style={{ position: "absolute" }}>
+                            <h3 className="headings" style={{ fontSize: '20px', backgroundColor: 'white' }}>Lista svih projekata</h3>
                             <InsertDriveFileIcon style={{ color: '#19467c' }} />
                         </span>
                         <span style={{ marginTop: '50px' }}>
-                            {projectsList.length > 0 && projectsList.map((project: Project) => {
+                            {projectsList?.length > 0 && projectsList.map((project: Project) => {
                                 return <p className={selectedProject === project.projectId ? 'selected' : undefined} onClick={() => setSelectedProject(project.projectId)} key={project.projectId}>{project.projectName}</p>
                             })}
                         </span>
                     </span>
                     <span className='list_field_connections'>
-                        <span className="heading_icon_wrapper" style={{ position: 'fixed' }}>
-                            <h3 className="headings" style={{ fontSize: '20px' }}>Lista napravljenih konekcija</h3>
+                        <span className="heading_icon_wrapper" style={{ position: "absolute" }}>
+                            <h3 className="headings" style={{ fontSize: '20px', backgroundColor: 'white' }}>Lista napravljenih konekcija</h3>
                             <BusinessIcon style={{ color: '#19467c' }} />
                             <CableIcon style={{ color: '#19467c' }} />
                             <InsertDriveFileIcon style={{ color: '#19467c' }} />
                         </span>
                         <span style={{ marginTop: '50px' }}>
-                            {connectionsList.length > 0 && connectionsList.filter((connection: CompanyProject) => connection.companyId === selectedCompany).map((connection: CompanyProject) => {
+                            {connectionsList?.length > 0 && connectionsList.filter((connection: CompanyProject) => connection.companyId === selectedCompany).map((connection: CompanyProject) => {
                                 return <p key={connection.companyProjectId}>{connection.companyProjectName}</p>
                             })}
                         </span>

@@ -218,12 +218,13 @@ export default function CompaniesTable(props: CompaniesTableProps) {
 
     //filter connection with users based on selected company 
     function filterUserConnections() {
-
-        return userConnections.filter((connection: CompanyProjectUser) => connection.companyProjectUserName.includes(selectedCompanyName))
+        const filtered = userConnections.filter((connection: CompanyProjectUser) => connection.companyProjectUserName.includes(selectedCompanyName))
+        return filtered.filter((connetion: CompanyProjectUser, i: number, arr: CompanyProjectUser[]) => connetion.companyProjectUserName.slice(connetion.companyProjectUserName.lastIndexOf('-')) !== arr[i + 1]?.companyProjectUserName.slice(arr[i + 1]?.companyProjectUserName.lastIndexOf('-')))
     }
 
     return (
         <TableContainer component={Paper}>
+            {!props?.data && <span style={{ position: 'absolute', bottom: '50%', right: '50%', fontSize: '18px' }}>nema kreiranih kompanija</span>}
             {/*delete company modal*/}
             {showModal && <Dialog open={showModal} onClose={() => setShowModal(false)}>
                 <DialogContent>
@@ -318,7 +319,7 @@ export default function CompaniesTable(props: CompaniesTableProps) {
                     </StyledTableRow>
                 </TableHead>
                 <TableBody sx={{ color: "white" }}>
-                    {(props.data.length > 0 && rowsPerPage > 0
+                    {(props?.data?.length > 0 && (rowsPerPage > 0
                         ? props.data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : props.data
                     ).map((company: Company) => {
@@ -346,14 +347,14 @@ export default function CompaniesTable(props: CompaniesTableProps) {
                                 </Tooltip>
                             </TableCell>
                         </StyledTableRow>
-                    }).reverse()}
+                    }).reverse())}
                 </TableBody>
                 <TableFooter>
                     <TableRow>
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
                             colSpan={10}
-                            count={props.data.length}
+                            count={props?.data?.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             SelectProps={{
