@@ -24,9 +24,8 @@ const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
   component: Component,
 }) => {
   const token = useAppSelector((state: RootState) => state.user.JWT);
-  const user = useAppSelector((state: RootState) => state.user.userData)
-  return <Component />;
-  // return <Navigate to="/" replace />;
+  if (token) return <Component />
+  return <Navigate to="/" replace />;
 };
 
 export const router = createBrowserRouter([
