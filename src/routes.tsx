@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, createHashRouter, Navigate } from "react-router-dom";
 //CUSTOM COMPONENTS
 import App from "./App";
 import LoginPage from "./components/LoginPage/LoginPage";
@@ -28,7 +28,7 @@ const CheckIsAuthenticated: React.FC<isAuthenticated> = ({
   return <Navigate to="/" replace />;
 };
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: "/",
     element: <App />,
